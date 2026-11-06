@@ -11,8 +11,8 @@
 //  (A linha DONO_EMAIL abaixo é opcional: serve só como dono "de reserva".)
 // =====================================================================
 
-// OPCIONAL: e-mail de um dono de reserva, sempre com acesso total. Pode deixar assim e usar o menu da planilha.
-const DONO_EMAIL = '';
+// E-mail do DONO: único com acesso total à Área privada (além de quem você cadastrar na aba Equipe).
+const DONO_EMAIL = 'lucasclaudio86@gmail.com';
 const COMISSAO_PADRAO = 50;      // % de comissão usada quando o barbeiro não tem uma definida
 const FUSO = 'America/Sao_Paulo';
 
