@@ -1,13 +1,18 @@
 // =====================================================================
 //  BARBEARIA — back-end (Google Apps Script) · versão 5 com Área privada
 // =====================================================================
-//  O QUE VOCÊ PRECISA EDITAR: só a linha DONO_EMAIL logo abaixo.
-//  Tudo o mais (serviços, preços, equipe, fotos, textos, horários) você
-//  muda depois, pelo próprio site, em "Área privada".
+//  COMO CADASTRAR O E-MAIL DO DONO E DOS BARBEIROS (sem mexer em código):
+//   1) Abra a planilha "Agendas Barbearia" e recarregue a página (F5).
+//   2) No menu "Barbearia" (ao lado de Ajuda) escolha "Cadastrar e-mail do DONO"
+//      ou "Cadastrar BARBEIRO" e responda as perguntas.
+//   3) Quem foi cadastrado precisa criar conta no site com o MESMO e-mail.
+//  Depois de entrar como dono, você também cadastra a equipe pelo site em
+//  Área privada → Equipe. Serviços, preços, fotos, textos e horários também.
+//  (A linha DONO_EMAIL abaixo é opcional: serve só como dono "de reserva".)
 // =====================================================================
 
-// E-mail da CONTA do dono no site (a mesma que você usa para entrar). Sempre terá acesso total.
-const DONO_EMAIL = 'COLOQUE_SEU_EMAIL_AQUI';
+// OPCIONAL: e-mail de um dono de reserva, sempre com acesso total. Pode deixar assim e usar o menu da planilha.
+const DONO_EMAIL = '';
 const COMISSAO_PADRAO = 50;      // % de comissão usada quando o barbeiro não tem uma definida
 const FUSO = 'America/Sao_Paulo';
 
@@ -85,7 +90,7 @@ const cf_ = () => aba_('Config', CAB_CF, sh => reescrever_(sh, CAB_CF, Object.ke
 const sv_ = () => aba_('Servicos', CAB_SV, sh =>
   reescrever_(sh, CAB_SV, SEMENTE_SERVICOS, ['@', '0.##', '@', '@', '@', '@', '@']));
 const eq_ = () => aba_('Equipe', CAB_EQ, sh => reescrever_(sh, CAB_EQ, [
-  [DONO_EMAIL.trim().toLowerCase(), 'Dono', 'dono', 0, 'não', '', '', 'sim'],
+  [emailOk_(DONO_EMAIL) ? DONO_EMAIL.trim().toLowerCase() : '', 'Dono', 'dono', 0, 'não', '', '', 'sim'],
   ['', 'Carlos', 'barbeiro', COMISSAO_PADRAO, 'sim', 'Curso de degradê e navalhado | Barboterapia profissional', 'Especialista em degradê e barba desenhada.', 'sim'],
   ['', 'João', 'barbeiro', COMISSAO_PADRAO, 'sim', 'Colorimetria masculina | Corte infantil', 'Atende crianças com paciência e capricho.', 'sim']
 ], ['@', '@', '@', '0.##', '@', '@', '@', '@']));
@@ -93,6 +98,7 @@ const eq_ = () => aba_('Equipe', CAB_EQ, sh => reescrever_(sh, CAB_EQ, [
 // evita que o Google Planilhas execute texto digitado como fórmula
 const seguro_ = t => /^[=+\-@]/.test(String(t)) ? "'" + t : String(t);
 const limpo_ = (t, max) => String(t == null ? '' : t).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
+const emailOk_ = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(e || '').trim());
 const sim_ = v => String(v).trim().toLowerCase() === 'sim';
 const simnao_ = b => b ? 'sim' : 'não';
 
@@ -142,7 +148,7 @@ const nomesBarbeiros_ = () => barbeiros_().map(p => p.nome);
 function quem_(email) {
   const dono = String(DONO_EMAIL).trim().toLowerCase();
   const m = equipe_().filter(p => p.ativo && p.email && p.email === email)[0];
-  if (email === dono) return { papel: 'dono', nome: m ? m.nome : 'Dono', email: email };
+  if (dono && email === dono) return { papel: 'dono', nome: m ? m.nome : 'Dono', email: email };
   return m ? { papel: m.papel, nome: m.nome, email: email } : null;
 }
 function comissaoDe_(nome) {
@@ -550,17 +556,18 @@ function adminSalvarEquipe_(d) {
     const com = valorOk_(p.comissao);
     if (com === null || com > 100) return erro_('A comissão de ' + nome + ' deve ficar entre 0 e 100.');
     const cursos = (Array.isArray(p.cursos) ? p.cursos : []).map(c => limpo_(String(c).replace(/\|/g, ' '), 70)).filter(Boolean).slice(0, 10);
-    linhas.push([email, seguro_(nome), email === dono || p.papel === 'dono' ? 'dono' : 'barbeiro', r2_(com), simnao_(!!p.atende),
+    linhas.push([email, seguro_(nome), (dono && email === dono) || p.papel === 'dono' ? 'dono' : 'barbeiro', r2_(com), simnao_(!!p.atende),
       seguro_(cursos.join(' | ')), seguro_(limpo_(p.obs, 160)), simnao_(p.ativo !== false)]);
   }
-  if (dono && !emails[dono]) linhas.unshift([dono, 'Dono', 'dono', 0, 'não', '', '', 'sim']);
+  if (emailOk_(dono) && !emails[dono]) linhas.unshift([dono, 'Dono', 'dono', 0, 'não', '', '', 'sim']);
   // quem sumiu da lista continua existindo como "inativo" (não perde o histórico de agendas e vendas)
   equipe_().forEach(old => {
-    if (!nomes[old.nome.toLowerCase()] && !(old.email && old.email === dono)) {
+    if (!nomes[old.nome.toLowerCase()] && !(dono && old.email && old.email === dono)) {
       linhas.push([old.email, seguro_(old.nome), old.papel, old.comissao, 'não', seguro_(old.cursos.join(' | ')), seguro_(old.obs), 'não']);
     }
   });
   if (!linhas.some(l => l[7] === 'sim' && l[4] === 'sim')) return erro_('Deixe pelo menos um barbeiro ativo que atende clientes.');
+  if (!linhas.some(l => l[2] === 'dono' && l[0] && l[7] === 'sim')) return erro_('Precisa existir pelo menos um dono ativo com e-mail, senão ninguém acessa a Área privada.');
   reescrever_(eq_(), CAB_EQ, linhas, ['@', '@', '@', '0.##', '@', '@', '@', '@']);
   limparCache_();
   return json_({ ok: true });
@@ -657,6 +664,52 @@ function adminFotoHeroDel_() {
   if (antigo) lixeira_(antigo);
   limparCache_();
   return json_({ ok: true });
+}
+
+// =====================================================================
+//  MENU "Barbearia" NA PLANILHA: cadastrar e-mail do dono e dos barbeiros
+// =====================================================================
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Barbearia')
+    .addItem('Cadastrar e-mail do DONO', 'menuDono')
+    .addItem('Cadastrar BARBEIRO', 'menuBarbeiro')
+    .addToUi();
+}
+function perguntar_(ui, titulo, texto) {
+  const r = ui.prompt(titulo, texto, ui.ButtonSet.OK_CANCEL);
+  return r.getSelectedButton() === ui.Button.OK ? String(r.getResponseText()).trim() : null;
+}
+// Grava na aba Equipe. Reaproveita linha do mesmo e-mail, ou a linha do mesmo nome sem e-mail.
+function cadastrarEquipe_(email, nome, papel, comissao, atende) {
+  const sh = eq_(), v = sh.getDataRange().getValues();
+  let alvo = -1;
+  for (let i = 1; i < v.length && alvo < 0; i++) if (String(v[i][0]).trim().toLowerCase() === email) alvo = i;
+  for (let i = 1; i < v.length && alvo < 0; i++) if (!String(v[i][0]).trim() && String(v[i][1]).trim().toLowerCase() === nome.toLowerCase()) alvo = i;
+  if (alvo < 0 && papel === 'dono') for (let i = 1; i < v.length && alvo < 0; i++) if (!String(v[i][0]).trim() && String(v[i][2]) === 'dono') alvo = i;
+  const linha = [email, seguro_(nome), papel, comissao, simnao_(atende), alvo >= 0 ? v[alvo][5] : '', alvo >= 0 ? v[alvo][6] : '', 'sim'];
+  const fmts = ['@', '@', '@', '0.##', '@', '@', '@', '@'];
+  if (alvo >= 0) { const r = sh.getRange(alvo + 1, 1, 1, 8); r.setNumberFormats([fmts]); r.setValues([linha]); }
+  else acrescentar_(sh, CAB_EQ, linha, fmts);
+  limparCache_();
+}
+function menuDono() {
+  const ui = SpreadsheetApp.getUi();
+  const email = perguntar_(ui, 'E-mail do dono', 'Digite o e-mail da conta do dono no site:'); if (email === null) return;
+  if (!emailOk_(email)) { ui.alert('E-mail inválido. Tente de novo.'); return; }
+  const nome = perguntar_(ui, 'Nome do dono', 'Como aparece o nome do dono? (deixe "Dono" se quiser)'); if (nome === null) return;
+  cadastrarEquipe_(email.toLowerCase(), nome || 'Dono', 'dono', 0, false);
+  ui.alert('Dono cadastrado: ' + email.toLowerCase() + '\n\nAgora crie uma conta no site com esse mesmo e-mail (ou entre, se já tiver). A opção "Área privada" aparece no final do site.');
+}
+function menuBarbeiro() {
+  const ui = SpreadsheetApp.getUi();
+  const email = perguntar_(ui, 'E-mail do barbeiro', 'Digite o e-mail da conta do barbeiro no site:'); if (email === null) return;
+  if (!emailOk_(email)) { ui.alert('E-mail inválido. Tente de novo.'); return; }
+  const nome = perguntar_(ui, 'Nome do barbeiro', 'Nome que aparece no site (se ele já existe na aba Equipe, use o mesmo nome):'); if (!nome) return;
+  const c = perguntar_(ui, 'Comissão', 'Comissão do barbeiro em % (ex.: 50):'); if (c === null) return;
+  const com = c === '' ? COMISSAO_PADRAO : valorOk_(c);
+  if (com === null || com > 100) { ui.alert('Comissão inválida. Use um número de 0 a 100.'); return; }
+  cadastrarEquipe_(email.toLowerCase(), nome.slice(0, 40), 'barbeiro', com, true);
+  ui.alert('Barbeiro cadastrado: ' + nome + ' (' + email.toLowerCase() + ')\n\nEle precisa criar conta no site com esse mesmo e-mail. Depois disso vê a própria agenda na Área privada.');
 }
 
 // ---------- Entradas da API ----------
