@@ -187,8 +187,12 @@ function lixeira_(fileId) {
   if (!/^[\w-]{10,80}$/.test(String(fileId))) return;
   try { DriveApp.getFileById(fileId).setTrashed(true); } catch (e) {}
 }
-// Rode esta função UMA vez no editor para autorizar o acesso ao Google Drive (fotos).
-function autorizar() { pastaFotos_(); }
+// Rode esta função UMA vez no editor: autoriza o acesso ao Google Drive (fotos) e cria
+// todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
+function autorizar() {
+  pastaFotos_();
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_].forEach(f => f());
+}
 
 // ---------- Cache da configuração pública ----------
 const limparCache_ = () => { memoCfg_ = null; CacheService.getScriptCache().remove('pub'); };
