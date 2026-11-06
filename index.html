@@ -536,7 +536,8 @@ details.ad-det>div{padding:4px 14px 14px}
           <div class="coments" id="fb-lista"></div>
         </div>
       </div>
-      <div class="fim"><span class="marca" data-nome>Barbearia</span><span id="rod-end"></span><span>&copy; <span id="ano"></span></span><button type="button" class="btn sec mini bt-priv" id="ir-admin" hidden>Área privada</button></div>
+      <div class="fim"><span class="marca" data-nome>Barbearia</span><span id="rod-end"></span><span>&copy; <span id="ano"></span></span><button type="button" class="btn sec mini bt-priv" id="ir-admin">Área privada</button></div>
+      <div class="msg" id="msg-priv" role="alert"></div>
     </div>
   </footer>
 </div>
@@ -659,9 +660,10 @@ function reiniciarMapa() {
 async function atualizarPerfil() {
   try {
     const r = await post({ action: 'perfil', token: sessao.token });
-    if (r.expirada) { sair(); return; }
+    if (r.expirada) { sair(); return null; }
     if (r.ok && sessao) { sessao.papel = r.papel; try { localStorage.setItem('sessao', JSON.stringify(sessao)); } catch (e) {} atualizarBotaoAdmin(); }
-  } catch (e) {}
+    return r;
+  } catch (e) { return null; }
 }
 aplicarSite();
 $('ano').textContent = new Date().getFullYear();
@@ -1199,7 +1201,7 @@ function lerImagem(file, max) {
 }
 
 // ---- entrada / abas ----
-function atualizarBotaoAdmin() { $('ir-admin').hidden = !ehEquipe(); }
+function atualizarBotaoAdmin() { $('ir-admin').hidden = !sessao; }
 async function abrirAdmin() {
   if (!ehEquipe()) { mostrar('home'); return; }
   if (!config) await carregarConfig();
@@ -1219,7 +1221,16 @@ function abrirAba(id) {
   const f = { agenda: abAgenda, vendas: abVendas, servicos: abServicos, fotos: abFotos, equipe: abEquipe, visual: abVisual }[id];
   if (f && (id === 'agenda' || ehDono())) f(box, () => my === adSeq);
 }
-$('ir-admin').onclick = () => mostrar('admin');
+$('ir-admin').onclick = async () => {
+  limpar('msg-priv');
+  if (!ehEquipe()) {
+    const r = await atualizarPerfil();
+    if (!r) { aviso('msg-priv', 'erro', 'Não foi possível conferir seu acesso. Verifique a conexão e tente de novo.'); return; }
+    if (!r.ok) { aviso('msg-priv', 'erro', 'O Apps Script ainda está na versão antiga. Cole o Code.gs novo e publique uma nova versão da implantação.'); return; }
+  }
+  if (ehEquipe()) mostrar('admin');
+  else aviso('msg-priv', 'erro', 'A conta ' + (sessao.email || '') + ' ainda não está cadastrada como dono ou barbeiro. Cadastre esse e-mail na aba Equipe da planilha (ou no menu Barbearia) e tente de novo.');
+};
 $('ad-voltar').onclick = () => mostrar('home');
 $('ad-sair').onclick = sair;
 
