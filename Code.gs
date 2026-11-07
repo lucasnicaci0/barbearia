@@ -35,10 +35,11 @@ const CFG_PADRAO = {
   heroTexto: 'Veja os horários livres e marque em menos de um minuto.',
   whatsapp: '5561999999999', instagram: 'suabarbearia',
   endereco: 'Quadra 11 Lote 1 Casa B - Mansões Odisséia, Águas Lindas de Goiás - GO, 72927-185',
-  regiao: 'Mansões Odisséia', lat: '', lon: '',
+  regiao: 'Mansões Odisséia', lat: '-15.771585825269458', lon: '-48.281261505017945',
   abre: '9', fecha: '19', intervalo: '30', diasFechados: '0', diasAFrente: '14',
-  corBotao: '#b4491f', corMadeira: '#4d2f1a', ceu: 'entardecer', fotoHero: ''
+  corBotao: '#8f3b22', corMadeira: '#382a20', ceu: 'entardecer', fotoHero: '', fotoFachada: '', metaCortes: '7'
 };
+const SEMENTE_MARCAS = [['m1', '', 'Fox For Men', '', 1], ['m2', '', 'QOD Barber Shop', '', 2], ['m3', '', 'Roger', '', 3], ['m4', '', 'Shark Barber', '', 4]];
 const ICONES = ['tesoura', 'navalha', 'gota', 'estrela', 'crianca', 'pincel'];
 const CATEGORIAS = ['corte', 'barba', 'quimica', 'outro'];
 const CEUS = ['entardecer', 'noite', 'dia', 'madrugada'];
@@ -52,10 +53,14 @@ const CAB_EQ = ['Email', 'Nome', 'Papel', 'Comissão %', 'Atende', 'Cursos', 'Ob
 const CAB_FT = ['Id', 'FileId', 'Título', 'Descrição', 'Serviço', 'Ordem', 'Criado em'];
 const CAB_CF = ['Chave', 'Valor'];
 const CAB_VD = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Categoria', 'Cliente', 'Telefone', 'Valor', 'Comissão %',
-  'Comissão R$', 'Lucro R$', 'Lucro %', 'Origem', 'Concluído em', 'Por', 'Chave'];
+  'Comissão R$', 'Lucro R$', 'Lucro %', 'Origem', 'Concluído em', 'Por', 'Chave', 'Email', 'Resgate'];
+const CAB_MC = ['Id', 'FileId', 'Nome', 'Descrição', 'Ordem'];
+const FMT_VD = ['@', '@', '@', '@', '@', '@', '@', '0.00', '0.##', '0.00', '0.00', '0.##', '@', '@', '@', '@', '@', '@'];
 const FMT_TXT = n => Array(n).fill('@');
 
+const memoAbas_ = {};
 function aba_(nome, cab, semente) {
+  if (memoAbas_[nome]) return memoAbas_[nome];
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(nome);
   if (!sh) {
@@ -64,7 +69,9 @@ function aba_(nome, cab, semente) {
     sh.setFrozenRows(1);
     if (semente) semente(sh);
   }
-  if (!sh.getRange(1, cab.length).getValue()) sh.getRange(1, cab.length).setValue(cab[cab.length - 1]);
+  const atual = sh.getRange(1, 1, 1, cab.length).getValues()[0];       // completa cabeçalhos que faltam (planilhas antigas)
+  cab.forEach((c, i) => { if (!atual[i]) sh.getRange(1, i + 1).setValue(c); });
+  memoAbas_[nome] = sh;
   return sh;
 }
 function reescrever_(sh, cab, linhas, fmts) {
@@ -85,6 +92,7 @@ const ag_ = () => aba_('Agendamentos', CAB_AG);
 const us_ = () => aba_('Usuarios', CAB_US);
 const fb_ = () => aba_('Feedback', CAB_FB);
 const vd_ = () => aba_('Vendas', CAB_VD);
+const mc_ = () => aba_('Marcas', CAB_MC, sh => reescrever_(sh, CAB_MC, SEMENTE_MARCAS, ['@', '@', '@', '@', '0']));
 const ft_ = () => aba_('Fotos', CAB_FT);
 const cf_ = () => aba_('Config', CAB_CF, sh => reescrever_(sh, CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, CFG_PADRAO[k]]), FMT_TXT(2)));
 const sv_ = () => aba_('Servicos', CAB_SV, sh =>
@@ -147,6 +155,7 @@ const nomesBarbeiros_ = () => barbeiros_().map(p => p.nome);
 // Quem é essa conta? (dono, barbeiro ou ninguém). Sempre confirmado no servidor.
 function quem_(email) {
   const dono = String(DONO_EMAIL).trim().toLowerCase();
+  if (dono && email === dono) return { papel: 'dono', nome: 'Dono', email: email };      // atalho: não precisa ler a planilha
   const m = equipe_().filter(p => p.ativo && p.email && p.email === email)[0];
   if (dono && email === dono) return { papel: 'dono', nome: m ? m.nome : 'Dono', email: email };
   return m ? { papel: m.papel, nome: m.nome, email: email } : null;
@@ -160,6 +169,11 @@ function comissaoDe_(nome) {
 function fotos_() {
   return ft_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     id: String(l[0]), fileId: String(l[1]), titulo: String(l[2]), desc: String(l[3]), servico: String(l[4]), ordem: Number(l[5]) || 0
+  })).sort((a, b) => a.ordem - b.ordem);
+}
+function marcas_() {
+  return mc_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    id: String(l[0]), fileId: String(l[1]), nome: String(l[2]), desc: String(l[3]), ordem: Number(l[4]) || 0
   })).sort((a, b) => a.ordem - b.ordem);
 }
 function pastaFotos_() {
@@ -191,7 +205,7 @@ function lixeira_(fileId) {
 // todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
 function autorizar() {
   pastaFotos_();
-  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_].forEach(f => f());
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_].forEach(f => f());
 }
 
 // ---------- Cache da configuração pública ----------
@@ -208,6 +222,7 @@ function publico_() {
       barbeiros: barbeiros_().map(p => ({ nome: p.nome, cursos: p.cursos, obs: p.obs })),
       servicos: servicos_().filter(s => s.ativo).map(s => ({ nome: s.nome, preco: s.preco, icone: s.icone, desc: s.desc, destaque: s.destaque })),
       fotos: fotos_().map(f => ({ id: f.id, fileId: f.fileId, titulo: f.titulo, desc: f.desc, servico: f.servico })),
+      marcas: marcas_().map(m => ({ id: m.id, fileId: m.fileId, nome: m.nome, desc: m.desc })),
       site: site, diasFechados: h.fechados, dias: h.dias, abre: h.abre, fecha: h.fecha
     });
     try { cache.put('pub', txt, 300); } catch (e) {}
@@ -286,14 +301,42 @@ function validarToken_(token) {
 }
 
 // ---------- Usuários ----------
+// Hash novo (v2): um HMAC com chave secreta do script. É rápido (1 cálculo) e a chave nunca fica na planilha.
+// Senhas antigas (300 repetições) continuam valendo e são trocadas pelo hash novo no primeiro login.
+function hashV2_(senha, salt) { return 'v2:' + hex_(Utilities.computeHmacSha256Signature(salt + '|' + senha, segredo_())); }
 function acharUsuario_(email) {
-  const v = us_().getDataRange().getValues();
-  for (let i = 1; i < v.length; i++) {
-    if (String(v[i][0]).toLowerCase() === email) {
-      return { nome: String(v[i][1]), telefone: String(v[i][2]), salt: String(v[i][3]), hash: String(v[i][4]) };
+  const cache = CacheService.getScriptCache(), chave = 'u_' + email;
+  const c = cache.get(chave);
+  if (c) return JSON.parse(c);
+  const sh = us_(), n = sh.getLastRow();
+  if (n < 2) return null;
+  const emails = sh.getRange(2, 1, n - 1, 1).getValues();          // lê só a coluna de e-mails (mais rápido)
+  for (let i = 0; i < emails.length; i++) {
+    if (String(emails[i][0]).toLowerCase() === email) {
+      const l = sh.getRange(i + 2, 1, 1, 6).getValues()[0];
+      const u = { nome: String(l[1]), telefone: String(l[2]), salt: String(l[3]), hash: String(l[4]) };
+      try { cache.put(chave, JSON.stringify(u), 21600); } catch (e) {}
+      return u;
     }
   }
   return null;
+}
+function trocarHash_(email, senha) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(4000)) return;                                   // se estiver ocupado, troca no próximo login
+  try {
+    const sh = us_(), n = sh.getLastRow();
+    if (n < 2) return;
+    const emails = sh.getRange(2, 1, n - 1, 1).getValues();
+    for (let i = 0; i < emails.length; i++) {
+      if (String(emails[i][0]).toLowerCase() === email) {
+        const salt = Utilities.getUuid(), c = sh.getRange(i + 2, 4, 1, 2);
+        c.setNumberFormats([['@', '@']]); c.setValues([[salt, hashV2_(senha, salt)]]);
+        CacheService.getScriptCache().remove('u_' + email);
+        return;
+      }
+    }
+  } finally { lock.releaseLock(); }
 }
 function sessao_(email, u) {
   const q = quem_(email);
@@ -309,7 +352,7 @@ function registrar_(d) {
   if (senha.length < 6) return erro_('A senha precisa ter pelo menos 6 caracteres.');
   if (acharUsuario_(email)) return erro_('Já existe uma conta com esse e-mail.');
   const salt = Utilities.getUuid();
-  acrescentar_(us_(), CAB_US, [email, seguro_(nome), seguro_(tel), salt, hash_(senha, salt), agoraBR_()], FMT_TXT(6));
+  acrescentar_(us_(), CAB_US, [email, seguro_(nome), seguro_(tel), salt, hashV2_(senha, salt), agoraBR_()], FMT_TXT(6));
   return sessao_(email, { nome: nome, telefone: tel });
 }
 function entrar_(d) {
@@ -319,7 +362,13 @@ function entrar_(d) {
   const n = Number(cache.get(chave) || 0);
   if (n >= 5) return erro_('Muitas tentativas. Aguarde 10 minutos e tente de novo.');
   const u = acharUsuario_(email);
-  if (!u || hash_(String(d.senha || ''), u.salt) !== u.hash) {
+  const senha = String(d.senha || '');
+  let valido = false;
+  if (u) {
+    if (u.hash.indexOf('v2:') === 0) valido = hashV2_(senha, u.salt) === u.hash;
+    else if (hash_(senha, u.salt) === u.hash) { valido = true; trocarHash_(email, senha); }
+  }
+  if (!valido) {
     cache.put(chave, String(n + 1), 600);
     return erro_('E-mail ou senha incorretos.');
   }
@@ -384,6 +433,31 @@ function listarFeedbacks_() {
 }
 
 // =====================================================================
+//  CARTÃO FIDELIDADE: a cada N cortes concluídos, 1 corte grátis
+// =====================================================================
+const metaCortes_ = () => inteiro_(cfg_().metaCortes, 7, 0, 30);        // 0 = desligado
+// Conta, por e-mail, os cortes concluídos e os cortes grátis já resgatados
+function mapaFid_() {
+  const m = {};
+  vd_().getDataRange().getValues().slice(1).forEach(l => {
+    const e = String(l[16] || '').trim().toLowerCase();
+    if (!e || String(l[4]) !== 'corte') return;
+    const o = m[e] = m[e] || { cortes: 0, resg: 0 };
+    if (String(l[17]) === 'sim') o.resg++; else o.cortes++;
+  });
+  return m;
+}
+function fidDe_(mapa, email, meta) {
+  const o = mapa[email] || { cortes: 0, resg: 0 };
+  if (!meta) return { ativo: false, meta: 0, cortes: o.cortes, progresso: 0, faltam: 0, creditos: 0, resgatados: o.resg };
+  const creditos = Math.max(0, Math.floor(o.cortes / meta) - o.resg), progresso = o.cortes % meta;
+  return { ativo: true, meta: meta, cortes: o.cortes, progresso: progresso, faltam: meta - progresso, creditos: creditos, resgatados: o.resg };
+}
+function fidelidade_(email) {
+  return json_(Object.assign({ ok: true }, fidDe_(mapaFid_(), email, metaCortes_())));
+}
+
+// =====================================================================
 //  ÁREA PRIVADA (dono e barbeiro) — toda ação confere o papel aqui no servidor
 // =====================================================================
 const r2_ = n => Math.round(n * 100) / 100;
@@ -394,22 +468,25 @@ function adminAgenda_(d, q) {
   let de = isoOk_(d.de) ? d.de : hoje, ate = isoOk_(d.ate) ? d.ate : somarDias_(de, 7);
   if (ate < de) ate = de;
   if (diasEntre_(de, ate) > 62) ate = somarDias_(de, 62);
-  const preco = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; });
+  const preco = {}, cat = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; cat[s.nome] = s.categoria; });
+  const meta = metaCortes_(), fid = meta ? mapaFid_() : {};
   const lista = ag_().getDataRange().getValues().slice(1)
     .filter(l => { const dt = dataTxt_(l[0]); return dt >= de && dt <= ate && (q.papel === 'dono' || String(l[2]) === q.nome); })
     .map(l => ({
       data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), cliente: String(l[4]),
-      telefone: String(l[5]), status: String(l[8] || '').trim(), valor: preco[String(l[3])] || 0
+      telefone: String(l[5]), status: String(l[8] || '').trim(), valor: preco[String(l[3])] || 0,
+      gratis: !!meta && !String(l[8] || '').trim() && cat[String(l[3])] === 'corte' && fidDe_(fid, String(l[7]).toLowerCase(), meta).creditos > 0
     }))
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
   return json_({ ok: true, de: de, ate: ate, hoje: hoje, lista: lista });
 }
 
 function registrarVenda_(o) {
-  const com = comissaoDe_(o.barbeiro), valor = r2_(o.valor), vCom = r2_(valor * com / 100), lucro = r2_(valor - vCom);
+  const com = comissaoDe_(o.barbeiro), valor = r2_(o.valor), base = o.resgate ? r2_(o.base) : valor;   // corte grátis: a casa paga a comissão sobre o preço de tabela
+  const vCom = r2_(base * com / 100), lucro = r2_(valor - vCom);
   acrescentar_(vd_(), CAB_VD, [o.data, o.hora, o.barbeiro, seguro_(o.servico), o.categoria, seguro_(o.cliente || ''), seguro_(o.telefone || ''),
-    valor, com, vCom, lucro, valor ? r2_(lucro / valor * 100) : 0, o.origem, agoraBR_(), o.por, o.chave],
-    ['@', '@', '@', '@', '@', '@', '@', '0.00', '0.##', '0.00', '0.00', '0.##', '@', '@', '@', '@']);
+    valor, com, vCom, lucro, valor ? r2_(lucro / valor * 100) : 0, o.origem, agoraBR_(), o.por, o.chave,
+    String(o.email || '').toLowerCase(), o.resgate ? 'sim' : ''], FMT_VD);
 }
 const valorOk_ = v => { const n = Number(String(v).replace(',', '.')); return isFinite(n) && n >= 0 && n <= 99999 ? n : null; };
 
@@ -422,15 +499,20 @@ function adminConcluir_(d, q) {
     if (q.papel !== 'dono' && v[i][2] !== q.nome) return erro_('Sem permissão para este horário.');
     if (String(v[i][8] || '').trim()) return erro_('Este horário já foi finalizado.');
     const sv = servicos_().filter(s => s.nome === v[i][3])[0];
-    let valor = sv ? sv.preco : 0;
-    if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
+    let valor = sv ? sv.preco : 0, gratis = false;
+    const emailCli = String(v[i][7] || '').toLowerCase();
+    if (d.gratis && status === 'concluido') {                       // resgate do corte grátis do cartão fidelidade
+      const meta = metaCortes_();
+      if (!meta || !sv || sv.categoria !== 'corte' || !emailCli || fidDe_(mapaFid_(), emailCli, meta).creditos < 1) return erro_('Este cliente não tem corte grátis disponível para este serviço.');
+      gratis = true; valor = 0;
+    } else if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
       const x = valorOk_(d.valor); if (x === null) return erro_('Valor inválido.'); valor = x;
     }
     const c = sh.getRange(i + 1, 9); c.setNumberFormat('@'); c.setValue(status);
     if (status === 'concluido') {
       registrarVenda_({ data: dataTxt_(v[i][0]), hora: horaTxt_(v[i][1]), barbeiro: String(v[i][2]), servico: String(v[i][3]),
         categoria: sv ? sv.categoria : 'outro', cliente: String(v[i][4]), telefone: String(v[i][5]), valor: valor, origem: 'agenda',
-        por: q.email, chave: [dataTxt_(v[i][0]), horaTxt_(v[i][1]), v[i][2]].join('|') });
+        email: emailCli, resgate: gratis, base: sv ? sv.preco : 0, por: q.email, chave: [dataTxt_(v[i][0]), horaTxt_(v[i][1]), v[i][2]].join('|') });
     }
     return json_({ ok: true });
   }
@@ -443,12 +525,18 @@ function adminVendaAvulsa_(d, q) {
   if (!sv) return erro_('Escolha um serviço.');
   const barbeiro = q.papel === 'dono' ? String(d.barbeiro || '') : q.nome;
   if (!equipe_().some(p => p.nome === barbeiro && p.ativo)) return erro_('Escolha o barbeiro.');
-  let valor = sv.preco;
-  if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
+  let valor = sv.preco, gratis = false;
+  const emailCli = emailOk_(d.email) ? String(d.email).trim().toLowerCase() : '';
+  if (d.gratis) {
+    const meta = metaCortes_();
+    if (!meta || sv.categoria !== 'corte' || !emailCli || fidDe_(mapaFid_(), emailCli, meta).creditos < 1) return erro_('Este cliente não tem corte grátis disponível. Informe o e-mail da conta dele no site.');
+    gratis = true; valor = 0;
+  } else if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
     const x = valorOk_(d.valor); if (x === null) return erro_('Valor inválido.'); valor = x;
   }
   registrarVenda_({ data: hoje_(), hora: agora_(), barbeiro: barbeiro, servico: sv.nome, categoria: sv.categoria,
-    cliente: limpo_(d.cliente, 80) || 'Sem agendamento', telefone: '', valor: valor, origem: 'avulsa', por: q.email, chave: 'avulsa|' + Utilities.getUuid() });
+    cliente: limpo_(d.cliente, 80) || 'Sem agendamento', telefone: '', valor: valor, origem: 'avulsa', email: emailCli, resgate: gratis, base: sv.preco,
+    por: q.email, chave: 'avulsa|' + Utilities.getUuid() });
   return json_({ ok: true });
 }
 
@@ -474,13 +562,14 @@ function adminRelatorio_(d) {
   const rows = vd_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), categoria: String(l[4]), cliente: String(l[5]),
     valor: Number(l[7]) || 0, comissaoPct: Number(l[8]) || 0, comissao: Number(l[9]) || 0, lucro: Number(l[10]) || 0,
-    margem: Number(l[11]) || 0, origem: String(l[12]), chave: String(l[15])
+    margem: Number(l[11]) || 0, origem: String(l[12]), chave: String(l[15]), gratis: String(l[17]) === 'sim'
   })).filter(r => r.data >= de && r.data <= ate);
-  const tot = { qtd: rows.length, bruto: 0, comissao: 0, lucro: 0, cortes: 0 };
+  const tot = { qtd: rows.length, bruto: 0, comissao: 0, lucro: 0, cortes: 0, gratis: 0 };
   const porSrv = {}, porBar = {}, porDia = {};
   rows.forEach(r => {
     tot.bruto += r.valor; tot.comissao += r.comissao; tot.lucro += r.lucro;
     if (r.categoria === 'corte') tot.cortes++;
+    if (r.gratis) tot.gratis++;
     const s = porSrv[r.servico] = porSrv[r.servico] || { nome: r.servico, categoria: r.categoria, qtd: 0, valor: 0 };
     s.qtd++; s.valor += r.valor;
     const b = porBar[r.barbeiro] = porBar[r.barbeiro] || { nome: r.barbeiro, qtd: 0, valor: 0, comissao: 0, lucro: 0 };
@@ -519,7 +608,7 @@ function adminExcluirVenda_(d) {
 function adminDados_() {
   const c = cfg_(), conf = {};
   Object.keys(CFG_PADRAO).forEach(k => { conf[k] = c[k]; });
-  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
+  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), marcas: marcas_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
 }
 
 function adminSalvarServicos_(d) {
@@ -606,6 +695,7 @@ function adminSalvarConfig_(d) {
   if (n.abre !== undefined) novo.abre = String(inteiro_(n.abre, 9, 0, 23));
   if (n.fecha !== undefined) novo.fecha = String(inteiro_(n.fecha, 19, 1, 24));
   if (n.intervalo !== undefined) novo.intervalo = String([10, 15, 20, 30, 45, 60].indexOf(inteiro_(n.intervalo, 30, 10, 60)) !== -1 ? inteiro_(n.intervalo, 30, 10, 60) : 30);
+  if (n.metaCortes !== undefined) novo.metaCortes = String(inteiro_(n.metaCortes, 7, 0, 30));
   if (n.diasAFrente !== undefined) novo.diasAFrente = String(inteiro_(n.diasAFrente, 14, 1, 60));
   if (n.diasFechados !== undefined) {
     const arr = (Array.isArray(n.diasFechados) ? n.diasFechados : String(n.diasFechados).split(',')).map(s => String(s).trim()).filter(s => /^[0-6]$/.test(s));
@@ -651,6 +741,61 @@ function adminFotoDel_(d) {
   }
   return erro_('Foto não encontrada.');
 }
+function trocarImagemCfg_(chave, imagem, prefixo) {
+  const r = salvarImagem_(imagem, prefixo + '-' + Date.now());
+  if (r.erro) return erro_(r.erro);
+  const c = cfg_(), antigo = c[chave];
+  c[chave] = r.id;
+  reescrever_(cf_(), CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, String(c[k] == null ? '' : c[k])]), FMT_TXT(2));
+  if (antigo) lixeira_(antigo);
+  limparCache_();
+  return json_({ ok: true });
+}
+function removerImagemCfg_(chave) {
+  const c = cfg_(), antigo = c[chave];
+  c[chave] = '';
+  reescrever_(cf_(), CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, String(c[k] == null ? '' : c[k])]), FMT_TXT(2));
+  if (antigo) lixeira_(antigo);
+  limparCache_();
+  return json_({ ok: true });
+}
+const adminFotoFachada_ = d => trocarImagemCfg_('fotoFachada', d.imagem, 'fachada');
+const adminFotoFachadaDel_ = () => removerImagemCfg_('fotoFachada');
+
+// Marcas dos produtos usadas na barbearia (carrossel). Lista completa: nomes, textos, ordem. Fotos vão por admin_marca_foto.
+function adminMarcasSalvar_(d) {
+  const lista = Array.isArray(d.marcas) ? d.marcas : [];
+  if (lista.length > 30) return erro_('Marcas demais.');
+  const atuais = marcas_(), porId = {}; atuais.forEach(m => { porId[m.id] = m; });
+  const vistos = {}, linhas = [];
+  for (let i = 0; i < lista.length; i++) {
+    const m = lista[i] || {}, nome = limpo_(m.nome, 40);
+    if (!nome) return erro_('Toda marca precisa de nome.');
+    if (vistos[nome.toLowerCase()]) return erro_('Marca repetida: ' + nome);
+    vistos[nome.toLowerCase()] = 1;
+    const antiga = porId[String(m.id)];
+    linhas.push([antiga ? antiga.id : 'm' + Utilities.getUuid().slice(0, 7), antiga ? antiga.fileId : '', seguro_(nome), seguro_(limpo_(m.desc, 70)), i + 1]);
+  }
+  const mantidos = {}; linhas.forEach(l => { mantidos[l[0]] = 1; });
+  atuais.forEach(a => { if (!mantidos[a.id] && a.fileId) lixeira_(a.fileId); });     // marca apagada: foto vai para a lixeira
+  reescrever_(mc_(), CAB_MC, linhas, ['@', '@', '@', '@', '0']);
+  limparCache_();
+  return json_({ ok: true });
+}
+function adminMarcaFoto_(d) {
+  const sh = mc_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]) !== String(d.id)) continue;
+    const r = d.remover ? { id: '' } : salvarImagem_(d.imagem, 'marca-' + Date.now());
+    if (r.erro) return erro_(r.erro);
+    const c = sh.getRange(i + 1, 2); c.setNumberFormat('@'); c.setValue(r.id);
+    if (v[i][1]) lixeira_(String(v[i][1]));
+    limparCache_();
+    return json_({ ok: true });
+  }
+  return erro_('Marca não encontrada.');
+}
+
 function adminFotoHero_(d) {
   const r = salvarImagem_(d.imagem, 'topo-' + Date.now());
   if (r.erro) return erro_(r.erro);
@@ -726,14 +871,24 @@ function doGet(e) {
 }
 
 const ACOES_EQUIPE = ['admin_agenda', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar'];
+const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'admin_agenda', 'admin_dados', 'admin_relatorio'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
-  'admin_salvar_config', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_hero', 'admin_foto_hero_del'];
+  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_hero', 'admin_foto_hero_del'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(25000);
+  let travou = false;
   try {
     const d = JSON.parse(e.postData.contents);
+    if (LEITURAS.indexOf(d.action) === -1) { lock.waitLock(25000); travou = true; }   // só escritas entram na fila
+    return rotear_(d);
+  } catch (err) {
+    return erro_('Erro no servidor. Tente novamente.');
+  } finally {
+    if (travou) lock.releaseLock();
+  }
+}
+function rotear_(d) {
     if (d.action === 'registrar') return registrar_(d);
     if (d.action === 'entrar') return entrar_(d);
     const email = validarToken_(d.token);
@@ -744,6 +899,7 @@ function doPost(e) {
     if (d.action === 'cancelar') return cancelar_(d, email);
     if (d.action === 'feedback') return enviarFeedback_(d, email);
     if (d.action === 'perfil') return perfil_(email);
+    if (d.action === 'fidelidade') return fidelidade_(email);
     if (String(d.action).indexOf('admin_') === 0) {
       const q = quem_(email);
       const ehDono = q && q.papel === 'dono';
@@ -766,12 +922,11 @@ function doPost(e) {
         case 'admin_foto_del': return adminFotoDel_(d);
         case 'admin_foto_hero': return adminFotoHero_(d);
         case 'admin_foto_hero_del': return adminFotoHeroDel_();
+        case 'admin_marcas_salvar': return adminMarcasSalvar_(d);
+        case 'admin_marca_foto': return adminMarcaFoto_(d);
+        case 'admin_foto_fachada': return adminFotoFachada_(d);
+        case 'admin_foto_fachada_del': return adminFotoFachadaDel_();
       }
     }
-    return erro_('Ação inválida.');
-  } catch (err) {
-    return erro_('Erro no servidor. Tente novamente.');
-  } finally {
-    lock.releaseLock();
-  }
+  return erro_('Ação inválida.');
 }
