@@ -363,6 +363,11 @@ select:focus-visible{outline-color:var(--ferr)}
 .ad-novo h4{margin-top:0}
 .ad-link{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0}
 .ad-link input{flex:1 1 200px;margin:0}
+.badge.antec{background:#f1dfae;color:#5a3d0a}
+.ad-linha.fim-concluido.feito{opacity:1}
+.ad-feitos{margin-top:18px}
+.ad-feitos .ad-linha{grid-template-columns:70px 1fr 1fr}
+.ad-feitos .ad-linha .ad-acoes{grid-column:1/-1}
 .ad-tab{overflow-x:auto}
 .ad-tab table{width:100%;border-collapse:collapse;font-size:.97rem}
 .ad-tab th{text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2);padding:8px 10px;border-bottom:2px solid var(--tinta2);white-space:nowrap}
@@ -827,13 +832,14 @@ const LATLON = [-15.771585825269458, -48.281261505017945];   // coordenadas exat
 const ENDERECO = 'Quadra 11 Lote 1 Casa B - Mansões Odisséia, Águas Lindas de Goiás - GO, 72927-185';
 // Carrossel: "servico" deve ser igual ao nome de um serviço. Para usar foto real, ponha o arquivo na
 // pasta do site (ex.: fotos/degrade.jpg) e preencha "img". Sem foto, aparece uma ilustração.
+// Fotos de exemplo: Unsplash (licença livre). Se alguma não abrir, aparece a ilustração. Para usar fotos suas, envie na aba "Fotos do carrossel" da Área privada.
 const CORTES = [
-  { titulo: 'Degradê',         desc: 'Baixo, médio ou alto',       servico: 'Degradê',           arte: 'maquina',  img: '' },
-  { titulo: 'Corte social',    desc: 'Clássico e alinhado',        servico: 'Corte social',      arte: 'pente',    img: '' },
-  { titulo: 'Barba na navalha',desc: 'Toalha quente e acabamento', servico: 'Barba',             arte: 'navalha',  img: '' },
+  { titulo: 'Degradê',         desc: 'Baixo, médio ou alto',       servico: 'Degradê',           arte: 'maquina',  img: 'https://images.unsplash.com/photo-1634480257305-7f4ca3582e6a?auto=format&fit=crop&w=1000&q=80' },
+  { titulo: 'Corte social',    desc: 'Clássico e alinhado',        servico: 'Corte social',      arte: 'pente',    img: 'https://images.unsplash.com/photo-1672642150228-3fcd5826ec26?auto=format&fit=crop&w=1000&q=80' },
+  { titulo: 'Barba na navalha',desc: 'Toalha quente e acabamento', servico: 'Barba',             arte: 'navalha',  img: 'https://images.unsplash.com/photo-1494873446894-adbfecfc407a?auto=format&fit=crop&w=1000&q=80' },
   { titulo: 'Corte + Barba',   desc: 'O combo mais pedido',        servico: 'Corte + Barba',     arte: 'tesoura',  img: '' },
   { titulo: 'Platinado',       desc: 'Descoloração e tonalização', servico: 'Platinado / Luzes', arte: 'pincel',   img: '' },
-  { titulo: 'Corte infantil',  desc: 'Para os pequenos',           servico: 'Corte infantil',    arte: 'tesoura',  img: '' }
+  { titulo: 'Corte infantil',  desc: 'Para os pequenos',           servico: 'Corte infantil',    arte: 'tesoura',  img: 'https://images.unsplash.com/photo-1521490878864-a50e9fcb5718?auto=format&fit=crop&w=1000&q=80' }
 ];
 // ==========================
 
@@ -1721,7 +1727,7 @@ function faixaAgenda() {
 function abAgenda(box, vivo) {
   box.append(h('h3', { text: ehDono() ? 'Agenda de todos os barbeiros' : 'Minha agenda' }),
     h('p', { class: 'ad-nota', text: 'Ao terminar o atendimento, toque em "Concluir": ele vira uma venda e entra no relatório.' }));
-  const lista = h('div', {});
+  const lista = h('div', {}); let feitosBox = null;
   const selP = h('select', { onchange: e => { adAg.per = e.target.value; carregar(); } }, opcoes(PERIODOS, adAg.per));
   const filtros = h('div', { class: 'ad-filtros' }, h('label', {}, 'Período', selP));
   if (ehDono()) {
@@ -1730,13 +1736,15 @@ function abAgenda(box, vivo) {
   }
   box.append(filtros, lista, avulsaForm(() => carregar()));
   async function carregar() {
-    lista.textContent = ''; lista.append(h('p', { class: 'ad-nota', text: 'Carregando…' }));
+    lista.textContent = ''; feitosBox = null; lista.append(h('p', { class: 'ad-nota', text: 'Carregando…' }));
     const f = faixaAgenda(), r = await apost('admin_agenda', { de: f[0], ate: f[1] }, null, true);
     if (!vivo()) return; lista.textContent = ''; if (!r) return;
-    const itens = r.lista.filter(a => !adAg.barb || a.barbeiro === adAg.barb);
-    if (!itens.length) { lista.append(h('div', { class: 'ad-vazio', text: 'Nenhum cliente marcado neste período.' })); return; }
-    const pend = itens.filter(a => !a.status).length;
-    lista.append(h('p', { class: 'ad-nota' }, h('b', { text: itens.length + (itens.length === 1 ? ' cliente' : ' clientes') }), ' · ' + pend + ' aguardando atendimento'));
+    const todos = r.lista.filter(a => !adAg.barb || a.barbeiro === adAg.barb);
+    const itens = todos.filter(a => !a.status), feitos = todos.filter(a => a.status);
+    if (!todos.length) { lista.append(h('div', { class: 'ad-vazio', text: 'Nenhum cliente marcado neste período.' })); return; }
+    lista.append(h('p', { class: 'ad-nota' }, h('b', { text: itens.length + (itens.length === 1 ? ' cliente aguardando' : ' clientes aguardando') }), feitos.length ? ' · ' + feitos.length + ' já atendido(s) saíram da lista (veja no fim da página)' : ''));
+    if (!itens.length) lista.append(h('div', { class: 'ad-vazio', text: 'Ninguém aguardando atendimento neste período.' }));
+    if (feitos.length) feitosBox = h('details', { class: 'ad-det ad-feitos' }, h('summary', { text: 'Já atendidos neste período (' + feitos.length + ')' }), feitos.map(a => linhaFeita(a)));
     let dia = '';
     itens.forEach(a => {
       if (a.data !== dia) {
@@ -1745,8 +1753,29 @@ function abAgenda(box, vivo) {
       }
       lista.append(linhaAgenda(a, r.hoje, carregar));
     });
+    if (feitosBox) lista.append(feitosBox);
   }
   carregar();
+}
+// "1h20", "45 min", "2 dias"
+function tempoTxt(min) {
+  if (min >= 1440) { const d = Math.round(min / 1440); return d + (d === 1 ? ' dia' : ' dias'); }
+  if (min >= 60) { const m = min % 60; return Math.floor(min / 60) + 'h' + (m ? String(m).padStart(2, '0') : ''); }
+  return min + ' min';
+}
+// "Antecipado: atendido às 14:20, 40 min antes do horário marcado (15:00)"
+function antecTxt(a) {
+  const fim = String(a.finalizadoEm || ''), quando = fim.slice(11, 16), dia = fim.slice(0, 5);
+  if (fim.slice(0, 10) !== br(a.data)) return 'Antecipado: marcado para ' + br(a.data).slice(0, 5) + ' às ' + a.hora + ', atendido em ' + dia + (quando ? ' às ' + quando : '') + '.';
+  return 'Antecipado: atendido' + (quando ? ' às ' + quando : '') + ', ' + tempoTxt(a.antecipado) + ' antes do horário marcado (' + a.hora + ').';
+}
+function linhaFeita(a) {
+  return h('div', { class: 'ad-linha fim-' + a.status + ' feito' },
+    h('div', { class: 'hr', text: a.hora }),
+    h('div', { class: 'cl' }, h('b', { text: a.cliente }), h('small', { text: br(a.data).slice(0, 5) + (ehDono() ? ' · ' + a.barbeiro : '') })),
+    h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: a.status === 'concluido' ? 'Atendimento registrado' : 'Cliente faltou' })),
+    h('div', { class: 'ad-acoes' }, h('span', { class: 'badge ' + a.status, text: a.status === 'concluido' ? 'Concluído' : 'Faltou' }),
+      a.antecipado ? h('span', { class: 'badge antec', text: 'Antecipado' }) : null, a.antecipado ? h('small', { text: antecTxt(a) }) : null));
 }
 function linhaAgenda(a, hoje, recarregar) {
   const dig = String(a.telefone).replace(/\D/g, ''), zap = dig.length <= 11 ? '55' + dig : dig;
@@ -1756,21 +1785,21 @@ function linhaAgenda(a, hoje, recarregar) {
     h('div', { class: 'cl' }, h('b', { text: a.cliente }),
       h('small', {}, dig ? h('a', { href: 'tel:' + dig, text: a.telefone }) : '', dig ? ' · ' : '', dig ? h('a', { href: 'https://wa.me/' + zap, target: '_blank', rel: 'noopener', text: 'WhatsApp' }) : '')),
     h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: (ehDono() ? a.barbeiro + ' · ' : '') + R$(a.valor) }), a.gratis ? h('span', { class: 'badge gratis', text: 'Tem corte grátis no cartão' }) : null), acoes);
-  const agir = async (acao, extra, ok) => { const r = await apost(acao, Object.assign({ data: a.data, hora: a.hora, barbeiro: a.barbeiro }, extra), ok); if (r) recarregar(); };
+  const agir = async (acao, extra, ok) => { const r = await apost(acao, Object.assign({ data: a.data, hora: a.hora, barbeiro: a.barbeiro }, extra), null); if (r) { aviso('msg-ad', 'ok', ok + (r.antecipado ? ' Foi antecipado: ' + tempoTxt(r.antecipado) + ' antes do horário marcado (' + (a.data === hoje ? '' : br(a.data).slice(0, 5) + ' ') + a.hora + ').' : '') + ' O cliente saiu da lista.'); recarregar(); } };
   const mostrarAcoes = () => {
     acoes.textContent = '';
     if (a.status) { acoes.append(h('span', { class: 'badge ' + a.status, text: a.status === 'concluido' ? 'Concluído' : 'Faltou' })); return; }
-    if (a.data <= hoje) {
-      acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Concluir', onclick: () => {
-        if (!ehDono()) { if (confirm('Marcar como concluído? Vira uma venda de ' + R$(a.valor) + '.')) agir('admin_concluir', { status: 'concluido' }, 'Atendimento concluído e registrado nas vendas.'); return; }
+    {
+      acoes.append(h('button', { type: 'button', class: 'bt ok', text: a.data > hoje ? 'Atender agora (antecipado)' : 'Concluir', onclick: () => {
+        if (!ehDono()) { if (confirm((a.data > hoje ? 'Este cliente estava marcado para ' + br(a.data).slice(0, 5) + ' às ' + a.hora + '. Atender agora e registrar como antecipado? ' : 'Marcar como concluído? ') + 'Vira uma venda de ' + R$(a.valor) + '.')) agir('admin_concluir', { status: 'concluido' }, 'Atendimento concluído e registrado nas vendas.'); return; }
         acoes.textContent = '';
         const v = h('input', { type: 'number', min: '0', step: '0.01', value: String(a.valor), class: 'valor-in', 'aria-label': 'Valor cobrado' });
         acoes.append(v, h('button', { type: 'button', class: 'bt ok', text: 'Confirmar', onclick: () => agir('admin_concluir', { status: 'concluido', valor: v.value }, 'Atendimento concluído e registrado nas vendas.') }),
           h('button', { type: 'button', class: 'bt', text: 'Voltar', onclick: mostrarAcoes }));
       } }));
-      acoes.append(h('button', { type: 'button', class: 'bt', text: 'Faltou', onclick: () => { if (confirm('Marcar que o cliente faltou?')) agir('admin_concluir', { status: 'faltou' }, 'Marcado como falta.'); } }));
+      if (a.data <= hoje) acoes.append(h('button', { type: 'button', class: 'bt', text: 'Faltou', onclick: () => { if (confirm('Marcar que o cliente faltou?')) agir('admin_concluir', { status: 'faltou' }, 'Marcado como falta.'); } }));
     }
-    if (a.gratis && a.data <= hoje) acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Concluir grátis', onclick: () => { if (confirm('Dar o corte grátis a ' + a.cliente + '? O valor fica R$ 0,00 e a comissão do barbeiro continua sobre o preço da tabela.')) agir('admin_concluir', { status: 'concluido', gratis: true }, 'Corte grátis registrado.'); } }));
+    if (a.gratis) acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Concluir grátis', onclick: () => { if (confirm('Dar o corte grátis a ' + a.cliente + '? O valor fica R$ 0,00 e a comissão do barbeiro continua sobre o preço da tabela.')) agir('admin_concluir', { status: 'concluido', gratis: true }, 'Corte grátis registrado.'); } }));
     acoes.append(h('button', { type: 'button', class: 'bt perigo', text: 'Cancelar', onclick: () => { if (confirm('Cancelar o horário de ' + a.cliente + '? O horário volta a ficar livre.')) agir('admin_cancelar', {}, 'Horário cancelado.'); } }));
   };
   mostrarAcoes();
@@ -1789,8 +1818,13 @@ function avulsaForm(aoSalvar) {
     h('label', { class: 'ad-chk' }, grat, ' Corte grátis do cartão (precisa do e-mail e de um crédito disponível)'),
     h('button', { type: 'button', class: 'bt forte', text: 'Registrar venda', onclick: async e => {
       e.target.disabled = true;
-      const r = await apost('admin_venda_avulsa', { servico: srv.value, barbeiro: barb.value, cliente: cli.value, valor: val.value, email: mail.value, gratis: grat.checked }, 'Venda registrada.');
-      e.target.disabled = false; if (r) { cli.value = ''; val.value = ''; mail.value = ''; grat.checked = false; aoSalvar(); }
+      const r = await apost('admin_venda_avulsa', { servico: srv.value, barbeiro: barb.value, cliente: cli.value, valor: val.value, email: mail.value, gratis: grat.checked }, null);
+      e.target.disabled = false;
+      if (r) {
+        let m = 'Venda registrada.';
+        if (r.agenda) m += ' O horário marcado de ' + (r.agenda.data === hojeServidor() ? 'hoje' : br(r.agenda.data).slice(0, 5)) + ' às ' + r.agenda.hora + ' saiu da agenda' + (r.antecipado ? ' (antecipado: ' + tempoTxt(r.antecipado) + ' antes do horário).' : '.');
+        cli.value = ''; val.value = ''; mail.value = ''; grat.checked = false; aoSalvar(); aviso('msg-ad', 'ok', m);
+      }
     } }));
   return h('details', { class: 'ad-det' }, h('summary', { text: 'Cliente chegou sem horário marcado? Registre a venda aqui' }), f);
 }

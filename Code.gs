@@ -45,7 +45,7 @@ const CATEGORIAS = ['corte', 'barba', 'quimica', 'outro'];
 const CEUS = ['entardecer', 'noite', 'dia', 'madrugada'];
 
 // ---- Cabeçalhos das abas ----
-const CAB_AG = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Nome', 'Telefone', 'Criado em', 'Email', 'Status'];
+const CAB_AG = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Nome', 'Telefone', 'Criado em', 'Email', 'Status', 'Finalizado em', 'Antecipado (min)'];
 const CAB_US = ['Email', 'Nome', 'Telefone', 'Salt', 'SenhaHash', 'Criado em'];
 const CAB_FB = ['Data', 'Nome', 'Nota', 'Comentário', 'Email'];
 const CAB_SV = ['Nome', 'Preço', 'Ícone', 'Descrição', 'Destaque', 'Categoria', 'Ativo'];
@@ -388,7 +388,7 @@ function agendar_(d, email) {
   if (!u) return erro_('Conta não encontrada.', { expirada: true });
   if (!servicos_().some(s => s.ativo && s.nome === d.servico)) return erro_('Serviço inválido.');
   if (slots_(d.data, d.barbeiro).indexOf(d.hora) === -1) return erro_('Esse horário não está mais disponível. Escolha outro.');
-  acrescentar_(ag_(), CAB_AG, [d.data, d.hora, d.barbeiro, d.servico, u.nome, u.telefone, agoraBR_(), email, ''], FMT_TXT(9));
+  acrescentar_(ag_(), CAB_AG, [d.data, d.hora, d.barbeiro, d.servico, u.nome, u.telefone, agoraBR_(), email, '', '', ''], FMT_TXT(11));
   return json_({ ok: true });
 }
 function meus_(email) {
@@ -475,7 +475,7 @@ function adminAgenda_(d, q) {
     .filter(l => { const dt = dataTxt_(l[0]); return dt >= de && dt <= ate && (q.papel === 'dono' || String(l[2]) === q.nome); })
     .map(l => ({
       data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), cliente: String(l[4]),
-      telefone: String(l[5]), status: String(l[8] || '').trim(), valor: preco[String(l[3])] || 0,
+      telefone: String(l[5]), status: String(l[8] || '').trim(), finalizadoEm: String(l[9] || ''), antecipado: Number(l[10]) || 0, valor: preco[String(l[3])] || 0,
       gratis: !!meta && !String(l[8] || '').trim() && cat[String(l[3])] === 'corte' && fidDe_(fid, String(l[7]).toLowerCase(), meta).creditos > 0
     }))
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
@@ -491,33 +491,63 @@ function registrarVenda_(o) {
 }
 const valorOk_ = v => { const n = Number(String(v).replace(',', '.')); return isFinite(n) && n >= 0 && n <= 99999 ? n : null; };
 
-// Marca como concluído (vira venda) ou "faltou"
-function adminConcluir_(d, q) {
+// Quantos minutos antes do horário marcado o cliente foi atendido (0 = no horário ou atrasado; menos de 15 min de folga não conta)
+function minutosAntes_(data, hora) {
+  const m = String(hora).split(':'), marc = Number(m[0]) * 60 + (Number(m[1]) || 0);
+  const a = agora_().split(':'), agora = Number(a[0]) * 60 + Number(a[1]);
+  const dif = diasEntre_(hoje_(), data) * 1440 + marc - agora;
+  return dif >= 15 ? dif : 0;
+}
+
+// Núcleo: marca o horário como concluído (vira venda) ou "faltou". Devolve {ok, antecipado} ou {erro}
+function concluirAgenda_(d, q, servicoNome) {
   const status = d.status === 'faltou' ? 'faltou' : 'concluido';
   const sh = ag_(), v = sh.getDataRange().getValues();
   for (let i = 1; i < v.length; i++) {
     if (dataTxt_(v[i][0]) !== d.data || horaTxt_(v[i][1]) !== d.hora || v[i][2] !== d.barbeiro) continue;
-    if (q.papel !== 'dono' && v[i][2] !== q.nome) return erro_('Sem permissão para este horário.');
-    if (String(v[i][8] || '').trim()) return erro_('Este horário já foi finalizado.');
-    const sv = servicos_().filter(s => s.nome === v[i][3])[0];
+    if (q.papel !== 'dono' && v[i][2] !== q.nome) return { erro: 'Sem permissão para este horário.' };
+    if (String(v[i][8] || '').trim()) return { erro: 'Este horário já foi finalizado.' };
+    const sv = servicos_().filter(s => s.nome === (servicoNome || v[i][3]))[0];
     let valor = sv ? sv.preco : 0, gratis = false;
     const emailCli = String(v[i][7] || '').toLowerCase();
     if (d.gratis && status === 'concluido') {                       // resgate do corte grátis do cartão fidelidade
       const meta = metaCortes_();
-      if (!meta || !sv || sv.categoria !== 'corte' || !emailCli || fidDe_(mapaFid_(), emailCli, meta).creditos < 1) return erro_('Este cliente não tem corte grátis disponível para este serviço.');
+      if (!meta || !sv || sv.categoria !== 'corte' || !emailCli || fidDe_(mapaFid_(), emailCli, meta).creditos < 1) return { erro: 'Este cliente não tem corte grátis disponível para este serviço.' };
       gratis = true; valor = 0;
     } else if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
-      const x = valorOk_(d.valor); if (x === null) return erro_('Valor inválido.'); valor = x;
+      const x = valorOk_(d.valor); if (x === null) return { erro: 'Valor inválido.' }; valor = x;
     }
-    const c = sh.getRange(i + 1, 9); c.setNumberFormat('@'); c.setValue(status);
+    const antes = status === 'concluido' ? minutosAntes_(d.data, d.hora) : 0;
+    const c = sh.getRange(i + 1, 9, 1, 3); c.setNumberFormats([['@', '@', '@']]); c.setValues([[status, agoraBR_(), antes ? String(antes) : '']]);
     if (status === 'concluido') {
-      registrarVenda_({ data: dataTxt_(v[i][0]), hora: horaTxt_(v[i][1]), barbeiro: String(v[i][2]), servico: String(v[i][3]),
+      registrarVenda_({ data: dataTxt_(v[i][0]), hora: horaTxt_(v[i][1]), barbeiro: String(v[i][2]), servico: sv ? sv.nome : String(v[i][3]),
         categoria: sv ? sv.categoria : 'outro', cliente: String(v[i][4]), telefone: String(v[i][5]), valor: valor, origem: 'agenda',
         email: emailCli, resgate: gratis, base: sv ? sv.preco : 0, por: q.email, chave: [dataTxt_(v[i][0]), horaTxt_(v[i][1]), v[i][2]].join('|') });
     }
-    return json_({ ok: true });
+    return { ok: true, antecipado: antes };
   }
-  return erro_('Agendamento não encontrado.');
+  return { erro: 'Agendamento não encontrado.' };
+}
+function adminConcluir_(d, q) {
+  const r = concluirAgenda_(d, q, null);
+  return r.erro ? erro_(r.erro) : json_({ ok: true, antecipado: r.antecipado });
+}
+
+// Horário ainda aberto do mesmo cliente (e-mail, ou nome igual) com o mesmo barbeiro, hoje ou nos próximos dias
+function acharAgendaAberta_(barbeiro, emailCli, nome) {
+  const hoje = hoje_(), nm = String(nome || '').trim().toLowerCase();
+  if (!emailCli && !nm) return null;
+  const v = ag_().getDataRange().getValues();
+  let melhor = null;
+  for (let i = 1; i < v.length; i++) {
+    const dt = dataTxt_(v[i][0]);
+    if (!dt || dt < hoje || String(v[i][8] || '').trim() || String(v[i][2]) !== barbeiro) continue;
+    const ok = emailCli ? String(v[i][7]).toLowerCase() === emailCli : String(v[i][4]).trim().toLowerCase() === nm;
+    if (!ok) continue;
+    const k = dt + ' ' + horaTxt_(v[i][1]);
+    if (!melhor || k < melhor.k) melhor = { k: k, data: dt, hora: horaTxt_(v[i][1]) };
+  }
+  return melhor;
 }
 
 // Cliente que chegou sem marcar
@@ -534,6 +564,12 @@ function adminVendaAvulsa_(d, q) {
     gratis = true; valor = 0;
   } else if (q.papel === 'dono' && d.valor !== undefined && d.valor !== '') {
     const x = valorOk_(d.valor); if (x === null) return erro_('Valor inválido.'); valor = x;
+  }
+  const aberta = acharAgendaAberta_(barbeiro, emailCli, d.cliente);     // o cliente tinha horário marcado? então ele sai da agenda
+  if (aberta) {
+    const r = concluirAgenda_({ status: 'concluido', data: aberta.data, hora: aberta.hora, barbeiro: barbeiro, gratis: !!d.gratis, valor: d.valor }, q, sv.nome);
+    if (r.erro) return erro_(r.erro);
+    return json_({ ok: true, agenda: { data: aberta.data, hora: aberta.hora }, antecipado: r.antecipado });
   }
   registrarVenda_({ data: hoje_(), hora: agora_(), barbeiro: barbeiro, servico: sv.nome, categoria: sv.categoria,
     cliente: limpo_(d.cliente, 80) || 'Sem agendamento', telefone: '', valor: valor, origem: 'avulsa', email: emailCli, resgate: gratis, base: sv.preco,
@@ -597,7 +633,7 @@ function adminExcluirVenda_(d) {
     if (chave.indexOf('avulsa|') !== 0) {            // devolve o horário para "pendente"
       const p = chave.split('|'), ag = ag_(), a = ag.getDataRange().getValues();
       for (let j = 1; j < a.length; j++) {
-        if (dataTxt_(a[j][0]) === p[0] && horaTxt_(a[j][1]) === p[1] && a[j][2] === p[2]) { ag.getRange(j + 1, 9).setValue(''); break; }
+        if (dataTxt_(a[j][0]) === p[0] && horaTxt_(a[j][1]) === p[1] && a[j][2] === p[2]) { ag.getRange(j + 1, 9, 1, 3).setValues([['', '', '']]); break; }
       }
     }
     return json_({ ok: true });
