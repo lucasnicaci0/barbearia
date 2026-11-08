@@ -51,7 +51,20 @@ const CAB_FB = ['Data', 'Nome', 'Nota', 'Comentário', 'Email'];
 const CAB_SV = ['Nome', 'Preço', 'Ícone', 'Descrição', 'Destaque', 'Categoria', 'Ativo'];
 const CAB_EQ = ['Email', 'Nome', 'Papel', 'Comissão %', 'Atende', 'Cursos', 'Observação', 'Ativo', 'Telefone'];
 const FMT_EQ = ['@', '@', '@', '0.##', '@', '@', '@', '@', '@'];
-const CAB_FT = ['Id', 'FileId', 'Título', 'Descrição', 'Serviço', 'Ordem', 'Criado em'];
+const CAB_FT = ['Id', 'FileId', 'Título', 'Descrição', 'Serviço', 'Ordem', 'Criado em', 'Url'];
+const FMT_FT = ['@', '@', '@', '@', '@', '0', '@', '@'];
+const CAB_PR = ['Id', 'Título', 'Descrição', 'Desconto %', 'Serviço', 'De', 'Até', 'Ativa', 'FileId', 'Url', 'Ordem'];
+const FMT_PR = ['@', '@', '@', '0.##', '@', '@', '@', '@', '@', '@', '0'];
+const FOTO_UNS = id => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=1000&q=80';
+// cortes que já vêm no carrossel (o dono edita, troca a foto ou apaga)
+const SEMENTE_FOTOS = [
+  ['Degradê', 'Baixo, médio ou alto', 'Degradê', FOTO_UNS('1634480257305-7f4ca3582e6a')],
+  ['Corte social', 'Clássico e alinhado', 'Corte social', FOTO_UNS('1672642150228-3fcd5826ec26')],
+  ['Barba na navalha', 'Toalha quente e acabamento', 'Barba', FOTO_UNS('1494873446894-adbfecfc407a')],
+  ['Corte + Barba', 'O combo mais pedido', 'Corte + Barba', ''],
+  ['Platinado', 'Descoloração e tonalização', 'Platinado / Luzes', ''],
+  ['Corte infantil', 'Para os pequenos', 'Corte infantil', FOTO_UNS('1521490878864-a50e9fcb5718')]
+];
 const CAB_CF = ['Chave', 'Valor'];
 const CAB_VD = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Categoria', 'Cliente', 'Telefone', 'Valor', 'Comissão %',
   'Comissão R$', 'Lucro R$', 'Lucro %', 'Origem', 'Concluído em', 'Por', 'Chave', 'Email', 'Resgate'];
@@ -95,6 +108,7 @@ const fb_ = () => aba_('Feedback', CAB_FB);
 const vd_ = () => aba_('Vendas', CAB_VD);
 const mc_ = () => aba_('Marcas', CAB_MC, sh => reescrever_(sh, CAB_MC, SEMENTE_MARCAS, ['@', '@', '@', '@', '0']));
 const ft_ = () => aba_('Fotos', CAB_FT);
+const pr_ = () => aba_('Promocoes', CAB_PR);
 const cf_ = () => aba_('Config', CAB_CF, sh => reescrever_(sh, CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, CFG_PADRAO[k]]), FMT_TXT(2)));
 const sv_ = () => aba_('Servicos', CAB_SV, sh =>
   reescrever_(sh, CAB_SV, SEMENTE_SERVICOS, ['@', '0.##', '@', '@', '@', '@', '@']));
@@ -169,9 +183,34 @@ function comissaoDe_(nome) {
 // ---------- Fotos ----------
 function fotos_() {
   return ft_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
-    id: String(l[0]), fileId: String(l[1]), titulo: String(l[2]), desc: String(l[3]), servico: String(l[4]), ordem: Number(l[5]) || 0
+    id: String(l[0]), fileId: String(l[1]), titulo: String(l[2]), desc: String(l[3]), servico: String(l[4]), ordem: Number(l[5]) || 0, url: String(l[7] || '')
   })).sort((a, b) => a.ordem - b.ordem);
 }
+// Na primeira vez, preenche o carrossel com os cortes padrão (assim o dono consegue editar e apagar todos).
+function semearFotos_() {
+  const p = PropertiesService.getScriptProperties();
+  if (p.getProperty('FOTOS_SEMEADAS')) return;
+  const sh = ft_();
+  if (sh.getLastRow() <= 1) reescrever_(sh, CAB_FT, SEMENTE_FOTOS.map((f, i) => ['c' + (i + 1), '', f[0], f[1], f[2], i + 1, agoraBR_(), f[3]]), FMT_FT);
+  p.setProperty('FOTOS_SEMEADAS', '1');
+}
+function promos_() {
+  return pr_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    id: String(l[0]), titulo: String(l[1]), desc: String(l[2]), desconto: Number(l[3]) || 0, servico: String(l[4]),
+    de: String(l[5]).trim() ? dataTxt_(l[5]) : '', ate: String(l[6]).trim() ? dataTxt_(l[6]) : '', ativa: String(l[7]) === 'sim',
+    fileId: String(l[8]), url: String(l[9] || ''), ordem: Number(l[10]) || 0
+  })).sort((a, b) => a.ordem - b.ordem);
+}
+// Maior desconto vigente (ativo, dentro das datas) para o serviço naquela data
+function promoPara_(promos, servico, data) {
+  let m = null;
+  promos.forEach(p => {
+    if (!p.ativa || !(p.desconto > 0) || (p.de && p.de > data) || (p.ate && p.ate < data) || (p.servico && p.servico !== servico)) return;
+    if (!m || p.desconto > m.desconto) m = p;
+  });
+  return m;
+}
+const precoPromo_ = (preco, p) => p ? r2_(preco * (100 - p.desconto) / 100) : preco;
 function marcas_() {
   return mc_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     id: String(l[0]), fileId: String(l[1]), nome: String(l[2]), desc: String(l[3]), ordem: Number(l[4]) || 0
@@ -206,7 +245,8 @@ function lixeira_(fileId) {
 // todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
 function autorizar() {
   pastaFotos_();
-  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_].forEach(f => f());
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_].forEach(f => f());
+  semearFotos_();
 }
 
 // ---------- Cache da configuração pública ----------
@@ -215,14 +255,16 @@ function publico_() {
   const cache = CacheService.getScriptCache();
   let txt = cache.get('pub');
   if (!txt) {
-    const c = cfg_(), h = horario_();
+    semearFotos_();
+    const c = cfg_(), h = horario_(), limite = somarDias_(hoje_(), -1);
     const site = {};
     Object.keys(CFG_PADRAO).forEach(k => { site[k] = c[k]; });
     delete site.abre; delete site.fecha; delete site.intervalo; delete site.diasFechados; delete site.diasAFrente;
     txt = JSON.stringify({
       barbeiros: barbeiros_().map(p => ({ nome: p.nome, cursos: p.cursos, obs: p.obs })),
       servicos: servicos_().filter(s => s.ativo).map(s => ({ nome: s.nome, preco: s.preco, icone: s.icone, desc: s.desc, destaque: s.destaque })),
-      fotos: fotos_().map(f => ({ id: f.id, fileId: f.fileId, titulo: f.titulo, desc: f.desc, servico: f.servico })),
+      fotos: fotos_().map(f => ({ id: f.id, fileId: f.fileId, url: f.url, titulo: f.titulo, desc: f.desc, servico: f.servico })), fotosOk: true,
+      promos: promos_().filter(p => p.ativa && (!p.ate || p.ate >= limite)).map(p => ({ id: p.id, titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, fileId: p.fileId, url: p.url })),
       marcas: marcas_().map(m => ({ id: m.id, fileId: m.fileId, nome: m.nome, desc: m.desc })),
       site: site, diasFechados: h.fechados, dias: h.dias, abre: h.abre, fecha: h.fecha
     });
@@ -470,14 +512,18 @@ function adminAgenda_(d, q) {
   if (ate < de) ate = de;
   if (diasEntre_(de, ate) > 62) ate = somarDias_(de, 62);
   const preco = {}, cat = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; cat[s.nome] = s.categoria; });
-  const meta = metaCortes_(), fid = meta ? mapaFid_() : {};
+  const promos = promos_(), meta = metaCortes_(), fid = meta ? mapaFid_() : {};
   const lista = ag_().getDataRange().getValues().slice(1)
     .filter(l => { const dt = dataTxt_(l[0]); return dt >= de && dt <= ate && (q.papel === 'dono' || String(l[2]) === q.nome); })
-    .map(l => ({
+    .map(l => {
+      const pm = promoPara_(promos, String(l[3]), dataTxt_(l[0])), tab = preco[String(l[3])] || 0;
+      return {
       data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), cliente: String(l[4]),
-      telefone: String(l[5]), status: String(l[8] || '').trim(), finalizadoEm: String(l[9] || ''), antecipado: Number(l[10]) || 0, valor: preco[String(l[3])] || 0,
+      telefone: String(l[5]), status: String(l[8] || '').trim(), finalizadoEm: String(l[9] || ''), antecipado: Number(l[10]) || 0, valor: precoPromo_(tab, pm),
+      promo: pm ? { titulo: pm.titulo, desconto: pm.desconto, tabela: tab } : null,
       gratis: !!meta && !String(l[8] || '').trim() && cat[String(l[3])] === 'corte' && fidDe_(fid, String(l[7]).toLowerCase(), meta).creditos > 0
-    }))
+      };
+    })
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
   return json_({ ok: true, de: de, ate: ate, hoje: hoje, lista: lista });
 }
@@ -508,7 +554,7 @@ function concluirAgenda_(d, q, servicoNome) {
     if (q.papel !== 'dono' && v[i][2] !== q.nome) return { erro: 'Sem permissão para este horário.' };
     if (String(v[i][8] || '').trim()) return { erro: 'Este horário já foi finalizado.' };
     const sv = servicos_().filter(s => s.nome === (servicoNome || v[i][3]))[0];
-    let valor = sv ? sv.preco : 0, gratis = false;
+    let valor = sv ? precoPromo_(sv.preco, promoPara_(promos_(), sv.nome, d.data)) : 0, gratis = false;
     const emailCli = String(v[i][7] || '').toLowerCase();
     if (d.gratis && status === 'concluido') {                       // resgate do corte grátis do cartão fidelidade
       const meta = metaCortes_();
@@ -556,7 +602,7 @@ function adminVendaAvulsa_(d, q) {
   if (!sv) return erro_('Escolha um serviço.');
   const barbeiro = q.papel === 'dono' ? String(d.barbeiro || '') : q.nome;
   if (!equipe_().some(p => p.nome === barbeiro && p.ativo)) return erro_('Escolha o barbeiro.');
-  let valor = sv.preco, gratis = false;
+  let valor = precoPromo_(sv.preco, promoPara_(promos_(), sv.nome, hoje_())), gratis = false;
   const emailCli = emailOk_(d.email) ? String(d.email).trim().toLowerCase() : '';
   if (d.gratis) {
     const meta = metaCortes_();
@@ -664,30 +710,85 @@ function adminBarbeiroCadastrar_(d) {
 }
 
 // Importa a foto de uma marca a partir de um link (o servidor baixa e guarda no Drive)
-function adminMarcaFotoUrl_(d) {
-  const url = String(d.url || '').trim();
-  if (url.length > 1500 || !/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(:\d+)?(\/\S*)?$/i.test(url)) return erro_('Cole o endereço completo da imagem, começando com https://');
-  const sh = mc_(), v = sh.getDataRange().getValues();
-  let linha = -1;
-  for (let i = 1; i < v.length; i++) if (String(v[i][0]) === String(d.id)) { linha = i; break; }
-  if (linha < 0) return erro_('Marca não encontrada.');
+// Baixa uma imagem de um link https, confere que é mesmo imagem e guarda no Drive. Devolve {id} ou {erro}
+function imagemDeUrl_(url0, prefixo) {
+  const url = String(url0 || '').trim();
+  if (url.length > 1500 || !/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(:\d+)?(\/\S*)?$/i.test(url)) return { erro: 'Cole o endereço completo da imagem, começando com https://' };
   let resp;
   try { resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true, headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BarbeariaSite/1.0)' } }); }
-  catch (e) { return erro_('Não consegui abrir esse link. Confira o endereço.'); }
-  if (resp.getResponseCode() !== 200) return erro_('O site respondeu com erro ' + resp.getResponseCode() + '. Tente outro link.');
+  catch (e) { return { erro: 'Não consegui abrir esse link. Confira o endereço.' }; }
+  if (resp.getResponseCode() !== 200) return { erro: 'O site respondeu com erro ' + resp.getResponseCode() + '. Tente outro link.' };
   const b = resp.getBlob().getBytes();
-  if (b.length < 500 || b.length > 8000000) return erro_('A imagem é pequena ou grande demais (máximo 8 MB).');
+  if (b.length < 500 || b.length > 8000000) return { erro: 'A imagem é pequena ou grande demais (máximo 8 MB).' };
   let tipo = '';
   if (b[0] === -1 && b[1] === -40) tipo = 'jpg';
   else if (b[0] === -119 && b[1] === 80 && b[2] === 78 && b[3] === 71) tipo = 'png';
   else if (b[0] === 71 && b[1] === 73 && b[2] === 70 && b[3] === 56) tipo = 'gif';
   else if (b[0] === 82 && b[1] === 73 && b[2] === 70 && b[3] === 70 && b[8] === 87 && b[9] === 69 && b[10] === 66 && b[11] === 80) tipo = 'webp';
-  if (!tipo) return erro_('Esse link não é de uma imagem JPG, PNG, WEBP ou GIF. Na foto, clique com o botão direito e escolha "Copiar endereço da imagem".');
+  if (!tipo) return { erro: 'Esse link não é de uma imagem JPG, PNG, WEBP ou GIF. Na foto, clique com o botão direito e escolha "Copiar endereço da imagem".' };
   const mime = { jpg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp' }[tipo];
-  const arq = pastaFotos_().createFile(Utilities.newBlob(b, mime, 'marca-' + Date.now() + '.' + tipo));
+  const arq = pastaFotos_().createFile(Utilities.newBlob(b, mime, (prefixo || 'foto') + '-' + Date.now() + '.' + tipo));
   arq.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  const c = sh.getRange(linha + 1, 2); c.setNumberFormat('@'); c.setValue(arq.getId());
+  return { id: arq.getId() };
+}
+// Foto vinda de upload (data URL) ou de link
+function novaImagem_(d, prefixo) {
+  if (d.imagem) return salvarImagem_(d.imagem, prefixo + '-' + Date.now());
+  if (d.url) return imagemDeUrl_(d.url, prefixo);
+  return { erro: 'Escolha uma foto ou cole o link dela.' };
+}
+function adminMarcaFotoUrl_(d) {
+  const sh = mc_(), v = sh.getDataRange().getValues();
+  let linha = -1;
+  for (let i = 1; i < v.length; i++) if (String(v[i][0]) === String(d.id)) { linha = i; break; }
+  if (linha < 0) return erro_('Marca não encontrada.');
+  const r = imagemDeUrl_(d.url, 'marca');
+  if (r.erro) return erro_(r.erro);
+  const c = sh.getRange(linha + 1, 2); c.setNumberFormat('@'); c.setValue(r.id);
   if (v[linha][1]) lixeira_(String(v[linha][1]));
+  limparCache_();
+  return json_({ ok: true });
+}
+// Troca ou remove a foto de uma linha (corte do carrossel ou promoção): {id, imagem | url | remover}
+function trocarFotoLinha_(sh, colFile, colUrl, d, prefixo) {
+  const v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]) !== String(d.id)) continue;
+    let novo = '';
+    if (!d.remover) { const r = novaImagem_(d, prefixo); if (r.erro) return erro_(r.erro); novo = r.id; }
+    const cf = sh.getRange(i + 1, colFile); cf.setNumberFormat('@'); cf.setValue(novo);      // só as duas células da imagem
+    const cu = sh.getRange(i + 1, colUrl); cu.setNumberFormat('@'); cu.setValue('');
+    if (v[i][colFile - 1]) lixeira_(String(v[i][colFile - 1]));
+    limparCache_();
+    return json_({ ok: true });
+  }
+  return erro_('Item não encontrado.');
+}
+const adminFotoImg_ = d => trocarFotoLinha_(ft_(), 2, 8, d, 'corte');
+const adminPromoImg_ = d => trocarFotoLinha_(pr_(), 9, 10, d, 'promo');
+
+// Promoções: o dono manda a lista inteira; o que não vier na lista é apagado
+function adminPromosSalvar_(d) {
+  const lista = Array.isArray(d.promos) ? d.promos : [];
+  if (lista.length > 30) return erro_('Promoções demais (máximo 30). Apague as antigas.');
+  const atuais = {}; promos_().forEach(p => { atuais[p.id] = p; });
+  const nomesServ = servicos_().map(x => x.nome), usados = {}, linhas = [];
+  for (let i = 0; i < lista.length; i++) {
+    const p = lista[i] || {}, titulo = limpo_(p.titulo, 50);
+    if (!titulo) return erro_('Toda promoção precisa de um título.');
+    const desc = p.desconto === '' || p.desconto == null ? 0 : Number(String(p.desconto).replace(',', '.'));
+    if (!isFinite(desc) || desc < 0 || desc > 100) return erro_('Desconto inválido em "' + titulo + '" (use de 0 a 100).');
+    const servico = String(p.servico || '');
+    if (servico && nomesServ.indexOf(servico) === -1) return erro_('O serviço de "' + titulo + '" não existe mais. Escolha outro.');
+    const de = String(p.de || ''), ate = String(p.ate || '');
+    if ((de && !isoOk_(de)) || (ate && !isoOk_(ate))) return erro_('Data inválida em "' + titulo + '".');
+    if (de && ate && ate < de) return erro_('Em "' + titulo + '" a data final vem antes da inicial.');
+    let id = String(p.id || ''); if (!atuais[id] || usados[id]) id = Utilities.getUuid().slice(0, 8);
+    usados[id] = 1; const antigo = atuais[id] || {};
+    linhas.push([id, seguro_(titulo), seguro_(limpo_(p.desc, 140)), r2_(desc), servico, de, ate, simnao_(p.ativa !== false), antigo.fileId || '', antigo.url || '', i + 1]);
+  }
+  Object.keys(atuais).forEach(id => { if (!usados[id]) lixeira_(atuais[id].fileId); });
+  reescrever_(pr_(), CAB_PR, linhas, FMT_PR);
   limparCache_();
   return json_({ ok: true });
 }
@@ -786,7 +887,8 @@ function adminDashboard_(d, q) {
 function adminDados_() {
   const c = cfg_(), conf = {};
   Object.keys(CFG_PADRAO).forEach(k => { conf[k] = c[k]; });
-  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), marcas: marcas_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
+  semearFotos_();
+  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), promos: promos_(), hoje: hoje_(), marcas: marcas_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
 }
 
 function adminSalvarServicos_(d) {
@@ -890,14 +992,13 @@ function adminSalvarConfig_(d) {
 
 function adminFotoAdd_(d) {
   const fotos = fotos_();
-  if (fotos.length >= 24) return erro_('Limite de 24 fotos no carrossel. Apague alguma para subir outra.');
+  if (fotos.length >= 30) return erro_('Limite de 30 cortes no carrossel. Apague algum para adicionar outro.');
   const titulo = limpo_(d.titulo, 40);
-  if (!titulo) return erro_('Dê um título para a foto.');
-  const r = salvarImagem_(d.imagem, 'corte-' + Date.now());
-  if (r.erro) return erro_(r.erro);
+  if (!titulo) return erro_('Dê um título para o corte.');
+  let fileId = '';
+  if (d.imagem || d.url) { const r = novaImagem_(d, 'corte'); if (r.erro) return erro_(r.erro); fileId = r.id; }
   const ordem = fotos.length ? Math.max.apply(null, fotos.map(f => f.ordem)) + 1 : 1;
-  acrescentar_(ft_(), CAB_FT, [Utilities.getUuid().slice(0, 8), r.id, seguro_(titulo), seguro_(limpo_(d.desc, 60)), seguro_(limpo_(d.servico, 40)), ordem, agoraBR_()],
-    ['@', '@', '@', '@', '@', '0', '@']);
+  acrescentar_(ft_(), CAB_FT, [Utilities.getUuid().slice(0, 8), fileId, seguro_(titulo), seguro_(limpo_(d.desc, 60)), seguro_(limpo_(d.servico, 40)), ordem, agoraBR_(), ''], FMT_FT);
   limparCache_();
   return json_({ ok: true });
 }
@@ -908,9 +1009,9 @@ function adminFotoSalvar_(d) {
     const n = mapa[a.id] || {};
     return [a.id, a.fileId, seguro_(limpo_(n.titulo !== undefined ? n.titulo : a.titulo, 40) || a.titulo),
       seguro_(limpo_(n.desc !== undefined ? n.desc : a.desc, 60)), seguro_(limpo_(n.servico !== undefined ? n.servico : a.servico, 40)),
-      n.ordem !== undefined ? inteiro_(n.ordem, a.ordem, 0, 999) : a.ordem, ''];
+      n.ordem !== undefined ? inteiro_(n.ordem, a.ordem, 0, 999) : a.ordem, '', a.url];
   });
-  reescrever_(ft_(), CAB_FT, linhas, ['@', '@', '@', '@', '@', '0', '@']);
+  reescrever_(ft_(), CAB_FT, linhas, FMT_FT);
   limparCache_();
   return json_({ ok: true });
 }
@@ -1053,7 +1154,7 @@ function doGet(e) {
 const ACOES_EQUIPE = ['admin_agenda', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard'];
 const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'admin_agenda', 'admin_dados', 'admin_relatorio', 'admin_dashboard'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
-  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_hero', 'admin_foto_hero_del'];
+  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -1100,6 +1201,9 @@ function rotear_(d) {
         case 'admin_foto_add': return adminFotoAdd_(d);
         case 'admin_foto_salvar': return adminFotoSalvar_(d);
         case 'admin_foto_del': return adminFotoDel_(d);
+        case 'admin_foto_img': return adminFotoImg_(d);
+        case 'admin_promos_salvar': return adminPromosSalvar_(d);
+        case 'admin_promo_img': return adminPromoImg_(d);
         case 'admin_foto_hero': return adminFotoHero_(d);
         case 'admin_foto_hero_del': return adminFotoHeroDel_();
         case 'admin_marcas_salvar': return adminMarcasSalvar_(d);

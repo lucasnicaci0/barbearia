@@ -363,7 +363,24 @@ select:focus-visible{outline-color:var(--ferr)}
 .ad-novo h4{margin-top:0}
 .ad-link{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0}
 .ad-link input{flex:1 1 200px;margin:0}
-.badge.antec{background:#f1dfae;color:#5a3d0a}
+.badge.antec,.badge.promo{background:#f1dfae;color:#5a3d0a}
+.ad-prevpromo{max-width:260px;margin:8px 0}.ad-prevpromo img{display:block;width:100%;max-height:150px;object-fit:cover;border:1px solid #140a05}
+.promo-trilho{display:flex;gap:22px;overflow-x:auto;padding:14px 6px 22px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.promo{flex:0 0 min(330px,86%);scroll-snap-align:start;position:relative;display:flex;flex-direction:column;color:#2b1a0e;border:1px solid #140a05;border-radius:3px;background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);box-shadow:0 12px 24px rgba(0,0,0,.45),inset 0 0 0 5px rgba(120,80,30,.15);overflow:visible}
+.promo .pfoto{aspect-ratio:16/9;background:#241a12;border-bottom:3px solid #8a6a3a;overflow:hidden}
+.promo .pfoto img{display:block;width:100%;height:100%;object-fit:cover}
+.promo .pcorpo{padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.promo h3{font:700 1.4rem/1.15 var(--serif);margin:0;color:#2b1a0e;text-shadow:none}
+.promo p{margin:0;color:#4a3826;font-size:1rem}
+.promo .quando{font:700 .8rem var(--sans);letter-spacing:.07em;text-transform:uppercase;color:#7a2d10}
+.promo .pr{font:600 1.05rem var(--sans)}.promo .pr s{color:#7a6a55;font-weight:500;margin-right:6px}
+.promo .nota{font-size:.82rem;color:#6b5a45}
+.promo .btn{margin-top:auto}
+.promo .selo-d{position:absolute;right:-10px;top:-14px;z-index:2;display:grid;place-items:center;width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b8472a,#6d2412);color:#fff2d8;border:3px solid #e2c27a;box-shadow:0 5px 12px rgba(0,0,0,.55);transform:rotate(9deg);text-align:center;font:700 1.35rem/1 var(--serif)}
+.promo .selo-d small{display:block;font:700 .62rem var(--sans);letter-spacing:.1em}
+.promo.breve{filter:saturate(.7)}
+.srv .preco s{opacity:.6;margin-right:6px;font-weight:500}
+.srv .promo-tag{display:inline-block;margin-left:8px;padding:2px 8px;background:#b8472a;color:#fff2d8;font:700 .7rem var(--sans);letter-spacing:.06em;border-radius:2px;vertical-align:middle}
 .ad-linha.fim-concluido.feito{opacity:1}
 .ad-feitos{margin-top:18px}
 .ad-feitos .ad-linha{grid-template-columns:70px 1fr 1fr}
@@ -627,7 +644,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
   <header class="topo">
     <h1 class="marca" data-nome>Barbearia</h1>
     <nav class="nav" aria-label="Seções">
-      <a href="#agendar">Agendar</a><a href="#fidelidade" id="nav-fid" hidden>Fidelidade</a><a href="#cortes">Cortes</a><a href="#marcas" id="nav-marcas" hidden>Marcas</a><a href="#local">Localização</a><a href="#comodidades">Comodidades</a><a href="#feedback">Feedback</a>
+      <a href="#agendar">Agendar</a><a href="#promos" id="nav-promos" hidden>Promoções</a><a href="#fidelidade" id="nav-fid" hidden>Fidelidade</a><a href="#cortes" id="nav-cortes">Cortes</a><a href="#marcas" id="nav-marcas" hidden>Marcas</a><a href="#local">Localização</a><a href="#comodidades">Comodidades</a><a href="#feedback">Feedback</a>
     </nav>
     <span class="espaco-flex"></span>
     <div class="acoes">
@@ -653,6 +670,11 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
     </div>
   </section>
   <div class="rope" aria-hidden="true" style="margin:0 -18px;border-radius:0"></div>
+
+  <section class="sec" id="promos" hidden>
+    <div class="tit"><h2>Promoções</h2><p class="sub">Aproveite enquanto dura.</p></div>
+    <div class="promo-trilho" id="promo-trilho"></div>
+  </section>
 
   <section class="sec" id="agendar">
     <div class="tit"><h2>Agende seu horário</h2><p class="sub">Escolha o serviço na tabela, depois o barbeiro, o dia e a hora.</p></div>
@@ -1005,7 +1027,7 @@ async function abrirHome(recemEntrou) {
   setOla(); atualizarBotaoAdmin();
   if (!recemEntrou) atualizarPerfil();            // sessão antiga: confere o papel em segundo plano
   const tinha = !!(config && config.servicos);
-  const pintar = () => { aplicarSite(); renderComodidades(); renderLocal(); montarCarrossel(); renderMarcas(); resetarAgenda(); feedbacksPreguicosos(); };
+  const pintar = () => { aplicarSite(); renderComodidades(); renderLocal(); montarCarrossel(); renderMarcas(); renderPromos(); resetarAgenda(); feedbacksPreguicosos(); };
   if (tinha) pintar();                             // mostra na hora o que já estava guardado
   const ok = await carregarConfig();
   if (!ok) { aviso('msg-ag', 'erro', 'Não foi possível carregar. Verifique a conexão e recarregue a página.'); return; }
@@ -1056,7 +1078,9 @@ function renderAg() {
     const n = document.createElement('span'); n.className = 'nome'; n.textContent = s.nome;
     if (s.destaque) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = 'Mais pedido'; n.appendChild(t); }
     const pt = document.createElement('span'); pt.className = 'pt';
-    const pr = document.createElement('span'); pr.className = 'preco'; pr.textContent = 'R$ ' + s.preco;
+    const pr = document.createElement('span'); pr.className = 'preco'; const pm = promoDoServico(s.nome);
+    if (pm) { const rt = document.createElement('s'); rt.textContent = 'R$ ' + s.preco; pr.append(rt, R$(comPromo(s.preco, pm))); const tg = document.createElement('span'); tg.className = 'promo-tag'; tg.textContent = '−' + Math.round(pm.desconto) + '%'; n.appendChild(tg); }
+    else pr.textContent = 'R$ ' + s.preco;
     l1.append(n, pt, pr);
     const d = document.createElement('span'); d.className = 'desc'; d.textContent = s.desc || '';
     b.append(l1, d);
@@ -1114,15 +1138,65 @@ $('btn-ag').onclick = async () => {
   ag.enviando = false; renderAg();
 };
 
+// ---- promoções ----
+function promosVisiveis() {
+  const H = hojeServidor(), lim = somarDias(H, 7);
+  return ((config && config.promos) || []).filter(p => (!p.de || p.de <= lim) && (!p.ate || p.ate >= H));
+}
+function promoDoServico(nome) {
+  const H = hojeServidor(); let m = null;
+  ((config && config.promos) || []).forEach(p => {
+    if (!(p.desconto > 0) || (p.de && p.de > H) || (p.ate && p.ate < H) || (p.servico && p.servico !== nome)) return;
+    if (!m || p.desconto > m.desconto) m = p;
+  });
+  return m;
+}
+const comPromo = (preco, p) => p ? Math.round(preco * (100 - p.desconto)) / 100 : preco;
+function quandoPromo(p) {
+  const H = hojeServidor();
+  if (p.de && p.de > H) return 'Em breve · começa em ' + br(p.de).slice(0, 5);
+  if (p.de && p.ate && p.de === p.ate) return p.ate === H ? 'Só hoje' : 'Só dia ' + br(p.ate).slice(0, 5);
+  if (p.ate) return p.ate === H ? 'Último dia: hoje' : 'Válido até ' + br(p.ate).slice(0, 5);
+  return 'Por tempo limitado';
+}
+function renderPromos() {
+  const lista = promosVisiveis(), tr = $('promo-trilho');
+  $('promos').hidden = !lista.length; $('nav-promos').hidden = !lista.length; tr.textContent = '';
+  lista.forEach(p => {
+    const breve = p.de && p.de > hojeServidor(), sv = ((config && config.servicos) || []).filter(x => x.nome === p.servico)[0];
+    const foto = p.fileId ? (() => { const im = imgDrive(p.fileId, 700, p.titulo, i => { i.remove(); }); return im; })() : (urlSegura(p.url) ? h('img', { src: urlSegura(p.url), alt: p.titulo, loading: 'lazy' }) : null);
+    tr.append(h('article', { class: 'promo' + (breve ? ' breve' : '') },
+      p.desconto > 0 ? h('div', { class: 'selo-d', 'aria-label': p.desconto + '% de desconto' }, h('span', {}, Math.round(p.desconto) + '%', h('small', { text: 'OFF' }))) : null,
+      foto ? h('div', { class: 'pfoto' }, foto) : null,
+      h('div', { class: 'pcorpo' },
+        h('span', { class: 'quando', text: quandoPromo(p) }), h('h3', { text: p.titulo }), p.desc ? h('p', { text: p.desc }) : null,
+        sv && p.desconto > 0 ? h('div', { class: 'pr' }, h('s', { text: R$(sv.preco) }), R$(comPromo(sv.preco, p)) + ' · ' + sv.nome) : (p.servico ? h('div', { class: 'pr', text: p.servico }) : (p.desconto > 0 ? h('div', { class: 'pr', text: 'em todos os serviços' }) : null)),
+        p.desconto > 0 ? h('span', { class: 'nota', text: 'O desconto é aplicado na hora do atendimento.' }) : null,
+        breve ? null : h('button', { type: 'button', class: 'btn', text: p.servico ? 'Aproveitar: agendar' : 'Agendar meu horário', onclick: () => { if (p.servico && config.servicos.some(x => x.nome === p.servico)) escolherServico(p.servico, true); else $('agendar').scrollIntoView({ behavior: 'smooth' }); } }))));
+  });
+}
+
 // ---- carrossel ----
 let carTimer = null, carPausa = false, itensCar = [];
+function arteDe(txt) {
+  const t = String(txt || '').toLowerCase();
+  if (/barba|navalha/.test(t)) return 'navalha';
+  if (/degrad|fade|m[aá]quina/.test(t)) return 'maquina';
+  if (/social|cl[aá]ssic|pente/.test(t)) return 'pente';
+  if (/platin|luz|color|pigment|tint|hidrat/.test(t)) return 'pincel';
+  return 'tesoura';
+}
+const urlSegura = u => /^https:\/\//i.test(u || '') ? u : '';
 function itensDoCarrossel() {
   const f = (config && config.fotos) || [];
-  return f.length ? f.map(x => ({ titulo: x.titulo, desc: x.desc, servico: x.servico, arte: 'tesoura', id: x.fileId })) : CORTES;
+  if (config && config.fotosOk) return f.map(x => ({ titulo: x.titulo, desc: x.desc, servico: x.servico, arte: arteDe(x.titulo + ' ' + x.servico), id: x.fileId, img: urlSegura(x.url) }));
+  return f.length ? f.map(x => ({ titulo: x.titulo, desc: x.desc, servico: x.servico, arte: 'tesoura', id: x.fileId })) : CORTES;   // servidor antigo
 }
 function montarCarrossel() {
   const t = $('trilho'); t.textContent = ''; $('pontos').textContent = '';
   itensCar = itensDoCarrossel();
+  $('cortes').hidden = !itensCar.length; if ($('nav-cortes')) $('nav-cortes').hidden = !itensCar.length;
+  if (!itensCar.length) return;
   itensCar.forEach((c, i) => {
     const s = document.createElement('article'); s.className = 'slide';
     const q = document.createElement('div'); q.className = 'quadro';
@@ -1497,7 +1571,7 @@ const R$ = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', curr
 const PCT = v => Number(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
 const ICONES_SRV = [['tesoura', 'Tesoura'], ['navalha', 'Navalha'], ['gota', 'Gota'], ['estrela', 'Estrela'], ['crianca', 'Criança'], ['pincel', 'Pincel']];
 const CATS_SRV = [['corte', 'Corte (entra na soma de cortes)'], ['barba', 'Barba'], ['quimica', 'Química (hidratação, pigmentação…)'], ['outro', 'Outro']];
-const ABAS_DONO = [['dash', 'Dashboard'], ['agenda', 'Agenda'], ['vendas', 'Vendas e lucro'], ['equipe', 'Barbeiros'], ['servicos', 'Serviços e preços'], ['fotos', 'Fotos do carrossel'], ['marcas', 'Marcas'], ['visual', 'Aparência']];
+const ABAS_DONO = [['dash', 'Dashboard'], ['agenda', 'Agenda'], ['vendas', 'Vendas e lucro'], ['equipe', 'Barbeiros'], ['servicos', 'Serviços e preços'], ['vitrine', 'Vitrine do site'], ['visual', 'Aparência']];
 const ABAS_BARB = [['dash', 'Meu desempenho'], ['agenda', 'Minha agenda']];
 let adAba = 'dash', adSeq = 0;
 const ehDono = () => !!sessao && sessao.papel === 'dono';
@@ -1587,7 +1661,7 @@ function desenharAbas(abas) {
 function abrirAba(id) {
   const my = ++adSeq; limpar('msg-ad'); aplicarSite();    // desfaz pré-visualizações não salvas
   const box = $('ad-painel'); box.textContent = '';
-  const f = { dash: abDash, agenda: abAgenda, vendas: abVendas, servicos: abServicos, fotos: abFotos, marcas: abMarcas, equipe: abEquipe, visual: abVisual }[id];
+  const f = { dash: abDash, agenda: abAgenda, vendas: abVendas, servicos: abServicos, vitrine: abVitrine, equipe: abEquipe, visual: abVisual }[id];
   if (f && (id === 'agenda' || id === 'dash' || ehDono())) f(box, () => my === adSeq);
 }
 $('ir-admin').onclick = async () => {
@@ -1784,7 +1858,7 @@ function linhaAgenda(a, hoje, recarregar) {
     h('div', { class: 'hr', text: a.hora }),
     h('div', { class: 'cl' }, h('b', { text: a.cliente }),
       h('small', {}, dig ? h('a', { href: 'tel:' + dig, text: a.telefone }) : '', dig ? ' · ' : '', dig ? h('a', { href: 'https://wa.me/' + zap, target: '_blank', rel: 'noopener', text: 'WhatsApp' }) : '')),
-    h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: (ehDono() ? a.barbeiro + ' · ' : '') + R$(a.valor) }), a.gratis ? h('span', { class: 'badge gratis', text: 'Tem corte grátis no cartão' }) : null), acoes);
+    h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: (ehDono() ? a.barbeiro + ' · ' : '') + R$(a.valor) }), a.promo ? h('span', { class: 'badge promo', text: 'Promoção: ' + a.promo.titulo + ' (−' + Math.round(a.promo.desconto) + '%)' }) : null, a.gratis ? h('span', { class: 'badge gratis', text: 'Tem corte grátis no cartão' }) : null), acoes);
   const agir = async (acao, extra, ok) => { const r = await apost(acao, Object.assign({ data: a.data, hora: a.hora, barbeiro: a.barbeiro }, extra), null); if (r) { aviso('msg-ad', 'ok', ok + (r.antecipado ? ' Foi antecipado: ' + tempoTxt(r.antecipado) + ' antes do horário marcado (' + (a.data === hoje ? '' : br(a.data).slice(0, 5) + ' ') + a.hora + ').' : '') + ' O cliente saiu da lista.'); recarregar(); } };
   const mostrarAcoes = () => {
     acoes.textContent = '';
@@ -1910,60 +1984,190 @@ async function abServicos(box, vivo) {
 }
 
 // ---- Fotos do carrossel (dono) ----
+// ---- Vitrine do site (dono): cortes, produtos/marcas e promoções ----
+let adVit = 'cortes';
+const SUBS_VIT = [['cortes', 'Cortes do carrossel'], ['produtos', 'Produtos e marcas'], ['promos', 'Promoções e eventos']];
+function abVitrine(box, vivo) {
+  box.append(h('h3', { text: 'Vitrine do site' }),
+    h('p', { class: 'ad-nota', text: 'Tudo o que passa na tela dos clientes: cortes, produtos e promoções. Você pode adicionar, trocar fotos, mudar a ordem e tirar o que não quiser.' }));
+  const chips = h('div', { class: 'ad-chips' }), corpo = h('div', {});
+  SUBS_VIT.forEach(x => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adVit === x[0]), text: x[1], onclick: () => { adVit = x[0]; abrirAba('vitrine'); } })));
+  box.append(chips, corpo);
+  ({ cortes: abFotos, produtos: abMarcas, promos: abPromos })[adVit](corpo, vivo);
+}
+// miniatura de uma foto guardada no Drive ou em link
+function fotoEl(x, w, alt) {
+  if (x.fileId) { const im = imgDrive(x.fileId, w, alt); im.className = 'mini-foto'; return im; }
+  if (/^https:\/\//i.test(x.url || '')) return h('img', { class: 'mini-foto', alt: alt || '', loading: 'lazy', src: x.url });
+  return h('div', { class: 'ad-vazio', text: 'Sem foto' });
+}
+// trocar foto por arquivo ou por link, remover, e atalho para buscar no Google Imagens
+function controleFoto(tem, ops) {
+  const arq = h('input', { type: 'file', accept: 'image/*' });
+  arq.onchange = async () => { if (!arq.files[0]) return; limpar('msg-ad'); try { await ops.upload(await lerImagem(arq.files[0], 1100)); } catch (e) { aviso('msg-ad', 'erro', e.message); } };
+  const url = h('input', { type: 'url', maxlength: '1500', placeholder: 'https://… (endereço da imagem)', 'aria-label': 'Endereço da imagem' });
+  const bt = h('button', { type: 'button', class: 'bt forte', text: 'Importar', onclick: async () => {
+    limpar('msg-ad'); if (!/^https:\/\//i.test(url.value.trim())) { aviso('msg-ad', 'erro', 'Cole o endereço completo da imagem, começando com https://'); return; }
+    bt.disabled = true; bt.textContent = 'Importando…'; await ops.url(url.value.trim()); bt.disabled = false; bt.textContent = 'Importar';
+  } });
+  return h('div', {}, campo(tem ? 'Trocar a foto (arquivo)' : 'Enviar foto (arquivo)', arq),
+    h('div', { class: 'campo' }, 'Ou importar por link', h('div', { class: 'ad-link' }, url, bt)),
+    h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, tem ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: () => ops.remover() }) : null,
+      ops.buscar ? h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent(ops.buscar), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'text-decoration:none' }) : null));
+}
 async function abFotos(box, vivo) {
-  box.append(h('h3', { text: 'Fotos do carrossel de cortes' }), h('p', { class: 'ad-nota', text: 'Quando houver pelo menos uma foto aqui, o carrossel do site passa a mostrar só as suas fotos. Sem fotos, aparecem as ilustrações padrão.' }));
+  box.append(h('h4', { text: 'Cortes que saem daqui (carrossel do site)' }),
+    h('p', { class: 'ad-nota', text: 'Cada cartão é um corte do carrossel. Troque a foto, mude o título, escolha para qual serviço o botão "Agendar" leva, mude a ordem ou apague. Para um corte novo, use o formulário no fim. Sem foto, aparece uma ilustração. Se apagar todos, a seção some do site.' }));
   const r = await apost('admin_dados'); if (!vivo() || !r) return;
   const servs = [['', 'Nenhum (só mostrar)']].concat(r.servicos.filter(s => s.ativo).map(s => [s.nome, s.nome]));
   const fotos = r.fotos.map(f => Object.assign({}, f)), grade = h('div', { class: 'ad-grade' });
+  const textos = () => apost('admin_foto_salvar', { fotos: fotos.map((f, i) => ({ id: f.id, titulo: f.titulo, desc: f.desc, servico: f.servico, ordem: i + 1 })) }, null, true);
+  const recarregar = async msg => { await carregarConfig(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); };
+  const depois = async (acao, extra, msg) => { await textos(); const ok = await apost(acao, extra, null, true); if (ok) await recarregar(msg); };
   const desenhar = () => {
     grade.textContent = '';
-    if (!fotos.length) grade.append(h('div', { class: 'ad-vazio', text: 'Nenhuma foto enviada ainda.' }));
+    if (!fotos.length) grade.append(h('div', { class: 'ad-vazio', text: 'Nenhum corte no carrossel. A seção "Cortes que saem daqui" está escondida do site.' }));
     fotos.forEach((f, i) => {
       const mover = d => { const j = i + d; if (j < 0 || j >= fotos.length) return; [fotos[i], fotos[j]] = [fotos[j], fotos[i]]; desenhar(); };
       grade.append(h('div', { class: 'ad-item ad-foto' },
-        h('div', {}, (() => { const im = imgDrive(f.fileId, 300, f.titulo); im.className = 'mini-foto'; return im; })(),
+        h('div', {}, fotoEl(f, 300, f.titulo),
           h('div', { class: 'ord' }, h('button', { type: 'button', class: 'bt', text: '↑', 'aria-label': 'Mover para antes', disabled: i === 0, onclick: () => mover(-1) }),
             h('button', { type: 'button', class: 'bt', text: '↓', 'aria-label': 'Mover para depois', disabled: i === fotos.length - 1, onclick: () => mover(1) }))),
         h('div', {}, campo('Título', h('input', { type: 'text', maxlength: '40', value: f.titulo, oninput: e => { f.titulo = e.target.value; } })),
           campo('Frase curta', h('input', { type: 'text', maxlength: '60', value: f.desc, oninput: e => { f.desc = e.target.value; } })),
           campo('Botão "Agendar" leva para', h('select', { onchange: e => { f.servico = e.target.value; } }, opcoes(servs, f.servico))),
-          h('button', { type: 'button', class: 'bt perigo', text: 'Apagar foto', onclick: async () => {
-            if (!confirm('Apagar a foto "' + f.titulo + '"?')) return;
-            if (await apost('admin_foto_del', { id: f.id }, 'Foto apagada.')) { await carregarConfig(); abrirAba('fotos'); }
+          controleFoto(!!(f.fileId || f.url), {
+            upload: u => depois('admin_foto_img', { id: f.id, imagem: u }, 'Foto trocada.'),
+            url: u => depois('admin_foto_img', { id: f.id, url: u }, 'Foto importada.'),
+            remover: () => depois('admin_foto_img', { id: f.id, remover: true }, 'Foto removida (aparece a ilustração).'),
+            buscar: f.titulo + ' corte masculino barbearia' }),
+          h('button', { type: 'button', class: 'bt perigo', text: 'Apagar este corte', onclick: async () => {
+            if (!confirm('Apagar o corte "' + f.titulo + '" do carrossel?')) return;
+            await textos(); if (await apost('admin_foto_del', { id: f.id }, null, true)) await recarregar('Corte apagado.');
           } }))));
     });
   };
   desenhar();
-  const arq = h('input', { type: 'file', accept: 'image/*' }), tit = h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Degradê navalhado' }),
-    desc = h('input', { type: 'text', maxlength: '60', placeholder: 'Ex.: Baixo, com acabamento na navalha' }), srv = h('select', {}, opcoes(servs, '')), prev = h('img', { class: 'ad-prev', hidden: true, alt: 'Pré-visualização' });
+  // novo corte
+  const nv = { titulo: '', desc: '', servico: '', url: '' }, arq = h('input', { type: 'file', accept: 'image/*' }), prev = h('img', { class: 'ad-prev', hidden: true, alt: 'Pré-visualização' });
   let pronto = null;
   arq.onchange = async () => {
-    pronto = null; prev.hidden = true; limpar('msg-ad');
-    if (!arq.files[0]) return;
+    pronto = null; prev.hidden = true; limpar('msg-ad'); if (!arq.files[0]) return;
     try { pronto = await lerImagem(arq.files[0], 1100); prev.src = pronto; prev.hidden = false; } catch (e) { aviso('msg-ad', 'erro', e.message); }
   };
-  const enviar = h('button', { type: 'button', class: 'btn', text: 'Enviar foto', onclick: async () => {
-    if (!pronto) { aviso('msg-ad', 'erro', 'Escolha uma foto primeiro.'); return; }
-    if (!tit.value.trim()) { aviso('msg-ad', 'erro', 'Dê um título para a foto.'); return; }
-    enviar.disabled = true; enviar.textContent = 'Enviando…';
-    const ok = await apost('admin_foto_add', { imagem: pronto, titulo: tit.value, desc: desc.value, servico: srv.value }, 'Foto enviada! Já aparece no carrossel do site.');
-    enviar.disabled = false; enviar.textContent = 'Enviar foto';
-    if (ok) { const m = $('msg-ad').textContent; await carregarConfig(); abrirAba('fotos'); aviso('msg-ad', 'ok', m); }
+  const enviar = h('button', { type: 'button', class: 'btn', text: 'Adicionar ao carrossel', onclick: async () => {
+    if (!nv.titulo.trim()) { aviso('msg-ad', 'erro', 'Dê um título para o corte.'); return; }
+    const extra = { titulo: nv.titulo, desc: nv.desc, servico: nv.servico }; if (pronto) extra.imagem = pronto; else if (nv.url.trim()) extra.url = nv.url.trim();
+    enviar.disabled = true; enviar.textContent = 'Enviando…'; await textos();
+    const ok = await apost('admin_foto_add', extra, null, true);
+    enviar.disabled = false; enviar.textContent = 'Adicionar ao carrossel';
+    if (ok) await recarregar('Corte adicionado! Já aparece no carrossel do site.');
   } });
   box.append(grade, h('div', { class: 'ad-salvar' }, h('button', { type: 'button', class: 'bt forte', text: 'Salvar títulos e ordem', onclick: async e => {
-      e.target.disabled = true;
-      const ok = await apost('admin_foto_salvar', { fotos: fotos.map((f, i) => ({ id: f.id, titulo: f.titulo, desc: f.desc, servico: f.servico, ordem: i + 1 })) }, 'Fotos salvas.');
-      e.target.disabled = false; if (ok) carregarConfig();
+      e.target.disabled = true; const ok = await textos(); e.target.disabled = false;
+      if (ok) { await carregarConfig(); aviso('msg-ad', 'ok', 'Cortes salvos. Já estão no site.'); }
     } })),
-    h('h4', { text: 'Enviar nova foto' }),
-    h('div', { class: 'ad-up' }, campo('Foto (JPG ou PNG, vertical funciona melhor)', arq), prev, h('div', { class: 'ad-2' }, campo('Título', tit), campo('Frase curta (opcional)', desc)),
-      campo('Botão "Agendar este corte" leva para', srv), enviar));
+    h('div', { class: 'ad-novo' }, h('h4', { text: 'Adicionar corte novo' }),
+      h('div', { class: 'ad-2' }, campo('Título', h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Degradê navalhado', oninput: e => { nv.titulo = e.target.value; } })),
+        campo('Frase curta (opcional)', h('input', { type: 'text', maxlength: '60', placeholder: 'Ex.: Baixo, com acabamento na navalha', oninput: e => { nv.desc = e.target.value; } }))),
+      campo('Botão "Agendar este corte" leva para', h('select', { onchange: e => { nv.servico = e.target.value; } }, opcoes(servs, ''))),
+      campo('Foto (arquivo, opcional)', arq), prev,
+      campo('Ou importar a foto por link (opcional)', h('input', { type: 'url', maxlength: '1500', placeholder: 'https://…', oninput: e => { nv.url = e.target.value; } })),
+      enviar));
 }
 
-// ---- Marcas dos produtos (dono) ----
+// ---- Promoções e eventos ----
+function ideiasPromo(hoje, servicos) {
+  const Y = Number(hoje.slice(0, 4)), M = Number(hoje.slice(5, 7)), D = Number(hoje.slice(8, 10));
+  const p2 = n => String(n).padStart(2, '0'), iso = (y, m, d) => y + '-' + p2(m) + '-' + p2(d);
+  const proximo = (m, d, len) => { let de = iso(Y, m, d); if (somarDias(de, len || 0) < hoje) de = iso(Y + 1, m, d); return [de, somarDias(de, len || 0)]; };
+  const nesimo = (y, m, wd, n) => { let d = 1; while (diaSemana(iso(y, m, d)) !== wd) d++; return d + 7 * (n - 1); };
+  const ultimo = (y, m, wd) => { let d = new Date(Date.UTC(y, m, 0)).getUTCDate(); while (diaSemana(iso(y, m, d)) !== wd) d--; return d; };
+  const pais = () => { for (const y of [Y, Y + 1]) { const dom = iso(y, 8, nesimo(y, 8, 0, 2)), de = somarDias(dom, -6), ate = somarDias(dom, -1); if (ate >= hoje) return [de, ate]; } };
+  const black = () => { for (const y of [Y, Y + 1]) { const sex = iso(y, 11, ultimo(y, 11, 5)); if (somarDias(sex, 1) >= hoje) return [sex, somarDias(sex, 1)]; } };
+  const pag = D <= 5 ? iso(Y, M, 5) : (M === 12 ? iso(Y + 1, 1, 5) : iso(Y, M + 1, 5));
+  const terca = somarDias(hoje, (2 - diaSemana(hoje) + 7) % 7);
+  const mesIni = iso(Y, M, 1), mesFim = somarDias(iso(M === 12 ? Y + 1 : Y, M === 12 ? 1 : M + 1, 1), -1);
+  const tem = n => servicos.some(x => x === n) ? n : '';
+  return [
+    { titulo: 'Dia das Crianças', desc: 'Criança merece corte novo! Corte infantil com desconto.', desconto: 20, servico: tem('Corte infantil'), per: proximo(10, 12, 0) },
+    { titulo: 'Dia do Pagamento', desc: 'Chegou o pagamento: hora de se cuidar! Combo com desconto só hoje.', desconto: 10, servico: tem('Corte + Barba'), per: [pag, pag] },
+    { titulo: 'Semana do Dia dos Pais', desc: 'Presenteie o pai com um corte e barba de respeito.', desconto: 15, servico: tem('Corte + Barba'), per: pais() },
+    { titulo: 'Black Friday', desc: 'Dois dias de preço especial. Garanta o seu horário!', desconto: 20, servico: tem('Corte + Barba'), per: black() },
+    { titulo: 'Dia Internacional do Homem', desc: 'Dia de se cuidar: corte e barba com preço especial.', desconto: 10, servico: tem('Corte + Barba'), per: proximo(11, 19, 0) },
+    { titulo: 'Chegue ao Ano Novo no estilo', desc: 'Natal e Réveillon: capriche no visual para as festas.', desconto: 10, servico: tem('Corte + Barba'), per: proximo(12, 20, 11) },
+    { titulo: 'Dia do Cliente', desc: 'Nosso agradecimento: desconto especial no seu corte.', desconto: 15, servico: '', per: proximo(9, 15, 0) },
+    { titulo: 'Dia dos Namorados', desc: 'Vá arrumado para o encontro: desconto no combo.', desconto: 10, servico: tem('Corte + Barba'), per: proximo(6, 12, 0) },
+    { titulo: 'Volta às aulas', desc: 'Cabelo pronto para o ano letivo: corte infantil com desconto.', desconto: 15, servico: tem('Corte infantil'), per: proximo(2, 1, 13) },
+    { titulo: 'Aniversariante do mês', desc: 'Mostre seu documento e ganhe desconto no mês do seu aniversário.', desconto: 10, servico: '', per: [mesIni, mesFim] },
+    { titulo: 'Terça do Combo', desc: 'Dia mais tranquilo, preço melhor: combo com desconto.', desconto: 15, servico: tem('Corte + Barba'), per: [terca, terca] },
+    { titulo: 'Indique um amigo', desc: 'Traga um amigo e fale com o barbeiro sobre um desconto na sua próxima barba.', desconto: 0, servico: '', per: ['', ''] }
+  ].filter(x => x.per);
+}
+async function abPromos(box, vivo) {
+  box.append(h('h4', { text: 'Promoções e eventos' }),
+    h('p', { class: 'ad-nota', text: 'Promoções ligadas aparecem no site na seção "Promoções" durante as datas escolhidas. Se tiver desconto, ele já entra no valor da Agenda e das vendas (você ainda pode mudar o valor na hora de concluir). Desconto 0 serve só para divulgar.' }));
+  const r = await apost('admin_dados'); if (!vivo() || !r) return;
+  const hoje = r.hoje, nomesServ = r.servicos.filter(s => s.ativo).map(s => s.nome);
+  const promos = r.promos.map(p => Object.assign({}, p)), grade = h('div', { class: 'ad-grade' });
+  const servs = [['', 'Todos os serviços']].concat(nomesServ.map(n => [n, n]));
+  const envio = () => promos.map(p => ({ id: p.id || '', titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, ativa: p.ativa }));
+  const salvarTudo = quieto => apost('admin_promos_salvar', { promos: envio() }, quieto ? null : 'Promoções salvas.', quieto);
+  const recarregar = async msg => { await carregarConfig(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); };
+  const depois = async (acao, extra, msg) => { if (!(await salvarTudo(true))) return; const ok = await apost(acao, extra, null, true); if (ok) await recarregar(msg); };
+  const estado = p => !p.ativa ? ['Desligada', ''] : p.de && p.de > hoje ? ['Agendada para ' + br(p.de).slice(0, 5), ''] : p.ate && p.ate < hoje ? ['Encerrada', ''] : ['No ar agora', 'concluido'];
+  const desenhar = () => {
+    grade.textContent = '';
+    if (!promos.length) grade.append(h('div', { class: 'ad-vazio', text: 'Nenhuma promoção. Escolha uma ideia abaixo ou crie uma do zero.' }));
+    promos.forEach((p, i) => {
+      const mover = d => { const j = i + d; if (j < 0 || j >= promos.length) return; [promos[i], promos[j]] = [promos[j], promos[i]]; desenhar(); };
+      const est = estado(p);
+      grade.append(h('div', { class: 'ad-item' + (p.ativa ? '' : ' off') },
+        h('div', { class: 'ad-acoes', style: 'justify-content:space-between;margin-bottom:8px' }, h('span', { class: 'badge ' + est[1], text: est[0] }),
+          h('span', {}, h('button', { type: 'button', class: 'bt', text: '↑', 'aria-label': 'Mover para antes', disabled: i === 0, onclick: () => mover(-1) }), ' ',
+            h('button', { type: 'button', class: 'bt', text: '↓', 'aria-label': 'Mover para depois', disabled: i === promos.length - 1, onclick: () => mover(1) }))),
+        campo('Título', h('input', { type: 'text', maxlength: '50', value: p.titulo, oninput: e => { p.titulo = e.target.value; } })),
+        campo('Descrição (aparece no cartão)', h('input', { type: 'text', maxlength: '140', value: p.desc, oninput: e => { p.desc = e.target.value; } })),
+        h('div', { class: 'ad-2' }, campo('Desconto (%) — 0 = só divulgar', h('input', { type: 'number', min: '0', max: '100', step: '1', value: String(p.desconto), oninput: e => { p.desconto = e.target.value; } })),
+          campo('Vale para', h('select', { onchange: e => { p.servico = e.target.value; } }, opcoes(servs, p.servico)))),
+        h('div', { class: 'ad-2' }, campo('Começa em (vazio = já)', h('input', { type: 'date', value: p.de, onchange: e => { p.de = e.target.value; desenhar(); } })),
+          campo('Termina em (vazio = sem fim)', h('input', { type: 'date', value: p.ate, onchange: e => { p.ate = e.target.value; desenhar(); } }))),
+        h('div', { class: 'ad-chk' }, marca('Promoção ligada (aparece no site)', p.ativa, v => { p.ativa = v; desenhar(); })),
+        p.id ? h('div', {}, h('div', { class: 'ad-prevpromo' }, fotoEl(p, 300, p.titulo)), controleFoto(!!(p.fileId || p.url), {
+            upload: u => depois('admin_promo_img', { id: p.id, imagem: u }, 'Foto da promoção trocada.'),
+            url: u => depois('admin_promo_img', { id: p.id, url: u }, 'Foto da promoção importada.'),
+            remover: () => depois('admin_promo_img', { id: p.id, remover: true }, 'Foto removida.'),
+            buscar: p.titulo + ' promoção barbearia' }))
+          : h('p', { class: 'ad-nota', text: 'Promoção nova: clique em "Salvar promoções" e depois adicione a foto (opcional).' }),
+        h('button', { type: 'button', class: 'bt perigo', text: 'Apagar promoção', onclick: () => { if (confirm('Apagar "' + (p.titulo || 'esta promoção') + '"? Clique em "Salvar promoções" para confirmar.')) { promos.splice(i, 1); desenhar(); } } })));
+    });
+  };
+  desenhar();
+  const novaPromo = o => Object.assign({ id: '', titulo: '', desc: '', desconto: 10, servico: '', de: '', ate: '', ativa: true, fileId: '', url: '' }, o || {});
+  // ideias prontas
+  const ideias = h('div', { class: 'ad-cards', style: 'grid-template-columns:repeat(auto-fill,minmax(240px,1fr))' });
+  ideiasPromo(hoje, nomesServ).forEach(x => {
+    const quando = x.per[0] ? (x.per[0] === x.per[1] ? br(x.per[0]).slice(0, 5) : br(x.per[0]).slice(0, 5) + ' a ' + br(x.per[1]).slice(0, 5)) : 'quando quiser';
+    ideias.append(h('div', { class: 'ad-card' }, h('small', { text: quando + (x.desconto ? ' · ' + x.desconto + '% off' : ' · divulgação') }), h('b', { text: x.titulo, style: 'font-size:1.1rem' }),
+      h('span', { class: 'ad-delta', text: x.desc }),
+      h('button', { type: 'button', class: 'bt forte', style: 'margin-top:10px', text: 'Usar esta ideia', onclick: () => {
+        promos.unshift(novaPromo({ titulo: x.titulo, desc: x.desc, desconto: x.desconto, servico: x.servico, de: x.per[0], ate: x.per[1] })); desenhar();
+        aviso('msg-ad', 'ok', 'Ideia adicionada no topo da lista. Ajuste o que quiser e clique em "Salvar promoções".'); grade.scrollIntoView({ behavior: 'smooth' });
+      } })));
+  });
+  box.append(grade, h('div', { class: 'ad-salvar' },
+    h('button', { type: 'button', class: 'bt', text: '+ Criar promoção do zero', onclick: () => { promos.unshift(novaPromo()); desenhar(); } }),
+    h('button', { type: 'button', class: 'btn', text: 'Salvar promoções', onclick: async e => {
+      e.target.disabled = true; const ok = await salvarTudo(false); e.target.disabled = false;
+      if (ok) await recarregar('Promoções salvas. As que estão ligadas já aparecem no site.');
+    } })),
+    h('h4', { text: 'Ideias de promoções para o seu calendário' }),
+    h('p', { class: 'ad-nota', text: 'Datas já calculadas a partir de hoje. Toque em "Usar esta ideia" para criar a promoção, ajuste e salve.' }), ideias);
+}
+
 async function abMarcas(box, vivo) {
-  box.append(h('h3', { text: 'Marcas dos produtos que a barbearia usa' }),
-    h('p', { class: 'ad-nota', text: 'Elas aparecem no carrossel animado "Marcas que usamos". Para cada marca: toque em "Buscar no Google Imagens", abra a melhor foto (de preferência grande e com fundo limpo), copie o endereço da imagem e cole em "Importar por link". Também dá para enviar um arquivo. Use fotos que você pode usar (do próprio fabricante/distribuidor ou suas). Sem foto, aparece o nome em letreiro.' }));
+  box.append(h('h4', { text: 'Produtos e marcas (carrossel "Marcas que usamos")' }),
+    h('p', { class: 'ad-nota', text: 'Adicione produtos ou marcas novas, mude a ordem ou apague as que não usa mais. Elas aparecem no carrossel animado "Marcas que usamos". Para cada marca: toque em "Buscar no Google Imagens", abra a melhor foto (de preferência grande e com fundo limpo), copie o endereço da imagem e cole em "Importar por link". Também dá para enviar um arquivo. Use fotos que você pode usar (do próprio fabricante/distribuidor ou suas). Sem foto, aparece o nome em letreiro.' }));
   const r = await apost('admin_dados'); if (!vivo() || !r) return;
   const marcas = (r.marcas || []).map(m => Object.assign({}, m)), grade = h('div', { class: 'ad-grade' });
   const desenhar = () => {
@@ -1976,7 +2180,7 @@ async function abMarcas(box, vivo) {
         if (!arq.files[0]) return; limpar('msg-ad');
         try {
           const u = await lerImagem(arq.files[0], 800);
-          if (await apost('admin_marca_foto', { id: m.id, imagem: u }, 'Foto de ' + m.nome + ' enviada.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); }
+          if (await apost('admin_marca_foto', { id: m.id, imagem: u }, 'Foto de ' + m.nome + ' enviada.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); }
         } catch (e) { aviso('msg-ad', 'erro', e.message); }
       };
       const foto = m.fileId ? (() => { const im = imgDrive(m.fileId, 300, m.nome); im.className = 'mini-foto'; return im; })() : h('div', { class: 'ad-vazio', text: 'Sem foto' });
@@ -1994,23 +2198,23 @@ async function abMarcas(box, vivo) {
               bt.disabled = true; bt.textContent = 'Importando…';
               const ok = await apost('admin_marca_foto_url', { id: m.id, url: url.value.trim() }, 'Foto de ' + m.nome + ' importada.');
               bt.disabled = false; bt.textContent = 'Importar';
-              if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); }
+              if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); }
             } });
             return h('div', {}, h('div', { class: 'campo' }, 'Importar por link', h('div', { class: 'ad-link' }, url, bt)),
               h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent((m.nome || '') + ' produtos barbearia'), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'display:inline-block;margin-top:8px;text-decoration:none' }));
           })() : null,
-          m.fileId ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: async () => { if (await apost('admin_marca_foto', { id: m.id, remover: true }, 'Foto removida.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); } } }) : null,
+          m.fileId ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: async () => { if (await apost('admin_marca_foto', { id: m.id, remover: true }, 'Foto removida.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); } } }) : null,
           h('button', { type: 'button', class: 'bt perigo', text: 'Apagar marca', onclick: () => { if (confirm('Apagar a marca ' + (m.nome || '') + '? Clique em "Salvar marcas" para confirmar.')) { marcas.splice(i, 1); desenhar(); } } }))));
     });
   };
   desenhar();
   box.append(grade, h('div', { class: 'ad-salvar' },
-    h('button', { type: 'button', class: 'bt', text: '+ Adicionar marca', onclick: () => { marcas.push({ id: '', fileId: '', nome: '', desc: '' }); desenhar(); } }),
+    h('button', { type: 'button', class: 'bt', text: '+ Adicionar produto ou marca', onclick: () => { marcas.push({ id: '', fileId: '', nome: '', desc: '' }); desenhar(); } }),
     h('button', { type: 'button', class: 'bt forte', text: 'Salvar marcas', onclick: async e => {
       e.target.disabled = true;
       const ok = await apost('admin_marcas_salvar', { marcas: marcas.map(m => ({ id: m.id, nome: m.nome, desc: m.desc })) }, 'Marcas salvas. Já aparecem no site.');
       e.target.disabled = false;
-      if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); }
+      if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); }
     } })));
 }
 
