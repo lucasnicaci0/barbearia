@@ -337,6 +337,32 @@ select:focus-visible{outline-color:var(--ferr)}
 .ad-barras i{flex:1;min-width:5px;max-width:48px;background:linear-gradient(180deg,var(--ferr2),var(--ferr));border-radius:2px 2px 0 0;min-height:3px;transition:filter .15s,transform .15s;transform-origin:bottom}
 .ad-barras i:hover{filter:brightness(1.2);transform:scaleY(1.04)}
 .ad-eixo{display:flex;justify-content:space-between;color:var(--tinta2);font-size:.82rem;font-weight:600;margin-top:4px}
+.ad-delta{display:block;margin-top:3px;font:700 .78rem var(--sans);color:var(--tinta2)}
+.ad-delta.sobe{color:#2f5d17}.ad-delta.desce{color:#8a2412}
+.ad-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+@media(max-width:860px){.ad-2col{grid-template-columns:1fr}}
+.ad-hb{display:block;height:7px;margin-top:5px;background:rgba(106,77,44,.2);border-radius:1px;overflow:hidden}
+.ad-hb i{display:block;height:100%;background:linear-gradient(90deg,var(--ferr),var(--ferr2));border-radius:1px}
+.ad-rank{list-style:none;margin:0;padding:0}
+.ad-rank li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:8px 0;border-bottom:1px solid rgba(106,77,44,.28)}
+.ad-rank li b{font-weight:700}.ad-rank li span{color:var(--tinta2);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ad-rank li .ad-hb{grid-column:1/-1;margin-top:0}
+.ad-insights{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ad-insights li{padding:10px 14px;border:1.5px solid var(--tinta2);border-left:6px solid var(--latao);background:rgba(255,255,255,.28)}
+.ad-insights li.alerta{border-left-color:var(--ferr);background:rgba(143,59,34,.1)}
+.ad-insights li b{font-weight:700}
+.ad-mini{display:flex;align-items:flex-end;gap:5px;height:110px;border-bottom:2px solid var(--tinta2);padding-top:6px}
+.ad-mini div{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.ad-mini i{display:block;width:100%;max-width:44px;background:rgba(106,77,44,.45);border-radius:2px 2px 0 0;min-height:3px}
+.ad-mini div.pico i{background:linear-gradient(180deg,var(--ferr2),var(--ferr))}
+.ad-mini-r{display:flex;gap:5px;color:var(--tinta2);font-size:.76rem;font-weight:700;margin-top:4px;text-align:center}
+.ad-mini-r span{flex:1;min-width:0}
+.ad-acesso{border:2px dashed rgba(106,77,44,.55);padding:14px 16px;margin:0 0 20px;background:rgba(255,255,255,.2)}
+.ad-acesso ul{margin:6px 0 0;padding-left:20px}.ad-acesso li{margin:3px 0}
+.ad-novo{border:2px solid var(--ferr);background:rgba(143,59,34,.07);padding:18px;margin:0 0 26px}
+.ad-novo h4{margin-top:0}
+.ad-link{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 0}
+.ad-link input{flex:1 1 200px;margin:0}
 .ad-tab{overflow-x:auto}
 .ad-tab table{width:100%;border-collapse:collapse;font-size:.97rem}
 .ad-tab th{text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2);padding:8px 10px;border-bottom:2px solid var(--tinta2);white-space:nowrap}
@@ -1465,9 +1491,9 @@ const R$ = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', curr
 const PCT = v => Number(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
 const ICONES_SRV = [['tesoura', 'Tesoura'], ['navalha', 'Navalha'], ['gota', 'Gota'], ['estrela', 'Estrela'], ['crianca', 'Criança'], ['pincel', 'Pincel']];
 const CATS_SRV = [['corte', 'Corte (entra na soma de cortes)'], ['barba', 'Barba'], ['quimica', 'Química (hidratação, pigmentação…)'], ['outro', 'Outro']];
-const ABAS_DONO = [['agenda', 'Agenda'], ['vendas', 'Vendas e lucro'], ['servicos', 'Serviços e preços'], ['fotos', 'Fotos do carrossel'], ['marcas', 'Marcas'], ['equipe', 'Equipe'], ['visual', 'Aparência']];
-const ABAS_BARB = [['agenda', 'Agenda']];
-let adAba = 'agenda', adSeq = 0;
+const ABAS_DONO = [['dash', 'Dashboard'], ['agenda', 'Agenda'], ['vendas', 'Vendas e lucro'], ['equipe', 'Barbeiros'], ['servicos', 'Serviços e preços'], ['fotos', 'Fotos do carrossel'], ['marcas', 'Marcas'], ['visual', 'Aparência']];
+const ABAS_BARB = [['dash', 'Meu desempenho'], ['agenda', 'Minha agenda']];
+let adAba = 'dash', adSeq = 0;
 const ehDono = () => !!sessao && sessao.papel === 'dono';
 const ehEquipe = () => !!sessao && (sessao.papel === 'dono' || sessao.papel === 'barbeiro');
 const hojeServidor = () => (config && config.hoje) || hojeLocal();
@@ -1543,9 +1569,9 @@ async function abrirAdmin() {
   if (!ehEquipe()) { mostrar('home'); return; }
   if (!config) await carregarConfig();
   $('ad-papel').textContent = ehDono() ? 'Dono' : 'Barbeiro';
-  $('ad-ola').textContent = ehDono() ? 'Você enxerga tudo: agenda, vendas, equipe e o visual do site.' : 'Aqui você vê os clientes que marcaram horário com você.';
+  $('ad-ola').textContent = ehDono() ? 'Você enxerga tudo: dashboard, agenda, vendas, barbeiros e o visual do site.' : 'Aqui você vê o seu desempenho e os clientes que marcaram horário com você.';
   const abas = ehDono() ? ABAS_DONO : ABAS_BARB;
-  if (!abas.some(a => a[0] === adAba)) adAba = 'agenda';
+  if (!abas.some(a => a[0] === adAba)) adAba = 'dash';
   desenharAbas(abas); abrirAba(adAba);
 }
 function desenharAbas(abas) {
@@ -1555,8 +1581,8 @@ function desenharAbas(abas) {
 function abrirAba(id) {
   const my = ++adSeq; limpar('msg-ad'); aplicarSite();    // desfaz pré-visualizações não salvas
   const box = $('ad-painel'); box.textContent = '';
-  const f = { agenda: abAgenda, vendas: abVendas, servicos: abServicos, fotos: abFotos, marcas: abMarcas, equipe: abEquipe, visual: abVisual }[id];
-  if (f && (id === 'agenda' || ehDono())) f(box, () => my === adSeq);
+  const f = { dash: abDash, agenda: abAgenda, vendas: abVendas, servicos: abServicos, fotos: abFotos, marcas: abMarcas, equipe: abEquipe, visual: abVisual }[id];
+  if (f && (id === 'agenda' || id === 'dash' || ehDono())) f(box, () => my === adSeq);
 }
 $('ir-admin').onclick = async () => {
   limpar('msg-priv');
@@ -1570,6 +1596,118 @@ $('ir-admin').onclick = async () => {
 };
 $('ad-voltar').onclick = () => mostrar('home');
 $('ad-sair').onclick = sair;
+
+// ---- Dashboard (dono: tudo / barbeiro: só os números dele) ----
+const PER_D = [['hoje', 'Hoje'], ['7d', '7 dias'], ['mes', 'Este mês'], ['mes_ant', 'Mês passado'], ['30d', '30 dias'], ['ano', 'Este ano']];
+const MES_ABR = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+let adD = { per: 'mes', met: 'valor' };
+function deltaDe(atual, ant, rot) {
+  if (!ant) return h('span', { class: 'ad-delta', text: atual ? 'Sem período anterior para comparar' : '' });
+  const p = (atual - ant) / ant * 100, igual = Math.abs(p) < 0.5;
+  return h('span', { class: 'ad-delta ' + (igual ? '' : p > 0 ? 'sobe' : 'desce'), text: (igual ? '＝ igual ao período anterior' : (p > 0 ? '▲ ' : '▼ ') + Math.abs(p).toLocaleString('pt-BR', { maximumFractionDigits: 0 }) + '% ' + (rot || 'vs. período anterior')) });
+}
+function rotuloSerie(k, mensal) { return mensal ? MES_ABR[Number(k.slice(5, 7)) - 1] + '/' + k.slice(2, 4) : k.slice(8) + '/' + k.slice(5, 7); }
+function rankBarras(itens, valorTxt, detTxt) {
+  const max = Math.max.apply(null, itens.map(i => i.v)) || 1;
+  return h('ol', { class: 'ad-rank' }, itens.map(i => h('li', {}, h('b', { text: i.nome }), h('span', { text: valorTxt(i) + (detTxt ? ' · ' + detTxt(i) : '') }), h('span', { class: 'ad-hb', 'aria-hidden': 'true' }, h('i', { style: 'width:' + Math.max(2, i.v / max * 100) + '%' })))));
+}
+function miniBarras(rotulos, valores, titulos) {
+  const max = Math.max.apply(null, valores) || 1, pico = valores.indexOf(max);
+  return h('div', {}, h('div', { class: 'ad-mini', role: 'img', 'aria-label': 'Gráfico de barras' }, valores.map((v, i) => h('div', { class: v && i === pico ? 'pico' : '', title: titulos[i] }, h('i', { style: 'height:' + (v ? Math.max(4, v / max * 100) : 0) + '%' })))),
+    h('div', { class: 'ad-mini-r' }, rotulos.map(r => h('span', { text: r }))));
+}
+async function abDash(box, vivo) {
+  const dono = ehDono();
+  box.append(h('h3', { text: dono ? 'Dashboard da barbearia' : 'Meu desempenho' }),
+    h('p', { class: 'ad-nota', text: dono ? 'Vendas, lucro e cortes de toda a equipe. Os números vêm das vendas concluídas na Agenda (e das vendas avulsas).' : 'Seus atendimentos, cortes e a sua comissão. Só você vê estes números.' }));
+  const chips = h('div', { class: 'ad-chips' }), alvo = h('div', {});
+  const desenharChips = () => { chips.textContent = ''; PER_D.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adD.per === p[0]), text: p[1], onclick: () => { adD.per = p[0]; desenharChips(); carregar(); } }))); };
+  desenharChips(); box.append(chips, alvo);
+  async function carregar() {
+    alvo.textContent = ''; alvo.append(h('p', { class: 'ad-nota', text: 'Carregando…' }));
+    const r = await apost('admin_dashboard', { periodo: adD.per }, null, true);
+    if (!vivo()) return; alvo.textContent = ''; if (!r) return;
+    const t = r.totais, a = r.anterior, num = v => Number(v || 0).toLocaleString('pt-BR');
+    alvo.append(h('p', { class: 'ad-nota', text: r.rotulo + ': ' + br(r.de) + ' a ' + br(r.ate) + '. Comparado com ' + br(r.deAnt) + ' a ' + br(r.ateAnt) + '.' }));
+    // agenda de hoje
+    const ag = r.agenda;
+    alvo.append(h('div', { class: 'ad-cards' },
+      h('div', { class: 'ad-card' }, h('small', { text: 'Marcados hoje' }), h('b', { text: String(ag.hoje) }), h('span', { class: 'ad-delta', text: ag.hojeFeitos + ' já atendido(s)' })),
+      h('div', { class: 'ad-card' }, h('small', { text: 'Próximos 7 dias' }), h('b', { text: String(ag.proximos7) }), h('span', { class: 'ad-delta', text: 'horários marcados' })),
+      h('div', { class: 'ad-card' }, h('small', { text: 'Faltas no período' }), h('b', { text: String(ag.faltas) })),
+      h('div', { class: 'ad-card' + (ag.semBaixa ? ' dest' : '') }, h('small', { text: 'Sem baixa (30 dias)' }), h('b', { text: String(ag.semBaixa) }), h('span', { class: 'ad-delta', text: ag.semBaixa ? 'Dê baixa na Agenda' : 'Tudo em dia' }))));
+    // indicadores
+    const K = (rot, v, an, dest, extra) => h('div', { class: 'ad-card' + (dest ? ' dest' : '') }, h('small', { text: rot }), h('b', { text: v }), extra || deltaDe(an[0], an[1]));
+    const cards = dono ? [
+      K('Faturamento', R$(t.bruto), [t.bruto, a.bruto]), K('Lucro da casa', R$(t.lucro), [t.lucro, a.lucro], true),
+      K('Margem de lucro', PCT(t.margem), null, false, h('span', { class: 'ad-delta ' + (t.margem - a.margem > 0.4 ? 'sobe' : t.margem - a.margem < -0.4 ? 'desce' : ''), text: Math.abs(t.margem - a.margem) < 0.5 ? '＝ igual ao período anterior' : (t.margem > a.margem ? '▲ ' : '▼ ') + Math.abs(t.margem - a.margem).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' p.p. vs. anterior' })), K('Comissões pagas', R$(t.comissao), [t.comissao, a.comissao]),
+      K('Cortes', num(t.cortes), [t.cortes, a.cortes]), K('Atendimentos', num(t.qtd), [t.qtd, a.qtd]),
+      K('Ticket médio', R$(t.ticket), [t.ticket, a.ticket]), K('Clientes atendidos', num(t.clientes), [t.clientes, a.clientes]),
+      K('Cortes grátis dados', num(t.gratis), [t.gratis, a.gratis])
+    ] : [
+      K('Minha comissão', R$(t.comissao), [t.comissao, a.comissao], true), K('Faturamento dos meus atendimentos', R$(t.bruto), [t.bruto, a.bruto]),
+      K('Meus cortes', num(t.cortes), [t.cortes, a.cortes]), K('Atendimentos', num(t.qtd), [t.qtd, a.qtd]),
+      K('Ticket médio', R$(t.ticket), [t.ticket, a.ticket]), K('Clientes atendidos', num(t.clientes), [t.clientes, a.clientes]),
+      K('Cortes grátis que fiz', num(t.gratis), [t.gratis, a.gratis])
+    ];
+    alvo.append(h('h4', { text: 'Resumo do período' }), h('div', { class: 'ad-cards' }, cards));
+    if (!t.qtd) { alvo.append(h('div', { class: 'ad-vazio', text: 'Nenhuma venda neste período. As vendas aparecem aqui quando você toca em "Concluir" na Agenda.' })); }
+    // evolução
+    const mets = dono ? [['valor', 'Faturamento'], ['lucro', 'Lucro da casa'], ['qtd', 'Atendimentos']] : [['valor', 'Faturamento'], ['lucro', 'Minha comissão'], ['qtd', 'Atendimentos']];
+    const gBox = h('div', {}), mChips = h('div', { class: 'ad-chips' });
+    const desenharG = () => {
+      mChips.textContent = ''; mets.forEach(m => mChips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adD.met === m[0]), text: m[1], onclick: () => { adD.met = m[0]; desenharG(); } })));
+      gBox.textContent = '';
+      const val = x => x[adD.met], fm = v => adD.met === 'qtd' ? v + ' atend.' : R$(v), max = Math.max.apply(null, r.serie.map(val)) || 1;
+      gBox.append(h('div', { class: 'ad-barras', role: 'img', 'aria-label': (mets.find(m => m[0] === adD.met) || [])[1] + (r.mensal ? ' por mês' : ' por dia') },
+        r.serie.map(x => h('i', { style: 'height:' + Math.max(2, val(x) / max * 100) + '%', title: rotuloSerie(x.k, r.mensal) + ' · ' + fm(val(x)) + ' · ' + x.qtd + ' atendimento(s)' }))),
+        h('div', { class: 'ad-eixo' }, h('span', { text: rotuloSerie(r.serie[0].k, r.mensal) }), h('span', { text: 'maior: ' + fm(max) }), h('span', { text: rotuloSerie(r.serie[r.serie.length - 1].k, r.mensal) })));
+    };
+    desenharG();
+    alvo.append(h('h4', { text: r.mensal ? 'Evolução por mês' : 'Evolução por dia' }), mChips, gBox);
+    // por barbeiro / serviços
+    if (dono) {
+      const tb = r.porBarbeiro, maxV = Math.max.apply(null, tb.map(b => b.valor)) || 1;
+      alvo.append(h('h4', { text: 'Desempenho por barbeiro' }),
+        tabela(['Barbeiro', 'Atend.', 'Cortes', 'Faturamento', 'Comissão', 'Lucro da casa', 'Ticket'],
+          tb.map(b => [h('div', {}, h('b', { text: b.nome }), h('span', { class: 'ad-hb', 'aria-hidden': 'true' }, h('i', { style: 'width:' + (b.valor / maxV * 100) + '%' }))), String(b.qtd), String(b.cortes), R$(b.valor), R$(b.comissao), R$(b.lucro), R$(b.ticket)]), [1, 2, 3, 4, 5, 6]));
+    }
+    const dois = h('div', { class: 'ad-2col' });
+    if (r.porServico.length) dois.append(h('div', {}, h('h4', { text: dono ? 'Serviços mais vendidos' : 'Meus serviços mais feitos' }), rankBarras(r.porServico.map(x => ({ nome: x.nome, v: x.qtd, valor: x.valor, qtd: x.qtd })), x => x.qtd + 'x', x => R$(x.valor))));
+    if (t.qtd) {
+      const W = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      dois.append(h('div', {}, h('h4', { text: 'Movimento por dia da semana' }), miniBarras(W, r.semana, r.semana.map((v, i) => W[i] + ' · ' + v + ' atendimento(s) · ' + R$(r.semanaValor[i])))));
+      if (r.horas.length) {
+        const hs = r.horas;
+        dois.append(h('div', {}, h('h4', { text: 'Horários de pico' }), miniBarras(hs.map(x => x.h + 'h'), hs.map(x => x.qtd), hs.map(x => x.h + 'h · ' + x.qtd + ' atendimento(s)'))));
+      }
+    }
+    if (dois.childNodes.length) alvo.append(dois);
+    // destaques
+    const ins = [], W2 = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    if (t.qtd) {
+      const mw = Math.max.apply(null, r.semana), iw = r.semana.indexOf(mw);
+      ins.push(['Dia mais movimentado da semana: ', W2[iw], ' (' + mw + ' atendimentos no período).']);
+      const mh = r.horas.slice().sort((x, y) => y.qtd - x.qtd)[0]; if (mh) ins.push(['Horário de pico: ', mh.h + 'h', ' (' + mh.qtd + ' atendimentos).']);
+      const md = r.serie.slice().sort((x, y) => y.valor - x.valor)[0]; if (md && md.valor) ins.push([r.mensal ? 'Melhor mês: ' : 'Melhor dia: ', rotuloSerie(md.k, r.mensal), ' com ' + R$(md.valor) + ' em ' + md.qtd + ' atendimento(s).']);
+      if (r.porServico[0]) ins.push(['Serviço campeão: ', r.porServico[0].nome, ' (' + r.porServico[0].qtd + ' vendas, ' + R$(r.porServico[0].valor) + ').']);
+      if (dono && r.porBarbeiro[0] && r.porBarbeiro[0].qtd) ins.push(['Barbeiro destaque: ', r.porBarbeiro[0].nome, ' com ' + R$(r.porBarbeiro[0].valor) + ' em ' + r.porBarbeiro[0].qtd + ' atendimento(s).']);
+      if (dono) { const bc = r.porBarbeiro.slice().sort((x, y) => y.cortes - x.cortes)[0]; if (bc && bc.cortes) ins.push(['Mais cortes no período: ', bc.nome, ' (' + bc.cortes + ' cortes).']); }
+    }
+    const alertas = [];
+    if (ag.semBaixa) alertas.push(['Atenção: ', ag.semBaixa + ' horário(s) dos últimos 30 dias sem baixa.', ' Abra a Agenda e toque em "Concluir" ou "Faltou" — senão a venda não entra nos números.']);
+    if (ag.faltas) alertas.push(['Faltas: ', ag.faltas + ' cliente(s) não compareceram neste período.', '']);
+    if (dono && r.fid && r.fid.ativo) {
+      const f = r.fid;
+      ins.push(['Cartão do Xerife: ', f.clientesComCredito + ' cliente(s) com corte grátis a usar', ' (' + f.creditosAbertos + ' no total); ' + f.quaseLa + ' a um corte de ganhar o próximo.']);
+      if (f.custoGratis > 0) ins.push(['Custo dos cortes grátis no período: ', R$(f.custoGratis), ' (comissão paga sobre cortes sem receita).']);
+    }
+    if (dono && r.equipe) ins.push(['Equipe: ', r.equipe.ativos + ' barbeiro(s) ativo(s)', '.']);
+    if (ins.length || alertas.length) alvo.append(h('h4', { text: 'Destaques e alertas' }),
+      h('ul', { class: 'ad-insights' }, alertas.map(x => h('li', { class: 'alerta' }, x[0], h('b', { text: x[1] }), x[2])), ins.map(x => h('li', {}, x[0], h('b', { text: x[1] }), x[2]))));
+  }
+  carregar();
+}
 
 // ---- Agenda ----
 const PERIODOS = [['hoje', 'Hoje'], ['amanha', 'Amanhã'], ['7d', 'Próximos 7 dias'], ['30d', 'Próximos 30 dias']];
@@ -1791,7 +1929,7 @@ async function abFotos(box, vivo) {
 // ---- Marcas dos produtos (dono) ----
 async function abMarcas(box, vivo) {
   box.append(h('h3', { text: 'Marcas dos produtos que a barbearia usa' }),
-    h('p', { class: 'ad-nota', text: 'Elas aparecem no carrossel animado "Marcas que usamos". Envie a logo ou uma foto do produto de cada marca (as fotos oficiais ficam com os fabricantes, então baixe no site ou no Instagram deles). Sem foto, aparece o nome em letreiro.' }));
+    h('p', { class: 'ad-nota', text: 'Elas aparecem no carrossel animado "Marcas que usamos". Para cada marca: toque em "Buscar no Google Imagens", abra a melhor foto (de preferência grande e com fundo limpo), copie o endereço da imagem e cole em "Importar por link". Também dá para enviar um arquivo. Use fotos que você pode usar (do próprio fabricante/distribuidor ou suas). Sem foto, aparece o nome em letreiro.' }));
   const r = await apost('admin_dados'); if (!vivo() || !r) return;
   const marcas = (r.marcas || []).map(m => Object.assign({}, m)), grade = h('div', { class: 'ad-grade' });
   const desenhar = () => {
@@ -1814,7 +1952,19 @@ async function abMarcas(box, vivo) {
           h('button', { type: 'button', class: 'bt', text: '↓', 'aria-label': 'Mover para depois', disabled: i === marcas.length - 1, onclick: () => mover(1) }))),
         h('div', {}, campo('Nome da marca', h('input', { type: 'text', maxlength: '40', value: m.nome, oninput: e => { m.nome = e.target.value; } })),
           campo('Frase curta (opcional)', h('input', { type: 'text', maxlength: '70', value: m.desc || '', oninput: e => { m.desc = e.target.value; } })),
-          m.id ? campo(m.fileId ? 'Trocar a foto' : 'Enviar foto', arq) : h('p', { class: 'ad-nota', text: 'Marca nova: clique em "Salvar marcas" e depois envie a foto.' }),
+          m.id ? campo(m.fileId ? 'Trocar a foto (arquivo)' : 'Enviar foto (arquivo)', arq) : h('p', { class: 'ad-nota', text: 'Marca nova: clique em "Salvar marcas" e depois envie a foto.' }),
+          m.id ? (() => {
+            const url = h('input', { type: 'url', maxlength: '1500', placeholder: 'https://… (endereço da imagem)', 'aria-label': 'Endereço da imagem de ' + m.nome });
+            const bt = h('button', { type: 'button', class: 'bt forte', text: 'Importar', onclick: async () => {
+              limpar('msg-ad'); if (!/^https:\/\//i.test(url.value.trim())) { aviso('msg-ad', 'erro', 'Cole o endereço completo da imagem, começando com https://'); return; }
+              bt.disabled = true; bt.textContent = 'Importando…';
+              const ok = await apost('admin_marca_foto_url', { id: m.id, url: url.value.trim() }, 'Foto de ' + m.nome + ' importada.');
+              bt.disabled = false; bt.textContent = 'Importar';
+              if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); }
+            } });
+            return h('div', {}, h('div', { class: 'campo' }, 'Importar por link', h('div', { class: 'ad-link' }, url, bt)),
+              h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent((m.nome || '') + ' produtos barbearia'), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'display:inline-block;margin-top:8px;text-decoration:none' }));
+          })() : null,
           m.fileId ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: async () => { if (await apost('admin_marca_foto', { id: m.id, remover: true }, 'Foto removida.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('marcas'); aviso('msg-ad', 'ok', msg); } } }) : null,
           h('button', { type: 'button', class: 'bt perigo', text: 'Apagar marca', onclick: () => { if (confirm('Apagar a marca ' + (m.nome || '') + '? Clique em "Salvar marcas" para confirmar.')) { marcas.splice(i, 1); desenhar(); } } }))));
     });
@@ -1832,9 +1982,34 @@ async function abMarcas(box, vivo) {
 
 // ---- Equipe (dono) ----
 async function abEquipe(box, vivo) {
-  box.append(h('h3', { text: 'Equipe e comissões' }),
-    h('p', { class: 'ad-nota', text: 'Para um profissional acessar a Área privada, ele precisa criar uma conta no site com o MESMO e-mail cadastrado aqui. Barbeiro vê só a própria agenda; dono vê tudo.' }));
+  box.append(h('h3', { text: 'Barbeiros e comissões' }),
+    h('div', { class: 'ad-acesso' }, h('b', { text: 'Como o barbeiro entra na Área privada' }),
+      h('ul', {}, h('li', { text: 'Você cadastra o nome e o e-mail dele aqui, abaixo.' }),
+        h('li', { text: 'Ele cria uma conta no site usando exatamente esse e-mail (ou entra, se já tiver conta).' }),
+        h('li', { text: 'Pronto: aparece o botão da Área privada, só com "Meu desempenho" e "Minha agenda" — apenas os números e os clientes dele. Ele não vê os outros barbeiros, o lucro da casa, preços nem configurações.' }))));
   const r = await apost('admin_dados'); if (!vivo() || !r) return;
+  // formulário de cadastro rápido
+  const nv = { nome: '', email: '', telefone: '', comissao: String(r.comissaoPadrao), cursos: '', atende: true, obs: '' };
+  const btCad = h('button', { type: 'button', class: 'btn', text: 'Cadastrar barbeiro', onclick: async () => {
+    btCad.disabled = true;
+    const ok = await apost('admin_barbeiro_cadastrar', { nome: nv.nome, email: nv.email, telefone: nv.telefone, comissao: nv.comissao, atende: nv.atende, obs: nv.obs, cursos: nv.cursos.split('\n').map(x => x.trim()).filter(Boolean) });
+    btCad.disabled = false;
+    if (!ok) return;
+    await carregarConfig(); abrirAba('equipe');
+    aviso('msg-ad', 'ok', ok.temConta ? nv.nome.trim() + ' cadastrado. Ele já tem conta no site: ao entrar, a Área privada dele já está liberada.' : nv.nome.trim() + ' cadastrado! Peça para ele criar uma conta no site com o e-mail ' + nv.email.trim().toLowerCase() + ' — assim que entrar, a Área privada dele estará liberada.');
+  } });
+  box.append(h('div', { class: 'ad-novo' }, h('h4', { text: 'Cadastrar novo barbeiro' }),
+    h('div', { class: 'ad-2' },
+      campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Rafael', oninput: e => { nv.nome = e.target.value; } })),
+      campo('E-mail (será o login dele)', h('input', { type: 'email', maxlength: '80', placeholder: 'barbeiro@email.com', autocomplete: 'off', oninput: e => { nv.email = e.target.value; } }))),
+    h('div', { class: 'ad-2' },
+      campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', placeholder: '(61) 99999-9999', oninput: e => { nv.telefone = e.target.value; } })),
+      campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: nv.comissao, oninput: e => { nv.comissao = e.target.value; } }))),
+    campo('Cursos e formações (um por linha)', h('textarea', { maxlength: '500', oninput: e => { nv.cursos = e.target.value; } })),
+    campo('Observação', h('input', { type: 'text', maxlength: '160', placeholder: 'Ex.: especialista em degradê', oninput: e => { nv.obs = e.target.value; } })),
+    h('div', { class: 'ad-chk' }, marca('Atende clientes (aparece para agendar)', true, v => { nv.atende = v; })),
+    btCad));
+  box.append(h('h4', { text: 'Equipe cadastrada' }));
   const lista = r.equipe.map(p => Object.assign({}, p, { existe: true, cursosTxt: p.cursos.join('\n'), comissao: p.comissao })), grade = h('div', { class: 'ad-grade' });
   const desenhar = () => {
     grade.textContent = '';
@@ -1843,6 +2018,7 @@ async function abEquipe(box, vivo) {
       grade.append(h('div', { class: 'ad-item' + (p.ativo ? '' : ' off') },
         campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', value: p.nome, disabled: p.existe, oninput: e => { p.nome = e.target.value; } })),
         campo('E-mail da conta no site', h('input', { type: 'email', maxlength: '80', value: p.email, disabled: donoFixo, placeholder: 'barbeiro@email.com', oninput: e => { p.email = e.target.value; } })),
+        campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', value: p.telefone || '', placeholder: '(61) 99999-9999', oninput: e => { p.telefone = e.target.value; } })),
         h('div', { class: 'ad-2' },
           campo('Acesso', h('select', { disabled: donoFixo, onchange: e => { p.papel = e.target.value; } }, opcoes([['barbeiro', 'Barbeiro'], ['dono', 'Dono']], p.papel))),
           campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: String(p.comissao), oninput: e => { p.comissao = e.target.value; } }))),
@@ -1854,10 +2030,10 @@ async function abEquipe(box, vivo) {
   };
   desenhar();
   box.append(grade, h('div', { class: 'ad-salvar' },
-    h('button', { type: 'button', class: 'bt', text: '+ Adicionar profissional', onclick: () => { lista.push({ nome: '', email: '', papel: 'barbeiro', comissao: r.comissaoPadrao, atende: true, ativo: true, obs: '', cursos: [], cursosTxt: '', existe: false }); desenhar(); } }),
+    h('button', { type: 'button', class: 'bt', text: '+ Adicionar profissional', onclick: () => { lista.push({ nome: '', email: '', telefone: '', papel: 'barbeiro', comissao: r.comissaoPadrao, atende: true, ativo: true, obs: '', cursos: [], cursosTxt: '', existe: false }); desenhar(); } }),
     h('button', { type: 'button', class: 'btn', text: 'Salvar equipe', onclick: async e => {
       e.target.disabled = true;
-      const envio = lista.map(p => ({ nome: p.nome, email: p.email, papel: p.papel, comissao: p.comissao, atende: p.atende, ativo: p.ativo, obs: p.obs, cursos: p.cursosTxt.split('\n').map(x => x.trim()).filter(Boolean) }));
+      const envio = lista.map(p => ({ nome: p.nome, email: p.email, telefone: p.telefone || '', papel: p.papel, comissao: p.comissao, atende: p.atende, ativo: p.ativo, obs: p.obs, cursos: p.cursosTxt.split('\n').map(x => x.trim()).filter(Boolean) }));
       const ok = await apost('admin_salvar_equipe', { equipe: envio }, 'Equipe salva.');
       e.target.disabled = false; if (ok) { await carregarConfig(); abrirAba('equipe'); aviso('msg-ad', 'ok', 'Equipe salva.'); }
     } })));
