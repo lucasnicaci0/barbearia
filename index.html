@@ -310,7 +310,7 @@ select:focus-visible{outline-color:var(--ferr)}
 .bt:disabled{opacity:.4;cursor:not-allowed}
 .bt.ok{background:#3f6e2b;border-color:#24400f;color:#f4ffe9}.bt.ok:hover:not(:disabled){background:#4b8333}
 .bt.perigo{color:#8a2412;border-color:#8a2412}
-.bt.forte{background:var(--ferr);border-color:var(--ferr4);color:#fff2d8}
+.bt.forte{background:var(--ferr);border-color:var(--ferr4);color:#fff2d8}.bt.forte:hover:not(:disabled){background:var(--ferr2)}
 .ad-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .ad-salvar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px;padding-top:18px;border-top:2px dashed rgba(106,77,44,.5)}
 .ad-salvar .btn{width:auto;margin:0;padding:12px 26px}
@@ -581,6 +581,217 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
 @media(max-width:700px){.topo{padding:8px 14px;gap:4px 10px}.topo .marca{font-size:1rem;letter-spacing:.08em}.topo .btn.mini{padding:8px 10px;font-size:.7rem;letter-spacing:.05em}.ic{width:34px;height:34px}.ic svg{width:17px;height:17px}.acoes{gap:6px}.nav a{padding:6px 9px}.fid-rank{justify-content:center}html{scroll-padding-top:84px}}
 @media(min-width:1000px) and (max-width:1199px){.nav{order:3;width:100%}}
 @media(min-width:1200px){.nav{flex:1 1 0;min-width:0}.espaco-flex{display:none}}
+
+/* ===== v12 · avisos, confirmação, galeria, revólver animado, temas de promoção, mapa Red Dead, painel ===== */
+/* serviços: o botão "Remover" não fica mais em cima do nome */
+.ad-item.com-rem{padding-top:46px}
+.ad-item.com-rem .rem{top:8px;right:8px}
+
+/* sino de avisos */
+.sino{position:relative;display:inline-grid;place-items:center;width:40px;height:40px;border:1px solid #140a05;border-radius:50%;background:linear-gradient(180deg,#5d3a20,#3f2616);box-shadow:0 3px 0 #140a05;cursor:pointer;color:var(--osso);padding:0}
+.sino svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sino.tem svg{animation:badala 2.4s ease-in-out infinite;transform-origin:50% 10%;color:#ffd98a}
+.sino b{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#c6381c;color:#fff;font:800 .72rem/20px var(--sans);text-align:center;border:2px solid #1a0e07}
+@keyframes badala{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(14deg)}82%{transform:rotate(-12deg)}88%{transform:rotate(8deg)}94%{transform:rotate(-4deg)}}
+.sino-painel{position:fixed;top:62px;right:12px;z-index:400;width:min(390px,calc(100vw - 24px));max-height:72vh;overflow:auto;color:var(--tinta);border:1px solid #8a6a3a;background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);box-shadow:0 18px 40px rgba(0,0,0,.6);padding:14px}
+.sino-painel h3{font:700 1.15rem var(--serif);color:var(--tinta);margin:0 0 8px}
+.av-item{display:block;width:100%;text-align:left;border:1.5px solid var(--tinta2);border-left:5px solid var(--latao);background:rgba(255,255,255,.3);padding:10px 12px;margin-bottom:8px;cursor:pointer;font:inherit;color:var(--tinta)}
+.av-item.nova{border-left-color:#c6381c;background:rgba(198,56,28,.1)}
+.av-item b{display:block}.av-item span{display:block;font-size:.94rem;color:var(--tinta2)}.av-item small{color:var(--tinta2);font-weight:600}
+.toast{position:fixed;left:50%;bottom:22px;z-index:500;transform:translate(-50%,30px);opacity:0;pointer-events:none;max-width:min(460px,calc(100vw - 24px));padding:12px 18px;background:#241a12;color:var(--osso);border:1px solid #c79a45;border-left:6px solid #c6381c;box-shadow:0 12px 28px rgba(0,0,0,.6);transition:opacity .3s,transform .3s;font-weight:600}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* meus horários: situação */
+.st-ag{display:inline-block;margin:6px 0 0 0;padding:3px 10px;font:700 .78rem var(--sans);text-transform:uppercase;letter-spacing:.05em;border-radius:2px}
+.st-ag.pend{background:#f3dfa4;color:#5a3d0a;border:1px solid #b08d4f}
+.st-ag.ok{background:#d5e6bf;color:#24400f;border:1px solid #6f9a4b}
+.st-ag.rec{background:#f3cdbd;color:#5c1a0c;border:1px solid #b5533a}
+.item.pend{border-left-color:#b08d4f}.item.conf{border-left-color:#4a8a30}.item.recus{border-left-color:#8a2412;background:rgba(138,36,18,.08)}
+.item .item-t{flex:1;min-width:0}
+.fim-conf{display:block;margin-top:6px;font-size:.95rem;font-weight:500}
+
+/* fotos de cortes na hora de marcar */
+.gal-srv{margin:0 0 16px;padding-bottom:14px;border-bottom:2px dashed var(--tinta2)}
+.gal-srv h4{font:700 .98rem var(--sans);margin:0 0 8px;color:var(--tinta)}
+.gal-srv h4 small{font-weight:600;color:var(--tinta2)}
+.gal-trilho{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.gal-th{flex:0 0 96px;aspect-ratio:4/5;border:2px solid #1c0f08;padding:0;background:#241a12;cursor:zoom-in;position:relative;overflow:hidden;scroll-snap-align:start;transition:transform .16s}
+.gal-th:hover,.gal-th:focus-visible{transform:translateY(-3px)}
+.gal-th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.gal-th.mais{display:grid;place-items:center;color:#ece0c4;font:700 .8rem var(--sans);text-align:center;background:linear-gradient(180deg,#5d3a20,#3f2616)}
+.lightbox{position:fixed;inset:0;z-index:600;background:rgba(10,6,3,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px}
+.lightbox[hidden]{display:none}
+.lb-fig{margin:0;max-width:min(920px,100%);max-height:80vh;display:flex;flex-direction:column;align-items:center}
+.lb-fig img{max-width:100%;max-height:72vh;object-fit:contain;border:3px solid #c79a45;box-shadow:0 20px 50px rgba(0,0,0,.7);background:#241a12}
+.lb-cap{margin-top:10px;color:var(--osso);font-weight:600;text-align:center}
+.lb-btn{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:1px solid #140a05;background:linear-gradient(180deg,#5d3a20,#3f2616);color:var(--osso);font-size:1.7rem;cursor:pointer}
+.lb-btn.e{left:14px}.lb-btn.d{right:14px}.lb-fechar{position:absolute;top:14px;right:14px;top:14px;width:auto;height:auto;margin:0;padding:8px 14px;border-radius:2px;font:700 .9rem var(--sans)}
+
+/* perfil do barbeiro no site */
+.avatar.foto{object-fit:cover;padding:0}
+.pro .insta{display:inline-block;margin-top:4px;color:#7a2d10;font-weight:700}
+.pro .espec{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.pro .espec span{padding:3px 9px;border:1px solid #6d5a3a;background:rgba(255,255,255,.35);font:700 .78rem var(--sans);color:var(--tinta)}
+.pro .bio{font-size:.97rem;margin:6px 0;color:var(--tinta)}
+.pro .certs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pro .certs button{width:62px;height:62px;padding:0;border:2px solid #1c0f08;background:#241a12;cursor:zoom-in;overflow:hidden}
+.pro .certs img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* revólver: carregar a bala e dar o tiro */
+.fid-tambor{position:relative}
+.fid-tambor .bala{transform-box:fill-box;transform-origin:center}
+.fid-tambor .bala.nova{animation:balaEntra .9s cubic-bezier(.2,.9,.3,1.25) both;animation-delay:var(--d,0s)}
+@keyframes balaEntra{0%{opacity:0;transform:translateY(-60px) scale(1.9) rotate(-40deg)}55%{opacity:1;transform:translateY(0) scale(1.12) rotate(6deg)}78%{transform:scale(.94)}100%{opacity:1;transform:none}}
+.fid-tambor .brilho{transform-box:fill-box;transform-origin:center;animation:brilha .9s ease-out both;animation-delay:var(--d,0s)}
+@keyframes brilha{0%{opacity:0;transform:scale(.2)}45%{opacity:.95;transform:scale(1.9)}100%{opacity:0;transform:scale(2.6)}}
+.fid-tambor.recuo svg{animation:recuo .62s cubic-bezier(.2,.9,.3,1)}
+@keyframes recuo{0%{transform:none}10%{transform:translate(0,16px) rotate(-7deg) scale(1.06)}38%{transform:translate(0,-6px) rotate(3deg)}62%{transform:translate(0,3px) rotate(-1deg)}100%{transform:none}}
+.tiro-clarao{position:absolute;left:50%;top:-10%;width:78%;aspect-ratio:1;margin-left:-39%;border-radius:50%;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(circle,#fffbe0 0,#ffd36a 22%,rgba(255,130,40,.75) 46%,transparent 70%)}
+.fid-tambor.atirando .tiro-clarao{animation:clarao .6s ease-out}
+@keyframes clarao{0%{opacity:0;transform:scale(.2)}16%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(2)}}
+.tiro-bang{position:absolute;left:50%;top:2%;opacity:0;pointer-events:none;font:900 clamp(2rem,9vw,3.2rem) var(--serif);letter-spacing:.05em;color:#ffe9a8;text-shadow:3px 3px 0 #8f3b22,0 0 18px #ff9d2e,0 0 2px #000;white-space:nowrap}
+.fid-tambor.atirando .tiro-bang{animation:bang 1.5s ease-out .04s}
+@keyframes bang{0%{opacity:0;transform:translate(-50%,12px) rotate(-8deg) scale(.3)}16%{opacity:1;transform:translate(-50%,-8px) rotate(-8deg) scale(1.3)}70%{opacity:1;transform:translate(-50%,-18px) rotate(-8deg) scale(1)}100%{opacity:0;transform:translate(-50%,-38px) rotate(-8deg) scale(1.06)}}
+.tiro-fumaca i{position:absolute;left:50%;top:8%;width:24%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle,rgba(236,230,218,.9),rgba(170,160,150,0) 70%);filter:blur(2px)}
+.fid-tambor.atirando .tiro-fumaca i{animation:fumo 2.4s ease-out forwards}
+.tiro-fumaca i:nth-child(2){margin-left:-12%;animation-delay:.18s!important}.tiro-fumaca i:nth-child(3){margin-left:10%;animation-delay:.34s!important}
+@keyframes fumo{0%{opacity:0;transform:translate(-50%,0) scale(.3)}22%{opacity:.9}100%{opacity:0;transform:translate(-50%,-150%) scale(2.8)}}
+.tiro-bala{position:absolute;left:50%;top:14%;width:9px;height:28px;margin-left:-4px;border-radius:5px 5px 2px 2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,#8d6a22,#f2da98 45%,#8d6a22)}
+.fid-tambor.atirando .tiro-bala{animation:balaVoa .7s cubic-bezier(.3,.1,.8,.4) forwards}
+@keyframes balaVoa{0%{opacity:1;transform:translateY(0) scaleY(.6)}20%{opacity:1;transform:translateY(-30px) scaleY(1.4)}100%{opacity:0;transform:translateY(-260px) scaleY(2.2)}}
+.fid.sacudiu{animation:sacode .5s linear}
+@keyframes sacode{0%,100%{transform:none}20%{transform:translate(-4px,2px)}40%{transform:translate(5px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,0)}}
+.fid-badge.ganhou{animation:ganhou 1.2s ease-in-out 3}
+@keyframes ganhou{0%,100%{transform:scale(1);box-shadow:0 4px 8px rgba(0,0,0,.35)}50%{transform:scale(1.1);box-shadow:0 0 0 6px rgba(242,218,152,.55),0 8px 18px rgba(0,0,0,.45)}}
+.fid-replay{margin-top:6px;border:1px solid #3e2f17;background:rgba(255,255,255,.3);color:var(--tinta);padding:6px 12px;font:700 .82rem var(--sans);cursor:pointer;border-radius:2px}
+@media(prefers-reduced-motion:reduce){.fid-tambor .bala.nova,.fid-tambor .brilho{animation:none}.fid-tambor.atirando *,.fid-tambor.recuo svg,.fid.sacudiu,.fid-badge.ganhou{animation:none!important}}
+
+/* tema de promoção */
+.faixa-promo{position:relative;z-index:31;margin:0 -18px;padding:9px 16px;text-align:center;font:700 .98rem var(--sans);letter-spacing:.03em;color:var(--faixa-txt,#fff2d8);background:var(--faixa-bg,var(--ferr));border-bottom:2px solid rgba(0,0,0,.45);box-shadow:inset 0 -3px 0 rgba(255,255,255,.12)}
+.faixa-promo a{color:inherit;text-decoration:underline;margin-left:8px}
+.faixa-promo .em{margin:0 8px;font-size:1.15em}
+body[data-tema-n="2"] .tit h2::before,body[data-tema-n="3"] .tit h2::before{content:var(--tema-emoji,"") " ";font-size:.85em}
+body[data-tema-n="3"] .promo .selo-d{animation:balanca 3s ease-in-out infinite}
+@keyframes balanca{0%,100%{transform:rotate(9deg)}50%{transform:rotate(-4deg) scale(1.06)}}
+.tema-selo{position:fixed;left:14px;bottom:14px;z-index:120;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:1.9rem;background:radial-gradient(circle at 35% 30%,var(--ferr2),var(--ferr3));border:3px solid #e2c27a;box-shadow:0 6px 14px rgba(0,0,0,.55);animation:flutua 3.4s ease-in-out infinite;text-decoration:none}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.fx{position:fixed;inset:0;z-index:25;pointer-events:none;overflow:hidden}
+.fx i{position:absolute;top:-6%;font-style:normal;line-height:1;opacity:.85;animation:cai linear infinite;will-change:transform}
+.fx.fx-neve i{color:#fff;text-shadow:0 0 4px rgba(180,210,255,.7)}
+.fx.fx-confete i{width:9px;height:14px;border-radius:1px}
+.fx.fx-coracoes i{color:#e0446a;top:auto;bottom:-6%;animation-name:sobe}
+.fx.fx-brasas i{color:#ff9a3c;top:auto;bottom:-6%;text-shadow:0 0 8px #ff6a00;animation-name:sobe}
+.fx.fx-bolhas i{top:auto;bottom:-8%;border-radius:50%;border:2px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);animation-name:sobe}
+.fx.fx-estrelas i{top:auto;color:#ffe9a8;text-shadow:0 0 8px #ffd36a;animation-name:pisca}
+@keyframes cai{0%{transform:translate3d(0,-6vh,0) rotate(0)}100%{transform:translate3d(var(--dx,30px),108vh,0) rotate(540deg)}}
+@keyframes sobe{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}10%{opacity:.9}100%{transform:translate3d(var(--dx,30px),-108vh,0) scale(1.1);opacity:0}}
+@keyframes pisca{0%,100%{opacity:.1;transform:scale(.5)}50%{opacity:1;transform:scale(1.3)}}
+@media(prefers-reduced-motion:reduce){.fx{display:none}.tema-selo{animation:none}}
+.previa-barra{position:fixed;left:0;right:0;top:0;z-index:700;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:10px 14px;background:#111;color:#ffe9a8;border-bottom:3px solid #c6381c;font-weight:700}
+.previa-barra .btn{width:auto;margin:0;padding:8px 18px}
+body.em-previa .topo{top:52px}
+/* miniatura do tema (painel) */
+.tm-mock{position:relative;overflow:hidden;border:2px solid #1c0f08;background:var(--m-fundo,#2a1a14);color:#ece0c4;font:600 .8rem var(--sans);max-width:520px;box-shadow:0 8px 18px rgba(0,0,0,.4)}
+.tm-mock .m-faixa{padding:5px 8px;text-align:center;background:var(--m-c1);color:#fff;font-weight:800;font-size:.74rem}
+.tm-mock .m-topo{display:flex;gap:8px;align-items:center;padding:8px 10px;background:rgba(0,0,0,.35)}
+.tm-mock .m-topo b{font:800 .85rem var(--serif);flex:1}.tm-mock .m-topo i{width:34px;height:7px;background:rgba(255,255,255,.28);border-radius:3px}
+.tm-mock .m-hero{padding:18px 12px 16px;background:linear-gradient(180deg,rgba(0,0,0,.25),transparent),var(--m-ceu,linear-gradient(180deg,#352f42,#bd7a4e));text-align:center}
+.tm-mock .m-hero h5{margin:0 0 8px;font:800 1.05rem/1.15 var(--serif);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.tm-mock .m-bt{display:inline-block;padding:7px 16px;background:var(--m-c1);color:#fff;border:1px solid rgba(0,0,0,.5);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.7rem}
+.tm-mock .m-srv{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border-top:1px dashed rgba(255,255,255,.25)}
+.tm-mock .m-srv em{font-style:normal;background:var(--m-c2);color:#111;padding:1px 7px;font-weight:800;border-radius:2px}
+.tm-mock .m-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tm-mock .m-fx i{position:absolute;top:-8%;font-style:normal;animation:cai linear infinite;line-height:1}
+.tm-mock .m-fx.fx-coracoes i,.tm-mock .m-fx.fx-brasas i,.tm-mock .m-fx.fx-bolhas i{top:auto;bottom:-8%;animation-name:sobe}
+.tm-mock .m-fx.fx-estrelas i{top:auto;animation-name:pisca}
+.tm-mock .m-fx.fx-confete i{width:6px;height:9px}
+.tm-presets{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin:8px 0}
+.tm-presets button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border:2px solid var(--tinta2);background:rgba(255,255,255,.3);cursor:pointer;font:700 .8rem var(--sans);color:var(--tinta)}
+.tm-presets button[aria-pressed=true]{border-color:var(--ferr);box-shadow:0 0 0 3px rgba(180,73,31,.35)}
+.tm-presets .sw{display:flex;width:100%;height:14px;border:1px solid #1c0f08}.tm-presets .sw i{flex:1}
+.tm-sub{border:2px solid var(--ferr);background:rgba(143,59,34,.06);padding:12px 14px;margin:10px 0}
+.tm-sub>summary{cursor:pointer;font-weight:800}
+
+/* mapa estilo Red Dead */
+#mapa-leaf .leaflet-tile-pane{filter:sepia(.92) saturate(.72) hue-rotate(-14deg) contrast(1.22) brightness(.9)}
+.radar::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 90px 24px rgba(54,30,10,.72),inset 0 0 0 3px rgba(40,22,8,.9);background:radial-gradient(120% 100% at 50% 40%,transparent 55%,rgba(60,30,10,.28));mix-blend-mode:multiply}
+.radar.cheia::after{z-index:2}
+.mapa-moldura{position:absolute;inset:7px;z-index:3;pointer-events:none;border:2px dashed rgba(60,36,14,.75);outline:3px double rgba(60,36,14,.5);outline-offset:4px}
+.mapa-bussola{position:absolute;right:12px;top:12px;z-index:900;width:88px;height:88px;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+.mapa-cartela{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:900;pointer-events:none;padding:5px 22px;white-space:nowrap;font:800 .86rem var(--serif);letter-spacing:.14em;text-transform:uppercase;color:#2b1a0e;background:var(--papel),linear-gradient(180deg,#ecdcae,#cdb47a);border:2px solid #3a2412;box-shadow:0 4px 8px rgba(0,0,0,.5),inset 0 0 0 3px rgba(120,80,30,.25)}
+.mapa-cartela::before,.mapa-cartela::after{content:"★";margin:0 8px;color:#8f3b22}
+@media(max-width:700px){.mapa-bussola{width:62px;height:62px;top:58px;right:8px}.mapa-cartela{font-size:.66rem;padding:4px 12px;max-width:calc(100% - 100px)}.mapa-cartela::before,.mapa-cartela::after{margin:0 4px}}
+.mapa-dica{top:auto!important;bottom:34px;left:12px;z-index:900}
+.pin-oeste svg{width:54px;height:66px}
+.pin-oeste{position:relative}
+.pin-rotulo{position:absolute;left:50%;top:60px;transform:translateX(-50%);white-space:nowrap;padding:1px 9px;font:800 .7rem var(--serif);letter-spacing:.1em;text-transform:uppercase;color:#2b1a0e;background:linear-gradient(180deg,#ecdcae,#cdb47a);border:1.5px solid #3a2412;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.deco-oeste{background:none;border:0}
+.deco-oeste span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ecdcae,#b79a5e);border:2px solid #3a2412;box-shadow:0 3px 6px rgba(0,0,0,.5);transition:transform .2s}
+.deco-oeste:hover span{transform:scale(1.18) rotate(-6deg)}
+.deco-oeste svg{width:22px;height:22px;stroke:#2b1a0e;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.radar.sem-deco .deco-oeste{display:none}
+.mapa-leg{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:10px 0 0;padding:0;list-style:none;font-size:.86rem;color:var(--suave)}
+.mapa-leg li{display:flex;gap:6px;align-items:center}
+.mapa-leg svg{width:16px;height:16px;stroke:var(--sol);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mapa-leg label{display:flex;gap:6px;align-items:center;cursor:pointer;color:var(--osso);font-weight:700}
+.mapa-leg input{accent-color:var(--ferr);width:auto;margin:0}
+
+/* painel: clientes, avaliações, bloqueios, perfil da equipe */
+.ad-modal{position:fixed;inset:0;z-index:650;background:rgba(10,6,3,.78);display:flex;align-items:flex-start;justify-content:center;padding:4vh 12px;overflow:auto}
+.ad-modal[hidden]{display:none}
+.ad-modal>div{width:min(720px,100%);color:var(--tinta);background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);border:1px solid #8a6a3a;box-shadow:0 20px 50px rgba(0,0,0,.7);padding:22px}
+.cli-chip{display:inline-block;padding:3px 10px;font:700 .76rem var(--sans);letter-spacing:.04em;border:1px solid #6d5a3a;background:rgba(255,255,255,.4);color:var(--tinta);border-radius:2px;margin:0 6px 4px 0}
+.cli-chip.bom{background:#d5e6bf;border-color:#6f9a4b;color:#24400f}.cli-chip.conhecido{background:#e8e0c4}.cli-chip.novo{background:#dde8f3;border-color:#6a8fb5;color:#173a5c}
+.cli-chip.atencao{background:#f3dfa4;border-color:#b08d4f;color:#5a3d0a}.cli-chip.risco{background:#f3cdbd;border-color:#b5533a;color:#5c1a0c}.cli-chip.bloqueado{background:#2b1a0e;border-color:#000;color:#ffd7c9}
+.cli-grade{display:grid;gap:10px}
+.cli-card{border:1.5px solid var(--tinta2);border-left:6px solid var(--latao);background:rgba(255,255,255,.3);padding:0}
+.cli-card.gratis{border-left-color:#4a8a30}.cli-card.bloq{border-left-color:#2b1a0e;opacity:.85}
+.cli-card>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(150px,1.3fr) minmax(130px,1fr) auto;gap:6px 14px;align-items:center;padding:11px 14px}
+.cli-card>summary::-webkit-details-marker{display:none}
+.cli-card .nm b{display:block}.cli-card small{color:var(--tinta2);font-weight:600}
+.cli-card .mun{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+.cli-card .mun i{width:11px;height:11px;border-radius:50%;background:#111;border:1px solid #555}.cli-card .mun i.on{background:radial-gradient(circle at 35% 30%,#f2da98,#9a6f1e);border-color:#6b4a14}
+.cli-card .corpo{padding:4px 14px 14px;border-top:1px dashed rgba(106,77,44,.5)}
+@media(max-width:760px){.cli-card>summary{grid-template-columns:1fr}}
+.estrelas-in{display:flex;gap:4px;margin:4px 0 8px}
+.estrelas-in button{border:0;background:none;font-size:1.8rem;line-height:1;color:#b9a77f;cursor:pointer;padding:0 2px}
+.estrelas-in button.on{color:#d49a1a}
+.tags-in{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.tags-in button{padding:5px 11px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.3);font:700 .8rem var(--sans);cursor:pointer;color:var(--tinta)}
+.tags-in button[aria-pressed=true]{background:var(--ferr);color:#fff2d8;border-color:var(--ferr4)}
+.aval-hist{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:.92rem}
+.aval-hist li{padding:7px 10px;border:1px solid rgba(106,77,44,.4);background:rgba(255,255,255,.25)}
+.bloq-box{border:2px solid #8a2412;background:rgba(138,36,18,.07);padding:12px 14px;margin-top:12px}
+.bloq-box h5{margin:0 0 6px;font:800 1rem var(--sans);color:#8a2412}
+.ad-linha.pendente{border-left-color:#c6381c;background:rgba(198,56,28,.08)}
+.ad-linha .cli-chips{grid-column:2/-1}
+.pend-banner{border:2px solid #c6381c;background:rgba(198,56,28,.1);padding:10px 14px;margin:0 0 14px;font-weight:700}
+.eq-card>summary{list-style:none;cursor:pointer;display:flex;gap:12px;align-items:center;padding:12px 14px}
+.eq-card>summary::-webkit-details-marker{display:none}
+.eq-card{border:1.5px solid var(--tinta2);background:rgba(255,255,255,.3);margin-bottom:10px}
+.eq-card.off{opacity:.6}.eq-card .corpo{padding:6px 16px 16px;border-top:1px dashed rgba(106,77,44,.5)}
+.eq-foto{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid #2a1c0d;background:radial-gradient(circle at 35% 30%,#d8b878,#7d5f2e);display:grid;place-items:center;font:400 1.4rem var(--serif);color:#24170a;flex:0 0 54px}
+.eq-foto.grande{width:96px;height:96px;flex-basis:96px}
+.hor-grade{display:grid;gap:6px}
+.hor-dia{display:grid;grid-template-columns:78px 1fr;gap:6px 10px;align-items:center;padding:6px 8px;border:1px solid rgba(106,77,44,.4);background:rgba(255,255,255,.22)}
+.hor-dia .horas{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.hor-dia input[type=time]{width:auto;margin:0;padding:5px 7px}
+.hor-dia label{margin:0;font-size:.85rem;display:flex;gap:5px;align-items:center;font-weight:600;color:var(--tinta)}
+.hor-dia input[type=checkbox]{width:auto;margin:0;accent-color:var(--ferr)}
+.galeria-mini{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.galeria-mini figure{margin:0;width:92px;position:relative}
+.galeria-mini img{width:92px;height:115px;object-fit:cover;border:2px solid #1c0f08;display:block;background:#241a12}
+.galeria-mini button{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:1px solid #000;background:#8a2412;color:#fff;font-weight:800;cursor:pointer;line-height:1;padding:0}
+.dim-nota{display:block;margin:4px 0 8px;padding:6px 10px;border-left:4px solid var(--latao);background:rgba(176,141,79,.16);font-size:.88rem;font-weight:600;color:var(--tinta)}
+.dim-links{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.dim-links a{text-decoration:none;display:inline-block}
+.ad-sino-lin{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.radar.zoom-longe .deco-oeste{display:none}
+.sino[hidden],.sino b[hidden],.sino-painel[hidden],.fid-replay[hidden]{display:none!important}
+.pin-oeste .pin-in{position:relative;width:54px;height:66px}
+.pin-oeste .anel{position:absolute;left:50%;bottom:0;width:40px;height:14px;margin-left:-20px}
+@keyframes balaEntra{0%{opacity:0;transform:rotate(var(--a,0deg)) translateY(-60px) scale(1.9)}55%{opacity:1;transform:rotate(var(--a,0deg)) translateY(0) scale(1.12)}78%{transform:rotate(var(--a,0deg)) translateY(0) scale(.94)}100%{opacity:1;transform:rotate(var(--a,0deg)) translateY(0) scale(1)}}
+
 </style>
 </head>
 <body>
@@ -650,6 +861,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
     <div class="acoes">
       <a class="ic" id="lk-whats" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="#8fe0a8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.6A9 9 0 1 1 8 19.6z"/><path d="M9 8c.3 3 3 5.7 6 6l1.3-1.3-2-1-1 .8c-.9-.4-1.8-1.3-2.2-2.2l.8-1-1-2z"/></svg></a>
       <a class="ic" id="lk-insta" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#f4c56e" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#f4c56e"/></svg></a>
+      <button type="button" class="sino" id="sino" aria-label="Avisos" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17v-6a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg><b hidden>0</b></button>
       <button type="button" class="btn sec mini" id="ir-meus">Meus horários</button>
       <button type="button" class="btn sec mini" id="sair">Sair</button>
     </div>
@@ -683,6 +895,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
 
       <aside class="perg agenda" id="agenda" aria-label="Datas e horários livres">
         <div class="cab"><h3>Datas e horários livres</h3><p id="aviso-serv">Escolha um serviço na tabela para liberar a agenda.</p></div>
+        <div class="gal-srv" id="gal-srv" hidden></div>
         <div id="form-ag">
           <div class="bloco"><h4>Barbeiro</h4><div class="opcoes" id="barbeiros"></div></div>
           <div class="bloco" id="b-dia" hidden><h4>Dia</h4><div class="dias" id="dias"></div></div>
@@ -691,7 +904,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
           <button type="button" class="btn" id="btn-ag" disabled>Confirmar agendamento</button>
         </div>
         <div id="fim-ag" hidden>
-          <div class="msg ok" style="display:block">Agendado! <strong id="fim-txt"></strong></div>
+          <div class="msg ok" style="display:block"><span id="fim-tit">Agendado!</span> <strong id="fim-txt"></strong><span class="fim-conf" id="fim-conf"></span></div>
           <button type="button" class="btn" id="ver-meus">Ver meus horários</button>
           <button type="button" class="btn sec" id="novo-ag">Fazer outro agendamento</button>
         </div>
@@ -703,13 +916,14 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
   <section class="sec" id="fidelidade" hidden>
     <div class="tit"><h2>Cartão do Xerife</h2><p class="sub" id="fid-sub"></p></div>
     <div class="perg fid">
-      <div class="fid-tambor"><svg id="fid-svg" viewBox="-6 -6 252 252" role="img" aria-label="Tambor de revólver com os cortes já carregados"></svg></div>
+      <div class="fid-tambor" id="fid-tambor"><svg id="fid-svg" viewBox="-6 -6 252 252" role="img" aria-label="Tambor de revólver com os cortes já carregados"></svg><div class="tiro-clarao" aria-hidden="true"></div><div class="tiro-bala" aria-hidden="true"></div><div class="tiro-fumaca" aria-hidden="true"><i></i><i></i><i></i></div><div class="tiro-bang" aria-hidden="true">BANG!</div></div>
       <div class="fid-info">
         <div class="fid-rank" id="fid-rank"></div>
-        <div class="fid-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L12 15.6 6.1 19.1l1.7-6.7L2.5 7.9l6.9-.5z"/></svg><b id="fid-cred">0</b><span id="fid-rotulo">cortes grátis esperando</span></div>
+        <div class="fid-badge" id="fid-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L12 15.6 6.1 19.1l1.7-6.7L2.5 7.9l6.9-.5z"/></svg><b id="fid-cred">0</b><span id="fid-rotulo">cortes grátis esperando</span></div>
         <p class="fid-txt" id="fid-txt"></p>
         <div class="fid-barra" aria-hidden="true"><i id="fid-barra" style="width:0"></i></div>
         <ul class="fid-regras" id="fid-regras"></ul>
+        <button type="button" class="fid-replay" id="fid-replay">Rever a animação da última bala</button>
       </div>
     </div>
   </section>
@@ -738,6 +952,9 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
           <iframe id="mapa" title="Mapa da localização da barbearia" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
           <div class="carregando" id="mapa-load">Carregando o mapa…</div>
           <div class="mapa-dica" id="mapa-dica">Arraste para mover, use + e − para o zoom e toque na marcação para ver a fachada.</div>
+          <div class="mapa-moldura" aria-hidden="true"></div>
+          <svg class="mapa-bussola" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="rgba(236,220,174,.9)" stroke="#3a2412" stroke-width="3"/><circle cx="50" cy="50" r="38" fill="none" stroke="#3a2412" stroke-width="1" stroke-dasharray="2 3"/><path d="M50 20L57 50L50 80L43 50Z" fill="#8f3b22" stroke="#2a0f08" stroke-width="1.5"/><path d="M20 50L50 43L80 50L50 57Z" fill="#d9a14b" stroke="#2a0f08" stroke-width="1.5"/><circle cx="50" cy="50" r="4.500" fill="#2a0f08"/><text x="50" y="16" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="800" font-size="13" fill="#2a0f08">N</text></svg>
+          <div class="mapa-cartela" id="mapa-cartela">Barbearia</div>
           <button type="button" class="btn sec mini mapa-fechar" id="mp-fechar">Fechar mapa</button>
         </div>
         <div class="mapa-bar" id="mapa-bar">
@@ -746,6 +963,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
           <button type="button" class="btn sec mini" id="mp-full">Tela cheia</button>
           <div class="mapa-dist" id="mp-dist" aria-live="polite"></div>
         </div>
+        <ul class="mapa-leg" id="mapa-leg"></ul>
       </div>
       <div class="mad info">
         <h3 data-nome>Barbearia</h3>
@@ -820,6 +1038,7 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
     <span class="selo" id="ad-papel">Dono</span>
     <span class="espaco-flex"></span>
     <div class="acoes">
+      <button type="button" class="sino" id="sino2" aria-label="Avisos" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17v-6a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg><b hidden>0</b></button>
       <button type="button" class="btn sec mini" id="ad-voltar">Voltar ao site</button>
       <button type="button" class="btn sec mini" id="ad-sair">Sair</button>
     </div>
@@ -842,6 +1061,17 @@ label.ad-chk{display:flex;align-items:center;gap:8px;font-weight:600;color:var(-
     <button type="button" class="btn sec" id="voltar">Voltar</button>
   </section>
 </div>
+
+<div class="fx" id="fx" aria-hidden="true"></div>
+<div class="sino-painel" id="sino-painel" role="dialog" aria-label="Avisos" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+  <button type="button" class="lb-btn lb-fechar" id="lb-x">Fechar ✕</button>
+  <button type="button" class="lb-btn e" id="lb-e" aria-label="Foto anterior">‹</button>
+  <figure class="lb-fig"><img id="lb-img" alt=""><figcaption class="lb-cap" id="lb-cap"></figcaption></figure>
+  <button type="button" class="lb-btn d" id="lb-d" aria-label="Próxima foto">›</button>
+</div>
+<div class="ad-modal" id="modal" role="dialog" aria-modal="true" hidden><div id="modal-corpo"></div></div>
 
 <script>
 // ===== CONFIGURE AQUI =====
@@ -927,6 +1157,7 @@ function aplicarSite() {
   const coord = isFinite(parseFloat(S.lat)) && isFinite(parseFloat(S.lon)) ? parseFloat(S.lat) + ',' + parseFloat(S.lon) : '';
   $('lk-rota').href = coord ? 'https://waze.com/ul?ll=' + coord + '&navigate=yes&zoom=17' : 'https://waze.com/ul?q=' + encodeURIComponent(S.endereco) + '&navigate=yes';
   $('lk-mapa').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(coord || S.endereco);
+  $('mapa-cartela').textContent = S.nome;
   aplicarTema(S);
 }
 async function atualizarPerfil() {
@@ -945,7 +1176,7 @@ function post(corpo) {
 }
 function aviso(id, tipo, texto) { const m = $(id); m.className = 'msg ' + tipo; m.textContent = texto; }
 function limpar(id) { const m = $(id); m.className = 'msg'; m.textContent = ''; }
-function sair() { sessao = null; fid = null; try { localStorage.removeItem('sessao'); } catch (e) {} pararCarrossel(); mostrar('login'); }
+function sair() { previaTema = null; const pb = $('previa-barra'); if (pb) pb.remove(); document.body.classList.remove('em-previa'); sessao = null; fid = null; try { localStorage.removeItem('sessao'); } catch (e) {} pararCarrossel(); mostrar('login'); }
 function checar(r, msgId) {
   if (r.expirada) { sair(); aviso('msg-login', 'erro', r.erro); return false; }
   if (!r.ok) { aviso(msgId, 'erro', r.erro || 'Algo deu errado.'); return false; }
@@ -958,6 +1189,7 @@ function mostrar(tela, recemEntrou) {
   $('t-admin').hidden = tela !== 'admin';
   document.querySelector('.login-fundo').hidden = tela !== 'login';      // o céu de fundo só existe na tela de login
   window.scrollTo(0, 0);
+  if (tela === 'login') pararAvisos(); else iniciarAvisos();
   if (tela === 'home') abrirHome(recemEntrou);
   if (tela === 'meus') carregarMeus();
   if (tela === 'admin') abrirAdmin();
@@ -1027,7 +1259,7 @@ async function abrirHome(recemEntrou) {
   setOla(); atualizarBotaoAdmin();
   if (!recemEntrou) atualizarPerfil();            // sessão antiga: confere o papel em segundo plano
   const tinha = !!(config && config.servicos);
-  const pintar = () => { aplicarSite(); renderComodidades(); renderLocal(); montarCarrossel(); renderMarcas(); renderPromos(); resetarAgenda(); feedbacksPreguicosos(); };
+  const pintar = () => { aplicarSite(); renderComodidades(); renderLocal(); montarCarrossel(); renderMarcas(); renderPromos(); resetarAgenda(); feedbacksPreguicosos(); aplicarPromoTema(); };
   if (tinha) pintar();                             // mostra na hora o que já estava guardado
   const ok = await carregarConfig();
   if (!ok) { aviso('msg-ag', 'erro', 'Não foi possível carregar. Verifique a conexão e recarregue a página.'); return; }
@@ -1070,6 +1302,7 @@ function escolherServico(nome, rolar) {
 
 function renderAg() {
   if (!config || !config.servicos) return;
+  renderGalSrv();
   const srv = $('servicos'); srv.textContent = '';
   config.servicos.forEach(s => {
     const b = document.createElement('button');
@@ -1089,14 +1322,14 @@ function renderAg() {
   });
 
   $('aviso-serv').textContent = ag.servico ? ag.servico + ': agora escolha o barbeiro, o dia e a hora.' : 'Escolha um serviço na tabela para liberar a agenda.';
-  preencher('barbeiros', config.barbeiros.map(o => chip([o.nome], ag.barbeiro === o.nome, () => { limpar('msg-ag'); ag.barbeiro = o.nome; ag.hora = null; buscarSlots(); }, !ag.servico)));
+  preencher('barbeiros', config.barbeiros.map(o => chip([o.nome], ag.barbeiro === o.nome, () => { limpar('msg-ag'); ag.barbeiro = o.nome; ag.hora = null; if (ag.data && folgaDe(o.nome, ag.data)) ag.data = null; buscarSlots(); }, !ag.servico)));
 
   $('b-dia').hidden = !(ag.servico && ag.barbeiro);
   const hoje = config.hoje || hojeLocal(), total = config.dias || 14, fechados = config.diasFechados || [];
   const dias = [];
   for (let i = 0; i < total; i++) {
     const iso = somarDias(hoje, i), w = diaSemana(iso);
-    dias.push(chip([DIAS_SEM[w], iso.slice(8) + '/' + iso.slice(5, 7)], ag.data === iso, () => { limpar('msg-ag'); ag.data = iso; ag.hora = null; buscarSlots(); }, fechados.indexOf(w) !== -1));
+    dias.push(chip([DIAS_SEM[w], iso.slice(8) + '/' + iso.slice(5, 7)], ag.data === iso, () => { limpar('msg-ag'); ag.data = iso; ag.hora = null; buscarSlots(); }, fechados.indexOf(w) !== -1 || (ag.barbeiro && folgaDe(ag.barbeiro, iso))));
   }
   preencher('dias', dias);
 
@@ -1132,6 +1365,9 @@ $('btn-ag').onclick = async () => {
     const r = await post({ action: 'agendar', token: sessao.token, servico: ag.servico, barbeiro: ag.barbeiro, data: ag.data, hora: ag.hora });
     if (checar(r, 'msg-ag')) {
       $('fim-txt').textContent = `${br(ag.data)} às ${ag.hora} · ${ag.servico} com ${ag.barbeiro}`;
+      const pend = r.conf === 'pendente';
+      $('fim-tit').textContent = pend ? 'Pedido enviado!' : 'Agendado!';
+      $('fim-conf').textContent = pend ? 'Seu horário só vale depois que o barbeiro confirmar. Você recebe o aviso no sino do site (e por e-mail) assim que ele responder. Acompanhe em "Meus horários".' : 'Horário confirmado.';
       $('form-ag').hidden = true; $('fim-ag').hidden = false;
     } else { ag.hora = null; buscarSlots(); }
   } catch (e) { aviso('msg-ag', 'erro', 'Não foi possível agendar. Verifique a conexão.'); }
@@ -1270,12 +1506,12 @@ function renderLocal() {
 
 // ---- mapa interativo (Leaflet + OpenStreetMap), com a fachada na marcação ----
 let mapa = null, mapaIniciado = false, mapaObservado = false, mapaChave = '', geoId = null, eu = null, euCirculo = null, euLinha = null, destinoMapa = null;
-const PIN_SVG = '<svg viewBox="0 0 46 58" aria-hidden="true"><defs><linearGradient id="gpin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b24f2d"/><stop offset="1" stop-color="#6a2713"/></linearGradient></defs><path d="M23 56C23 56 4 36 4 21a19 19 0 0138 0c0 15-19 35-19 35z" fill="url(#gpin)" stroke="#2a0f08" stroke-width="2"/><circle cx="23" cy="21" r="12.5" fill="#e2d6b8" stroke="#2a0f08" stroke-width="1.5"/><path d="M23 11.5l2.6 6.2 6.7.5-5.1 4.4 1.6 6.5L23 25.5l-5.8 3.6 1.6-6.5-5.1-4.4 6.7-.5z" fill="#6a2713"/></svg>';
+// (o pin de xerife e os ícones do Oeste ficam mais abaixo, em PIN_SVG / DECOR)
 function destino() { const la = parseFloat(S.lat), lo = parseFloat(S.lon); return isFinite(la) && isFinite(lo) ? [la, lo] : null; }
 function usarGoogle() {
   const f = $('mapa'), d = destino();
   f.src = 'https://maps.google.com/maps?q=' + encodeURIComponent(d ? d[0] + ',' + d[1] : S.endereco) + '&hl=pt-BR&z=17&output=embed';
-  f.hidden = false; $('mapa-leaf').hidden = true; $('mapa-dica').hidden = true; $('mapa-bar').hidden = true; $('mapa-load').hidden = true;
+  f.hidden = false; $('mapa-leg').hidden = true; $('mapa-leaf').hidden = true; $('mapa-dica').hidden = true; $('mapa-bar').hidden = true; $('mapa-load').hidden = true;
 }
 async function buscarJSON(url, ms) {
   const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
@@ -1313,10 +1549,11 @@ function criarMapa(pos) {
   L.control.zoom({ position: 'bottomright', zoomInTitle: 'Aproximar', zoomOutTitle: 'Afastar' }).addTo(mapa);
   L.control.attribution({ position: 'bottomleft', prefix: false }).addTo(mapa);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(mapa);
-  const icone = L.divIcon({ className: 'pin-oeste', html: '<span class="anel"></span>' + PIN_SVG, iconSize: [46, 58], iconAnchor: [23, 56], popupAnchor: [0, -52] });
+  const icone = L.divIcon({ className: 'pin-oeste', html: pinHtml(), iconSize: [54, 66], iconAnchor: [27, 64], popupAnchor: [0, -60] });
   L.marker(pos, { icon: icone, title: S.nome, alt: S.nome, keyboard: true }).addTo(mapa)
     .bindPopup(conteudoPopup, { className: 'pop-oeste', maxWidth: 270, minWidth: 260, autoPanPaddingTopLeft: [20, 60], autoPanPaddingBottomRight: [20, 20] });
   destinoMapa = pos;
+  decorarMapa(pos);
   const apagarDica = () => $('mapa-dica').classList.add('some');
   mapa.on('movestart zoomstart popupopen', apagarDica);
   mapa.on('focus', () => mapa.scrollWheelZoom.enable());        // roda do mouse só dá zoom depois de clicar no mapa
@@ -1379,6 +1616,7 @@ function reiniciarMapa() {
   if (mapa) { mapa.remove(); mapa = null; }
   mapaIniciado = false; mapaObservado = false; mapaChave = '';
   $('mapa-leaf').textContent = ''; $('mapa-leaf').hidden = false; $('mapa').hidden = true; $('mapa').removeAttribute('src');
+  $('mapa-leg').hidden = false; $('mapa-leg').textContent = ''; $('radar').classList.remove('sem-deco', 'zoom-longe');
   $('mapa-load').hidden = false; $('mapa-bar').hidden = false; $('mapa-dica').hidden = false; $('mapa-dica').classList.remove('some'); $('mp-dist').textContent = '';
 }
 function observarMapa() {
@@ -1413,14 +1651,14 @@ const ICO_PAT = [
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 16c3 1.1 6 1.6 9.5 1.6s6.500-.5 9.500-1.600"/><path d="M6.500 15.200c.2-4.200 1.200-7.500 3-8.700 1.100 1.300 2.100 1.700 2.500 1.700s1.400-.4 2.500-1.700c1.800 1.200 2.800 4.500 3 8.700"/><path d="M2.500 16c-1-1.300-.7-2.600.8-3M21.500 16c1-1.300.7-2.600-.8-3"/></svg>',
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.500 8.500h12.500l1.800 1.700h4.700v3H17l-1 4.300h-3.700l.9-4.300H9L7.500 17.500H4.200L5.200 13.200 2.500 12.500z"/><circle cx="12" cy="10.700" r="1" /></svg>',
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.500l2.500 6 6.500.5-5 4.300 1.600 6.400L12 16.100 6.400 19.700 8 13.300 3 9l6.500-.5z"/></svg>'];
-function tamborSvg(meta, prog) {
+function tamborSvg(meta, prog, desde, pd) {
   const N = meta, R = 74, passo = 360 / N, rad = a => a * Math.PI / 180;
   let s = '<defs><radialGradient id="gAco" cx=".35" cy=".3" r=".95"><stop offset="0" stop-color="#a3a39f"/><stop offset=".55" stop-color="#52524f"/><stop offset="1" stop-color="#1c1c1b"/></radialGradient><radialGradient id="gLat" cx=".35" cy=".3" r=".95"><stop offset="0" stop-color="#f2da98"/><stop offset=".6" stop-color="#b98a30"/><stop offset="1" stop-color="#694a13"/></radialGradient></defs>';
   if (N > 12) {                                           // metas grandes: fileira de balas em vez do tambor
     const cols = Math.ceil(Math.sqrt(N * 1.4)), lin = Math.ceil(N / cols), cel = Math.min(220 / cols, 220 / lin), rr = cel * .36;
     for (let i = 0; i < N; i++) {
       const x = 120 - cols * cel / 2 + (i % cols) * cel + cel / 2, y = 120 - lin * cel / 2 + Math.floor(i / cols) * cel + cel / 2;
-      s += i < prog ? `<circle cx="${x}" cy="${y}" r="${rr}" fill="url(#gLat)" stroke="#3d2a08" stroke-width="1.4"/>` : `<circle cx="${x}" cy="${y}" r="${rr}" fill="#0a0a0a" stroke="#555" stroke-width="1.2"/>`;
+      s += i < prog ? `<circle${desde != null && i >= desde ? ` class="bala nova" style="--d:${(0.5 + (i - desde) * (pd || 1.25)).toFixed(2)}s;--a:0deg"` : ''} cx="${x}" cy="${y}" r="${rr}" fill="url(#gLat)" stroke="#3d2a08" stroke-width="1.4"/>` : `<circle cx="${x}" cy="${y}" r="${rr}" fill="#0a0a0a" stroke="#555" stroke-width="1.2"/>`;
     }
     return s;
   }
@@ -1433,7 +1671,12 @@ function tamborSvg(meta, prog) {
   for (let i = 0; i < N; i++) {
     const a = -90 + i * passo, x = (120 + R * Math.cos(rad(a))).toFixed(1), y = (120 + R * Math.sin(rad(a))).toFixed(1);
     s += `<circle cx="${x}" cy="${y}" r="${(r + 3).toFixed(1)}" fill="#262625" stroke="#0a0a0a" stroke-width="1.4"/>`;
-    if (i < prog) s += `<circle cx="${x}" cy="${y}" r="${(r * .88).toFixed(1)}" fill="url(#gLat)" stroke="#3d2a08" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="${(r * .45).toFixed(1)}" fill="none" stroke="#6b4a14" stroke-width="1.6"/><circle cx="${x}" cy="${y}" r="${(r * .16).toFixed(1)}" fill="#8d6a22"/>`;
+    if (i < prog) {
+      const nv = desde != null && i >= desde, dl = nv ? (0.5 + (i - desde) * (pd || 1.25)).toFixed(2) : 0;
+      s += (nv ? `<g class="bala nova" style="--d:${dl}s;--a:${(i * passo).toFixed(1)}deg">` : '') +
+        `<circle cx="${x}" cy="${y}" r="${(r * .88).toFixed(1)}" fill="url(#gLat)" stroke="#3d2a08" stroke-width="1.3"/><circle cx="${x}" cy="${y}" r="${(r * .45).toFixed(1)}" fill="none" stroke="#6b4a14" stroke-width="1.6"/><circle cx="${x}" cy="${y}" r="${(r * .16).toFixed(1)}" fill="#8d6a22"/>` +
+        (nv ? `</g><circle class="brilho" cx="${x}" cy="${y}" r="${(r * .9).toFixed(1)}" fill="#ffe9a8" style="--d:${dl}s"/>` : '');
+    }
     else s += `<circle cx="${x}" cy="${y}" r="${r.toFixed(1)}" fill="#050505"/><path d="M${(x - r * .7).toFixed(1)} ${y}A${(r * .7).toFixed(1)} ${(r * .7).toFixed(1)} 0 0 1 ${x} ${(y - r * .7).toFixed(1)}" fill="none" stroke="#5a5a57" stroke-width="1.2"/>`;
   }
   s += '</g><circle cx="120" cy="120" r="31" fill="url(#gAco)" stroke="#0e0e0d" stroke-width="2"/>' +
@@ -1455,8 +1698,8 @@ function renderFid() {
   if (!on) return;
   const meta = Number(fid.meta), prog = Number(fid.progresso) || 0, cr = Number(fid.creditos) || 0, tot = Number(fid.cortes) || 0, falta = Math.max(0, meta - prog);
   $('fid-sub').textContent = 'A cada ' + meta + ' cortes, 1 por conta da casa. Carregue o tambor, forasteiro.';
-  $('fid-svg').innerHTML = tamborSvg(meta, prog);
-  const roda = $('fid-roda'); if (roda) requestAnimationFrame(() => requestAnimationFrame(() => { roda.style.transform = 'rotate(' + (-prog * 360 / meta) + 'deg)'; }));
+  fidDesenhar(meta, prog, tot);
+  $('fid-replay').hidden = tot < 1;
   let pi = 0; PATENTES.forEach((p, i) => { if (tot >= p[0]) pi = i; });
   const pat = PATENTES[pi], prox = PATENTES[pi + 1], rk = $('fid-rank'); rk.textContent = '';
   rk.insertAdjacentHTML('beforeend', ICO_PAT[pat[2]]);
@@ -1476,17 +1719,24 @@ function renderFid() {
 function renderComodidades() {
   const el = $('pros'); el.textContent = '';
   config.barbeiros.forEach(b => {
-    const c = document.createElement('div'); c.className = 'pro perg';
-    const topo = document.createElement('div'); topo.className = 'topo-pro';
-    const av = document.createElement('div'); av.className = 'avatar'; av.textContent = (b.nome || '?').charAt(0).toUpperCase();
-    const nm = document.createElement('div'); const n = document.createElement('div'); n.className = 'nm'; n.textContent = b.nome;
-    const pf = document.createElement('div'); pf.className = 'papel'; pf.textContent = 'Barbeiro';
-    nm.append(n, pf); topo.append(av, nm); c.appendChild(topo);
-    if (b.cursos && b.cursos.length) {
-      const h = document.createElement('div'); h.className = 'rot'; h.textContent = 'Cursos e formações'; c.appendChild(h);
-      const ul = document.createElement('ul'); b.cursos.forEach(x => { const li = document.createElement('li'); li.textContent = x; ul.appendChild(li); }); c.appendChild(ul);
+    const c = h('div', { class: 'pro perg' }), inicial = () => h('div', { class: 'avatar', text: (b.nome || '?').charAt(0).toUpperCase() });
+    let avatar;
+    if (b.foto) { avatar = imgDrive(b.foto, 240, b.nome, im => im.replaceWith(inicial())); avatar.className = 'avatar foto'; avatar.loading = 'eager'; } else avatar = inicial();
+    const ig = arrobaDe(b.instagram);
+    c.append(h('div', { class: 'topo-pro' }, avatar, h('div', {},
+      h('div', { class: 'nm', text: b.nome }),
+      h('div', { class: 'papel', text: 'Barbeiro' + (b.anos > 0 ? ' · ' + b.anos + (b.anos === 1 ? ' ano' : ' anos') + ' de profissão' : '') }),
+      ig ? h('a', { class: 'insta', href: 'https://instagram.com/' + ig, target: '_blank', rel: 'noopener', text: '@' + ig }) : null)));
+    if (b.especialidades && b.especialidades.length) c.append(h('div', { class: 'espec' }, b.especialidades.map(x => h('span', { text: x }))));
+    if (b.bio) c.append(h('p', { class: 'bio', text: b.bio }));
+    if (b.cursos && b.cursos.length) { c.append(h('div', { class: 'rot', text: 'Cursos e formações' }), h('ul', {}, b.cursos.map(x => h('li', { text: x })))); }
+    const cs = (b.certs || []).filter(x => fotoSrc(x, 200));
+    if (cs.length) {
+      const lista = cs.map(y => ({ fileId: y.fileId, url: y.url, titulo: y.titulo || 'Certificado de ' + b.nome }));
+      c.append(h('div', { class: 'rot', text: 'Certificados' }), h('div', { class: 'certs' }, cs.map((x, i) =>
+        h('button', { type: 'button', 'aria-label': 'Ampliar certificado: ' + (x.titulo || b.nome), onclick: () => abrirLightbox(lista, i) }, miniFoto(x, 200, x.titulo, im => im.remove())))));
     }
-    if (b.obs) { const o = document.createElement('div'); o.className = 'obs'; o.textContent = b.obs; c.appendChild(o); }
+    if (b.obs) c.append(h('div', { class: 'obs', text: b.obs }));
     el.appendChild(c);
   });
 }
@@ -1544,22 +1794,387 @@ async function carregarMeus() {
   try {
     const r = await post({ action: 'meus', token: sessao.token });
     if (!checar(r, 'msg-meus')) { $('lista').textContent = ''; return; }
-    $('lista').textContent = '';
-    if (!r.lista.length) { $('lista').textContent = 'Você não tem agendamentos futuros.'; return; }
+    const L = $('lista'), rec = r.recusados || []; L.textContent = '';
+    if (!r.lista.length && !rec.length) { L.textContent = 'Você não tem agendamentos futuros.'; return; }
+    rec.forEach(a => {
+      const bt = h('button', { type: 'button', text: 'Entendi', onclick: async () => {
+        bt.disabled = true;
+        const x = await post({ action: 'cancelar', token: sessao.token, data: a.data, hora: a.hora, barbeiro: a.barbeiro, recusado: true });
+        if (checar(x, 'msg-meus')) carregarMeus(); else bt.disabled = false;
+      } });
+      L.append(h('div', { class: 'item recus' }, h('div', { class: 'item-t' },
+        h('div', { text: br(a.data) + ' às ' + a.hora + ' · ' + a.servico + ' com ' + a.barbeiro }), h('span', { class: 'st-ag rec', text: 'Não confirmado' }),
+        h('span', { class: 'fim-conf', text: 'Motivo: ' + (a.motivo || 'não informado') + '. Escolha outro horário ou fale com a barbearia.' })), bt));
+    });
     r.lista.forEach(a => {
-      const d = document.createElement('div'); d.className = 'item';
-      const t = document.createElement('div');
-      t.textContent = `${br(a.data)} às ${a.hora} · ${a.servico} com ${a.barbeiro}`;
-      const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Cancelar';
-      b.onclick = async () => {
-        if (!confirm('Cancelar este agendamento?')) return;
+      const pend = a.conf === 'pendente';
+      const b = h('button', { type: 'button', text: pend ? 'Cancelar pedido' : 'Cancelar', onclick: async () => {
+        if (!confirm(pend ? 'Cancelar este pedido de horário?' : 'Cancelar este agendamento?')) return;
         b.disabled = true;
         const x = await post({ action: 'cancelar', token: sessao.token, data: a.data, hora: a.hora, barbeiro: a.barbeiro });
         if (checar(x, 'msg-meus')) carregarMeus(); else b.disabled = false;
-      };
-      d.append(t, b); $('lista').appendChild(d);
+      } });
+      L.append(h('div', { class: 'item ' + (pend ? 'pend' : 'conf') }, h('div', { class: 'item-t' },
+        h('div', { text: br(a.data) + ' às ' + a.hora + ' · ' + a.servico + ' com ' + a.barbeiro }),
+        h('span', { class: 'st-ag ' + (pend ? 'pend' : 'ok'), text: pend ? 'Aguardando confirmação do barbeiro' : 'Confirmado' })), b));
     });
   } catch (e) { $('lista').textContent = ''; aviso('msg-meus', 'erro', 'Erro ao carregar seus agendamentos.'); }
+}
+
+
+// =====================================================================
+//  v12 · avisos (sino), confirmação do barbeiro, revólver animado,
+//  fotos dos cortes, perfil dos barbeiros e mapa de faroeste
+// =====================================================================
+function toast(t) {
+  const e = $('toast'); e.textContent = t; e.classList.add('on');
+  clearTimeout(e._t); e._t = setTimeout(() => e.classList.remove('on'), 7000);
+}
+const fotoSrc = (x, w) => (x && x.fileId ? fotoUrl(x.fileId, w) : urlSegura(x && x.url));
+function miniFoto(x, w, alt, falhou) {
+  if (x && x.fileId) return imgDrive(x.fileId, w, alt, falhou);
+  const im = h('img', { src: urlSegura(x && x.url), alt: alt || '', loading: 'lazy' });
+  im.onerror = () => { if (falhou) falhou(im); else im.remove(); };
+  return im;
+}
+
+// ---------- ampliar foto ----------
+let lb = { itens: [], i: 0 };
+function abrirLightbox(itens, i) {
+  lb = { itens: itens, i: i || 0 }; $('lightbox').hidden = false; document.body.style.overflow = 'hidden'; pintarLightbox();
+  $('lb-x').focus();
+}
+function pintarLightbox() {
+  const x = lb.itens[lb.i]; if (!x) return;
+  const im = $('lb-img'); im.src = fotoSrc(x, 1400); im.alt = x.titulo || '';
+  $('lb-cap').textContent = (x.titulo || '') + (lb.itens.length > 1 ? '  ·  ' + (lb.i + 1) + '/' + lb.itens.length : '');
+  $('lb-e').hidden = $('lb-d').hidden = lb.itens.length < 2;
+}
+function fecharLightbox() { $('lightbox').hidden = true; document.body.style.overflow = $('radar').classList.contains('cheia') ? 'hidden' : ''; $('lb-img').removeAttribute('src'); }
+function passoLightbox(n) { lb.i = (lb.i + n + lb.itens.length) % lb.itens.length; pintarLightbox(); }
+$('lb-x').onclick = fecharLightbox;
+$('lb-e').onclick = () => passoLightbox(-1);
+$('lb-d').onclick = () => passoLightbox(1);
+$('lightbox').addEventListener('click', e => { if (e.target === $('lightbox')) fecharLightbox(); });
+document.addEventListener('keydown', e => {
+  if ($('lightbox').hidden) return;
+  if (e.key === 'Escape') fecharLightbox(); else if (e.key === 'ArrowLeft' && lb.itens.length > 1) passoLightbox(-1); else if (e.key === 'ArrowRight' && lb.itens.length > 1) passoLightbox(1);
+});
+
+// ---------- avisos (sino) ----------
+const av = { n: 0, ult: '', lista: [], vistos: null, timer: null, busy: false };
+function pintarSino() {
+  document.querySelectorAll('.sino').forEach(b => {
+    b.hidden = !sessao; b.classList.toggle('tem', av.n > 0);
+    const n = b.querySelector('b'); n.hidden = !av.n; n.textContent = av.n > 99 ? '99+' : String(av.n);
+    b.setAttribute('aria-label', av.n ? av.n + (av.n === 1 ? ' aviso novo' : ' avisos novos') : 'Avisos');
+  });
+  document.title = (av.n ? '(' + av.n + ') ' : '') + S.nome + ' · Agendamento';
+}
+async function checarAvisos(lista) {
+  if (!sessao || av.busy) return; av.busy = true;
+  const meu = sessao.token;
+  try {
+    const r = await post({ action: 'notificacoes', token: sessao.token, ult: av.ult, lista: !!lista });
+    if (!sessao || sessao.token !== meu) return;
+    if (r.expirada) { sair(); return; }
+    if (!r.ok) return;
+    av.n = r.n; av.ult = r.ult;
+    if (r.lista) {
+      const conhecidos = av.vistos, novas = conhecidos ? r.lista.filter(x => !x.lida && !conhecidos.has(x.id)) : [];
+      av.lista = r.lista; av.vistos = new Set(r.lista.map(x => x.id));
+      if (novas.length) avisarNovas(novas);
+    }
+    pintarSino();
+    if (!$('sino-painel').hidden) desenharPainel();
+  } catch (e) {} finally { av.busy = false; }
+}
+function avisarNovas(novas) {
+  const x = novas[0];
+  toast(x.titulo + ': ' + x.texto + (novas.length > 1 ? '  (+' + (novas.length - 1) + ' avisos)' : ''));
+  try { if ('Notification' in window && Notification.permission === 'granted' && document.hidden) new Notification(x.titulo, { body: x.texto }); } catch (e) {}
+  const agora = novas.some(n => ['agendamento', 'cancelado', 'confirmado', 'recusado'].indexOf(n.tipo) !== -1);
+  if (agora && !$('t-admin').hidden && adAba === 'agenda' && $('modal').hidden && !document.querySelector('#ad-painel :focus')) abrirAba('agenda');
+  if (agora && !$('t-meus').hidden) carregarMeus();
+  if (novas.some(n => n.tipo === 'municao')) carregarFid();
+}
+function iniciarAvisos() {
+  if (!sessao) return; pintarSino();
+  if (av.timer) return;
+  av.timer = setInterval(() => { if (!document.hidden) checarAvisos(false); }, ehEquipe() ? 40000 : 90000);
+  checarAvisos(true);
+}
+function pararAvisos() {
+  clearInterval(av.timer); av.timer = null; av.n = 0; av.ult = ''; av.lista = []; av.vistos = null;
+  $('sino-painel').hidden = true; pintarSino();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && sessao && av.timer) checarAvisos(false); });
+function desenharPainel() {
+  const p = $('sino-painel'); p.textContent = '';
+  p.append(h('h3', { text: 'Avisos' }));
+  if (!av.lista.length) p.append(h('p', { class: 'aviso', text: 'Nenhum aviso por enquanto.' }));
+  av.lista.forEach(x => p.append(h('button', { type: 'button', class: 'av-item' + (x.lida ? '' : ' nova'), onclick: () => abrirAviso(x) },
+    h('b', { text: x.titulo }), h('span', { text: x.texto }), h('small', { text: x.quando }))));
+  const bts = h('div', { class: 'acoes-linha', style: 'display:flex;gap:8px;flex-wrap:wrap;margin-top:6px' });
+  if (av.n > 0) bts.append(h('button', { type: 'button', class: 'btn sec mini', text: 'Marcar todos como lidos', onclick: async () => {
+    av.lista.forEach(x => { x.lida = true; }); av.n = 0; pintarSino(); desenharPainel();
+    try { await post({ action: 'notificacoes_lidas', token: sessao.token, todas: true }); } catch (e) {}
+  } }));
+  if ('Notification' in window && Notification.permission === 'default') bts.append(h('button', { type: 'button', class: 'btn sec mini', text: 'Avisar também no aparelho', onclick: async () => {
+    try { await Notification.requestPermission(); } catch (e) {} desenharPainel();
+  } }));
+  bts.append(h('button', { type: 'button', class: 'btn sec mini', text: 'Fechar', onclick: () => { p.hidden = true; } }));
+  p.append(bts);
+}
+async function abrirAviso(x) {
+  if (!x.lida) { x.lida = true; av.n = Math.max(0, av.n - 1); pintarSino(); post({ action: 'notificacoes_lidas', token: sessao.token, ids: [x.id] }).catch(() => {}); }
+  $('sino-painel').hidden = true;
+  if (x.tipo === 'municao') { mostrar('home'); setTimeout(() => { const f = $('fidelidade'); if (!f.hidden) f.scrollIntoView({ behavior: 'smooth' }); }, 700); return; }
+  const doBarbeiro = x.tipo === 'agendamento' || x.tipo === 'bloqueio' || x.titulo === 'Cliente cancelou';
+  if (doBarbeiro && ehEquipe()) { adAba = x.tipo === 'bloqueio' ? 'dash' : 'agenda'; mostrar('admin'); }
+  else mostrar('meus');
+}
+document.querySelectorAll('.sino').forEach(b => {
+  b.onclick = e => {
+    e.stopPropagation(); const p = $('sino-painel');
+    if (!p.hidden) { p.hidden = true; return; }
+    desenharPainel(); p.hidden = false; checarAvisos(true);
+  };
+});
+document.addEventListener('click', e => { const p = $('sino-painel'); if (!p.hidden && !p.contains(e.target)) p.hidden = true; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('sino-painel').hidden = true; });
+
+// ---------- Cartão do Xerife: bala carregando e tiro ----------
+let fidAnim = null, fidObs = null;
+const fidChave = () => 'fid9:' + String((sessao && sessao.email) || '').toLowerCase();
+function fidLido() { try { const v = localStorage.getItem(fidChave()); return v == null ? null : Number(v); } catch (e) { return null; } }
+function fidGravar(n) { try { localStorage.setItem(fidChave(), String(n)); } catch (e) {} }
+const semMovimento = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches);
+function desenharTambor(meta, prog, desde, passoDelay) {
+  $('fid-svg').innerHTML = tamborSvg(meta, prog, desde, passoDelay);
+  const roda = $('fid-roda'); return roda;
+}
+function girarRoda(meta, prog, rapido) {
+  const roda = $('fid-roda'); if (!roda) return;
+  roda.style.transition = rapido ? 'transform .55s cubic-bezier(.3,.8,.3,1)' : '';
+  roda.style.transform = 'rotate(' + (-prog * 360 / meta) + 'deg)';
+}
+function fidEstatico() {
+  const meta = Number(fid.meta), prog = Number(fid.progresso) || 0;
+  $('fid-svg').innerHTML = tamborSvg(meta, prog);
+  const roda = $('fid-roda'); if (roda) requestAnimationFrame(() => requestAnimationFrame(() => { roda.style.transform = 'rotate(' + (-prog * 360 / meta) + 'deg)'; }));
+}
+// ant = total de cortes que o cliente já tinha visto; tot = total agora
+function tocarFid(ant, tot) {
+  const meta = Number(fid.meta), tam = $('fid-tambor'), card = tam.closest('.fid');
+  const cruzou = Math.floor(tot / meta) > Math.floor(ant / meta), p0 = ant % meta, p1 = cruzou ? meta : tot % meta;
+  const n = Math.min(p1 - p0, meta);
+  if (n <= 0 && !cruzou) { fidEstatico(); return; }
+  fidAnim = (fidAnim || {}); [fidAnim.t1, fidAnim.t2, fidAnim.t3, fidAnim.t4].forEach(clearTimeout); fidAnim.rodando = true;
+  tam.classList.remove('recuo', 'atirando'); card.classList.remove('sacudiu'); $('fid-badge').classList.remove('ganhou');
+  // começa no estado antigo (tambor com p0 balas), depois cada bala nova cai na câmara que está no topo
+  const roda = desenharTambor(meta, p1, p0, 1.25);
+  if (roda) { roda.style.transition = 'none'; roda.style.transform = 'rotate(' + (-p0 * 360 / meta) + 'deg)'; }
+  let k = 0;
+  const passoTempo = () => {
+    if (k >= n) return;
+    const alvo = p0 + k;
+    requestAnimationFrame(() => girarRoda(meta, alvo, true));
+    k++; fidAnim.t1 = setTimeout(passoTempo, 1250);
+  };
+  requestAnimationFrame(() => requestAnimationFrame(passoTempo));
+  const fimCarga = 500 + n * 1250 + 350;
+  fidAnim.t2 = setTimeout(() => {
+    girarRoda(meta, p1, true);
+    if (!cruzou) { fidGravar(tot); fidAnim.rodando = false; return; }
+    fidAnim.t3 = setTimeout(() => {               // tambor cheio: BANG
+      tam.classList.add('recuo', 'atirando'); card.classList.add('sacudiu'); $('fid-badge').classList.add('ganhou');
+      fidAnim.t4 = setTimeout(() => {
+        tam.classList.remove('recuo', 'atirando'); card.classList.remove('sacudiu');
+        const prog = tot % meta; $('fid-svg').innerHTML = tamborSvg(meta, prog);
+        const r2 = $('fid-roda'); if (r2) { r2.style.transition = 'none'; r2.style.transform = 'rotate(0deg)'; requestAnimationFrame(() => requestAnimationFrame(() => { r2.style.transition = ''; r2.style.transform = 'rotate(' + (-prog * 360 / meta) + 'deg)'; })); }
+        fidGravar(tot); fidAnim.rodando = false;
+      }, 1700);
+    }, 450);
+  }, fimCarga);
+}
+function agendarAnimacaoFid(ant, tot) {
+  if (fidObs) { fidObs.disconnect(); fidObs = null; }
+  const sec = $('fidelidade'), rodar = () => { if (fid && Number(fid.cortes) === tot) tocarFid(ant, tot); };
+  if (!('IntersectionObserver' in window)) { rodar(); return; }
+  fidObs = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { fidObs.disconnect(); fidObs = null; setTimeout(rodar, 350); } }, { threshold: .55 });
+  fidObs.observe($('fid-tambor'));
+}
+$('fid-replay').onclick = () => {
+  if (!fid || !fid.ativo) return;
+  const tot = Number(fid.cortes) || 0; if (tot < 1) { toast('Assim que o seu primeiro corte for registrado, a bala é carregada aqui.'); return; }
+  tocarFid(tot - 1, tot);
+};
+
+// ---------- fotos dos cortes na hora de marcar ----------
+function fotosDoServico(nome) {
+  const g = ((config && config.galeria) || {})[nome] || [];
+  const lista = g.filter(x => fotoSrc(x, 300)).map(x => ({ fileId: x.fileId, url: x.url, titulo: x.titulo || nome }));
+  if (lista.length) return lista;
+  return itensDoCarrossel().filter(c => c.servico === nome && (c.id || c.img)).map(c => ({ fileId: c.id, url: c.img, titulo: c.titulo }));
+}
+function renderGalSrv() {
+  const box = $('gal-srv'), nome = ag.servico, fotos = nome ? fotosDoServico(nome) : [], chave = nome + '|' + fotos.map(f => f.fileId || f.url).join(',');
+  if (box.dataset.k === chave) return;
+  box.dataset.k = chave; box.textContent = '';
+  box.hidden = !fotos.length; if (!fotos.length) return;
+  box.append(h('h4', {}, 'Cortes feitos aqui: ' + nome + ' ', h('small', { text: '(toque para ampliar)' })));
+  const tr = h('div', { class: 'gal-trilho', role: 'list' });
+  fotos.forEach((f, i) => {
+    const b = h('button', { type: 'button', class: 'gal-th', role: 'listitem', 'aria-label': 'Ampliar foto: ' + f.titulo, onclick: () => abrirLightbox(fotos, i) });
+    b.append(miniFoto(f, 320, f.titulo, im => { b.remove(); }));
+    tr.append(b);
+  });
+  box.append(tr);
+}
+
+// ---------- perfil dos barbeiros ----------
+function arrobaDe(v) {
+  const s = String(v || '').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/[\/?#].*$/, '');
+  return /^[\w.]{1,30}$/.test(s) ? s : '';
+}
+function folgaDe(nome, iso) {
+  const b = ((config && config.barbeiros) || []).filter(x => x.nome === nome)[0];
+  return !!(b && (b.folgas || []).indexOf(diaSemana(iso)) !== -1);
+}
+
+// ---------- tema de promoção: ver novo_tema.js (inserido abaixo) ----------
+
+// decide se o tambor aparece parado ou se uma bala nova vai ser carregada quando ele entrar na tela
+function fidDesenhar(meta, prog, tot) {
+  if (fidAnim && fidAnim.rodando) return;
+  const ant = fidLido();
+  if (ant == null || tot < ant || tot === ant) { if (ant == null || tot < ant) fidGravar(tot); fidEstatico(); return; }
+  if (semMovimento()) { fidGravar(tot); fidEstatico(); return; }
+  const p0 = ant % meta;
+  $('fid-svg').innerHTML = tamborSvg(meta, p0);
+  const roda = $('fid-roda'); if (roda) { roda.style.transition = 'none'; roda.style.transform = 'rotate(' + (-p0 * 360 / meta) + 'deg)'; }
+  agendarAnimacaoFid(ant, tot);
+}
+
+// ---------- mapa de faroeste: pin de xerife e ícones do Oeste ----------
+const PIN_SVG = (() => {
+  let p = '', b = '';
+  for (let k = 0; k < 12; k++) {
+    const a = (-90 + k * 30) * Math.PI / 180, r = k % 2 ? 7.4 : 15.5, x = (27 + r * Math.cos(a)).toFixed(1), y = (25 + r * Math.sin(a)).toFixed(1);
+    p += (k ? 'L' : 'M') + x + ' ' + y;
+    if (!(k % 2)) b += '<circle cx="' + x + '" cy="' + y + '" r="2.5" fill="#f2da98" stroke="#3d2a08" stroke-width="1"/>';
+  }
+  return '<svg viewBox="0 0 54 66" aria-hidden="true"><defs><linearGradient id="gpin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b24f2d"/><stop offset="1" stop-color="#6a2713"/></linearGradient>' +
+    '<radialGradient id="gpinOuro" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#fbeab0"/><stop offset=".6" stop-color="#d9a14b"/><stop offset="1" stop-color="#8a6320"/></radialGradient></defs>' +
+    '<path d="M27 64C27 64 5 42 5 25a22 22 0 0144 0c0 17-22 39-22 39z" fill="url(#gpin)" stroke="#2a0f08" stroke-width="2"/>' +
+    '<path d="' + p + 'Z" fill="url(#gpinOuro)" stroke="#3d2a08" stroke-width="1.4" stroke-linejoin="round"/>' + b +
+    '<circle cx="27" cy="25" r="3.4" fill="#6a2713" stroke="#3d2a08" stroke-width="1"/></svg>';
+})();
+function pinHtml() {
+  const c = h('div', { class: 'pin-in' }, h('span', { class: 'anel' }));
+  c.insertAdjacentHTML('beforeend', PIN_SVG);
+  c.append(h('span', { class: 'pin-rotulo', text: S.nome }));
+  return c;
+}
+const IC_OESTE = {
+  saloon: '<path d="M3 21V10l9-6 9 6v11M9 21v-6h6v6M3 10h18M7 13h.01M17 13h.01"/>',
+  ferradura: '<path d="M7.500 20.500C4.500 17 4 11 7 7.500 10 4.500 14 4.500 17 7.500 20 11 19.500 17 16.500 20.500"/><path d="M7.500 20.500H5M16.500 20.500H19M6.500 13h.01M7.500 9.500h.01M16.500 9.500h.01M17.500 13h.01"/>',
+  cacto: '<path d="M10 21V6a2 2 0 014 0v15M10 15H7.500A1.500 1.500 0 016 13.500V10M14 13h2.500a1.500 1.500 0 001.500-1.500V8M6 21h12"/>',
+  boi: '<path d="M2.500 5c1.500 3 3 4 5 4.500M21.500 5c-1.500 3-3 4-5 4.500M7.500 9.500h9l1 3.500-2 2.500-1 4.500h-5l-1-4.500-2-2.500zM10 13h.01M14 13h.01"/>',
+  roda: '<circle cx="12" cy="12" r="8.500"/><circle cx="12" cy="12" r="2"/><path d="M12 3.500v17M3.500 12h17M6 6l12 12M18 6L6 18"/>',
+  barril: '<path d="M5 8c0-1.500 3-2.500 7-2.500s7 1 7 2.500v9c0 1.500-3 2.500-7 2.500s-7-1-7-2.500z"/><path d="M5 8c0 1.500 3 2.500 7 2.500s7-1 7-2.500M5 13c0 1.500 3 2.500 7 2.500s7-1 7-2.500"/>',
+  chapeu: '<path d="M2.500 16c3 1.100 6 1.600 9.500 1.600s6.500-.5 9.500-1.600"/><path d="M6.500 15.200c.2-4.200 1.200-7.500 3-8.700 1.100 1.300 2.100 1.700 2.500 1.700s1.400-.4 2.500-1.700c1.800 1.200 2.800 4.500 3 8.700"/><path d="M2.500 16c-1-1.300-.7-2.600.8-3M21.500 16c1-1.300.7-2.600-.8-3"/>',
+  xerife: '<path d="M12 2.500l2.500 6 6.500.5-5 4.300 1.600 6.400L12 16.100 6.400 19.700 8 13.300 3 9l6.500-.5z"/>'
+};
+const DECOR = [   // nome, ícone, metros ao norte, metros a leste (só enfeite: não são lugares reais)
+  ['Saloon', 'saloon', 75, -125], ['Ferraria', 'ferradura', -70, 120], ['Deserto de cactos', 'cacto', 125, 80], ['Caveira de boi', 'boi', -120, -95],
+  ['Roda de carroça', 'roda', 30, 190], ['Barril de uísque', 'barril', -165, 15], ['Loja de chapéus', 'chapeu', -25, -185], ['Posto do xerife', 'xerife', 160, -40]
+];
+const svgOeste = k => '<svg viewBox="0 0 24 24" aria-hidden="true">' + IC_OESTE[k] + '</svg>';
+function decorarMapa(pos) {
+  const radar = $('radar'), leg = $('mapa-leg'), mLat = 1 / 111320, mLon = 1 / (111320 * Math.cos(pos[0] * Math.PI / 180));
+  leg.textContent = ''; radar.classList.remove('sem-deco');
+  leg.append(h('li', {}, h('label', {}, h('input', { type: 'checkbox', checked: true, onchange: e => radar.classList.toggle('sem-deco', !e.target.checked) }), 'Mostrar ícones do Oeste (só enfeite)')));
+  DECOR.forEach(d => {
+    const ic = h('span'); ic.innerHTML = svgOeste(d[1]);
+    L.marker([pos[0] + d[2] * mLat, pos[1] + d[3] * mLon], { icon: L.divIcon({ className: 'deco-oeste', html: ic, iconSize: [36, 36], iconAnchor: [18, 18] }), keyboard: false, title: d[0], alt: d[0] })
+      .addTo(mapa).bindTooltip(d[0], { direction: 'top', offset: [0, -16] });
+    const li = h('li'); li.innerHTML = svgOeste(d[1]); li.append(d[0]); leg.append(li);
+  });
+  const longe = () => radar.classList.toggle('zoom-longe', mapa.getZoom() < 16);
+  mapa.on('zoomend', longe); longe();
+}
+
+// ---- tema de promoção: muda o visual do site enquanto a promoção vale (o dono vê a prévia antes de publicar) ----
+const TEMAS = {
+  natal:       { nome: 'Natal', emoji: '🎄', cor1: '#a11d1d', cor2: '#2f7d46', fundo: '#2b1812', ceu: 'noite', efeito: 'neve', faixa: 'Feliz Natal! Ofertas de fim de ano' },
+  blackfriday: { nome: 'Black Friday', emoji: '🏷️', cor1: '#d9a400', cor2: '#f4e3a1', fundo: '#14110d', ceu: 'noite', efeito: 'estrelas', faixa: 'BLACK FRIDAY: preços que só aparecem uma vez ao ano' },
+  criancas:    { nome: 'Dia das Crianças', emoji: '🎈', cor1: '#1e78d2', cor2: '#f6c12b', fundo: '#3a2b1c', ceu: 'dia', efeito: 'bolhas', faixa: 'Dia das Crianças: corte infantil com desconto' },
+  pais:        { nome: 'Dia dos Pais', emoji: '👔', cor1: '#1d4e89', cor2: '#c9a227', fundo: '#2a2018', ceu: 'entardecer', efeito: 'nenhum', faixa: 'Dia dos Pais: presenteie com um corte e barba de respeito' },
+  namorados:   { nome: 'Namorados', emoji: '💘', cor1: '#b5183f', cor2: '#f2a1b5', fundo: '#2c1520', ceu: 'madrugada', efeito: 'coracoes', faixa: 'Dia dos Namorados: vá arrumado para o encontro' },
+  carnaval:    { nome: 'Carnaval', emoji: '🎭', cor1: '#7b2fa2', cor2: '#f6c12b', fundo: '#26122e', ceu: 'noite', efeito: 'confete', faixa: 'Carnaval: capriche no visual' },
+  halloween:   { nome: 'Halloween', emoji: '🎃', cor1: '#e0620c', cor2: '#6b3fa0', fundo: '#171021', ceu: 'noite', efeito: 'brasas', faixa: 'Halloween: promoção de arrepiar' },
+  pagamento:   { nome: 'Dia do Pagamento', emoji: '💰', cor1: '#2f7d32', cor2: '#f3d36b', fundo: '#1f2a1a', ceu: 'dia', efeito: 'confete', faixa: 'Dia do pagamento: hora de se cuidar' },
+  anonovo:     { nome: 'Ano Novo', emoji: '🎆', cor1: '#c9a227', cor2: '#e8e8e8', fundo: '#0f1226', ceu: 'noite', efeito: 'estrelas', faixa: 'Chegue ao Ano Novo no estilo' },
+  junino:      { nome: 'Festa Junina', emoji: '🔥', cor1: '#c62828', cor2: '#f6c12b', fundo: '#2d1b10', ceu: 'entardecer', efeito: 'brasas', faixa: 'Arraiá da barbearia: promoção de São João' },
+  copa:        { nome: 'Copa do Mundo', emoji: '⚽', cor1: '#2e8b3a', cor2: '#f6d11b', fundo: '#13251a', ceu: 'dia', efeito: 'confete', faixa: 'Hoje tem jogo: chegue de cabelo novo' },
+  neon:        { nome: 'Neon', emoji: '⚡', cor1: '#0aa5c0', cor2: '#e83e8c', fundo: '#101822', ceu: 'noite', efeito: 'estrelas', faixa: 'Promoção relâmpago' },
+  custom:      { nome: 'Personalizado', emoji: '⭐', cor1: '#8f3b22', cor2: '#d9a14b', fundo: '#382a20', ceu: 'entardecer', efeito: 'nenhum', faixa: 'Promoção especial' }
+};
+const EFEITOS = [['', 'Padrão do tema'], ['neve', 'Neve ❄'], ['confete', 'Confete 🎉'], ['estrelas', 'Estrelas ✦'], ['brasas', 'Brasas 🔥'], ['coracoes', 'Corações ♥'], ['bolhas', 'Bolhas ○'], ['nenhum', 'Nenhum']];
+let previaTema = null;
+// mistura o que o dono escolheu com o padrão do tema ("" = usar o padrão)
+function temaFinal(t) {
+  const b = TEMAS[t.preset] || TEMAS.custom, ef = t.efeito || b.efeito;
+  return { preset: t.preset in TEMAS ? t.preset : 'custom', nivel: Math.min(3, Math.max(1, Number(t.nivel) || 2)), cor1: t.cor1 || b.cor1, cor2: t.cor2 || b.cor2, fundo: t.fundo || b.fundo, ceu: b.ceu,
+    emoji: t.emoji || b.emoji, efeito: ef === 'nenhum' ? '' : ef, faixa: t.faixa || b.faixa, heroTitulo: t.heroTitulo || '' };
+}
+function temaAtivo() {
+  if (previaTema) return previaTema;
+  const H = hojeServidor();
+  const p = ((config && config.promos) || []).filter(x => x.tema && x.tema.preset && (!x.de || x.de <= H) && (!x.ate || x.ate >= H))[0];
+  return p ? Object.assign({ _promo: p }, p.tema) : null;
+}
+const luzDe = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255); return .299 * c[0] + .587 * c[1] + .114 * c[2]; };
+// partículas do efeito (neve, confete, estrelas...). Usado no site e na miniatura do painel.
+function montarFx(el, efeito, n, c1, c2) {
+  el.textContent = '';
+  el.className = el.className.replace(/\bfx-\S+/g, '').replace(/\s+/g, ' ').trim();
+  if (!efeito || !n) return;
+  el.classList.add('fx-' + efeito);
+  const chars = { neve: '❄', coracoes: '♥', brasas: '•', estrelas: '✦' }, cores = [c1, c2, '#ffffff', '#f4c56e'], r = Math.random;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('i');
+    p.style.left = (r() * 100).toFixed(1) + '%';
+    p.style.animationDuration = (efeito === 'estrelas' ? 2 + r() * 3 : 7 + r() * 9).toFixed(1) + 's';
+    p.style.animationDelay = (-r() * 12).toFixed(1) + 's';
+    p.style.setProperty('--dx', ((r() - .5) * 120).toFixed(0) + 'px');
+    if (efeito === 'confete') p.style.background = cores[i % 4];
+    else if (efeito === 'bolhas') { const s = 10 + r() * 22; p.style.width = p.style.height = s.toFixed(0) + 'px'; }
+    else { p.textContent = chars[efeito]; p.style.fontSize = (10 + r() * 14).toFixed(0) + 'px'; }
+    if (efeito === 'estrelas') p.style.top = (r() * 90).toFixed(0) + '%';
+    el.appendChild(p);
+  }
+}
+function aplicarPromoTema() {
+  const fx = $('fx'), raiz = document.documentElement.style, body = document.body, home = $('t-home');
+  ['faixa-promo', 'tema-selo'].forEach(id => { const e = $(id); if (e) e.remove(); });
+  const t0 = temaAtivo();
+  if (!t0) {
+    body.removeAttribute('data-tema'); body.removeAttribute('data-tema-n');
+    ['--tema-emoji', '--faixa-bg', '--faixa-txt'].forEach(k => raiz.removeProperty(k)); montarFx(fx, '', 0); return;
+  }
+  const t = temaFinal(t0), promo = t0._promo || {};
+  body.setAttribute('data-tema', t.preset); body.setAttribute('data-tema-n', String(t.nivel));
+  aplicarTema(Object.assign({}, S, { corBotao: t.cor1, corMadeira: t.nivel >= 2 ? t.fundo : S.corMadeira, ceu: t.nivel >= 2 ? t.ceu : S.ceu }));
+  raiz.setProperty('--tema-emoji', '"' + t.emoji + '"'); raiz.setProperty('--faixa-bg', t.cor1); raiz.setProperty('--faixa-txt', luzDe(t.cor1) > .62 ? '#1b1208' : '#fff2d8');
+  const off = Number(promo.desconto) > 0 ? ' · ' + Math.round(promo.desconto) + '% OFF' : '';
+  const faixa = h('div', { id: 'faixa-promo', class: 'faixa-promo', role: 'note' }, h('span', { class: 'em', text: t.emoji }), t.faixa + off, h('a', { href: '#promos', text: 'Ver promoções' }), h('span', { class: 'em', text: t.emoji }));
+  home.insertBefore(faixa, home.firstChild);
+  if (t.nivel >= 2 && t.heroTitulo) { const h1 = document.querySelector('.hero h1'); if (h1) h1.textContent = t.heroTitulo; }
+  if (t.nivel >= 3) home.append(h('a', { id: 'tema-selo', class: 'tema-selo', href: '#promos', 'aria-label': 'Ver promoções', text: t.emoji }));
+  montarFx(fx, t.efeito, t.nivel >= 3 ? 34 : t.nivel === 2 ? 12 : 0, t.cor1, t.cor2);
 }
 
 
@@ -1620,18 +2235,20 @@ function imgDrive(id, w, alt, aoFalhar) {
   return im;
 }
 // reduz a foto no próprio navegador (rápido e leve) e devolve JPEG em base64
-function lerImagem(file, max) {
+function lerImagem(file, max, ratio) {
   return new Promise((res, rej) => {
     if (!file || !/^image\//.test(file.type)) return rej(new Error('Escolha um arquivo de imagem (JPG ou PNG).'));
     if (file.size > 25e6) return rej(new Error('Arquivo muito grande (máximo 25 MB).'));
     const url = URL.createObjectURL(file), im = new Image();
     im.onload = () => {
       URL.revokeObjectURL(url);
-      let esc = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+      let sx = 0, sy = 0, sw = im.naturalWidth, sh = im.naturalHeight;
+      if (ratio > 0) { if (sw / sh > ratio) { const nw = Math.round(sh * ratio); sx = Math.round((sw - nw) / 2); sw = nw; } else { const nh = Math.round(sw / ratio); sy = Math.round((sh - nh) / 2); sh = nh; } }
+      let esc = Math.min(1, max / Math.max(sw, sh));
       for (const q of [0.82, 0.7, 0.55]) {
         const c = document.createElement('canvas');
-        c.width = Math.max(1, Math.round(im.naturalWidth * esc)); c.height = Math.max(1, Math.round(im.naturalHeight * esc));
-        const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height);
+        c.width = Math.max(1, Math.round(sw * esc)); c.height = Math.max(1, Math.round(sh * esc));
+        const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
         const u = c.toDataURL('image/jpeg', q);
         if (u.length < 2.6e6) return res(u);
         esc *= 0.8;
@@ -1659,7 +2276,7 @@ function desenharAbas(abas) {
   abas.forEach(a => c.appendChild(h('button', { type: 'button', role: 'tab', 'aria-selected': String(adAba === a[0]), text: a[1], onclick: () => { adAba = a[0]; desenharAbas(abas); abrirAba(a[0]); } })));
 }
 function abrirAba(id) {
-  const my = ++adSeq; limpar('msg-ad'); aplicarSite();    // desfaz pré-visualizações não salvas
+  const my = ++adSeq; limpar('msg-ad'); aplicarSite(); aplicarPromoTema();    // desfaz pré-visualizações não salvas
   const box = $('ad-painel'); box.textContent = '';
   const f = { dash: abDash, agenda: abAgenda, vendas: abVendas, servicos: abServicos, vitrine: abVitrine, equipe: abEquipe, visual: abVisual }[id];
   if (f && (id === 'agenda' || id === 'dash' || ehDono())) f(box, () => my === adSeq);
@@ -1702,7 +2319,7 @@ async function abDash(box, vivo) {
     h('p', { class: 'ad-nota', text: dono ? 'Vendas, lucro e cortes de toda a equipe. Os números vêm das vendas concluídas na Agenda (e das vendas avulsas).' : 'Seus atendimentos, cortes e a sua comissão. Só você vê estes números.' }));
   const chips = h('div', { class: 'ad-chips' }), alvo = h('div', {});
   const desenharChips = () => { chips.textContent = ''; PER_D.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adD.per === p[0]), text: p[1], onclick: () => { adD.per = p[0]; desenharChips(); carregar(); } }))); };
-  desenharChips(); box.append(chips, alvo);
+  desenharChips(); const blocoCli = h('div', { class: 'ad-clientes' }); box.append(chips, alvo, blocoCli);
   async function carregar() {
     alvo.textContent = ''; alvo.append(h('p', { class: 'ad-nota', text: 'Carregando…' }));
     const r = await apost('admin_dashboard', { periodo: adD.per }, null, true);
@@ -1786,7 +2403,7 @@ async function abDash(box, vivo) {
     if (ins.length || alertas.length) alvo.append(h('h4', { text: 'Destaques e alertas' }),
       h('ul', { class: 'ad-insights' }, alertas.map(x => h('li', { class: 'alerta' }, x[0], h('b', { text: x[1] }), x[2])), ins.map(x => h('li', {}, x[0], h('b', { text: x[1] }), x[2]))));
   }
-  carregar();
+  carregar(); secClientes(blocoCli, vivo);
 }
 
 // ---- Agenda ----
@@ -1816,6 +2433,8 @@ function abAgenda(box, vivo) {
     const todos = r.lista.filter(a => !adAg.barb || a.barbeiro === adAg.barb);
     const itens = todos.filter(a => !a.status), feitos = todos.filter(a => a.status);
     if (!todos.length) { lista.append(h('div', { class: 'ad-vazio', text: 'Nenhum cliente marcado neste período.' })); return; }
+    const pendN = todos.filter(a => !a.status && a.conf === 'pendente').length;
+    if (pendN) lista.append(h('div', { class: 'pend-banner', role: 'status' }, '🔔 ' + pendN + (pendN === 1 ? ' cliente está esperando' : ' clientes estão esperando') + ' a sua confirmação. O horário só vale depois que você confirmar ou recusar.'));
     lista.append(h('p', { class: 'ad-nota' }, h('b', { text: itens.length + (itens.length === 1 ? ' cliente aguardando' : ' clientes aguardando') }), feitos.length ? ' · ' + feitos.length + ' já atendido(s) saíram da lista (veja no fim da página)' : ''));
     if (!itens.length) lista.append(h('div', { class: 'ad-vazio', text: 'Ninguém aguardando atendimento neste período.' }));
     if (feitos.length) feitosBox = h('details', { class: 'ad-det ad-feitos' }, h('summary', { text: 'Já atendidos neste período (' + feitos.length + ')' }), feitos.map(a => linhaFeita(a)));
@@ -1850,34 +2469,6 @@ function linhaFeita(a) {
     h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: a.status === 'concluido' ? 'Atendimento registrado' : 'Cliente faltou' })),
     h('div', { class: 'ad-acoes' }, h('span', { class: 'badge ' + a.status, text: a.status === 'concluido' ? 'Concluído' : 'Faltou' }),
       a.antecipado ? h('span', { class: 'badge antec', text: 'Antecipado' }) : null, a.antecipado ? h('small', { text: antecTxt(a) }) : null));
-}
-function linhaAgenda(a, hoje, recarregar) {
-  const dig = String(a.telefone).replace(/\D/g, ''), zap = dig.length <= 11 ? '55' + dig : dig;
-  const acoes = h('div', { class: 'ad-acoes' });
-  const row = h('div', { class: 'ad-linha' + (a.status ? ' fim-' + a.status : '') },
-    h('div', { class: 'hr', text: a.hora }),
-    h('div', { class: 'cl' }, h('b', { text: a.cliente }),
-      h('small', {}, dig ? h('a', { href: 'tel:' + dig, text: a.telefone }) : '', dig ? ' · ' : '', dig ? h('a', { href: 'https://wa.me/' + zap, target: '_blank', rel: 'noopener', text: 'WhatsApp' }) : '')),
-    h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: (ehDono() ? a.barbeiro + ' · ' : '') + R$(a.valor) }), a.promo ? h('span', { class: 'badge promo', text: 'Promoção: ' + a.promo.titulo + ' (−' + Math.round(a.promo.desconto) + '%)' }) : null, a.gratis ? h('span', { class: 'badge gratis', text: 'Tem corte grátis no cartão' }) : null), acoes);
-  const agir = async (acao, extra, ok) => { const r = await apost(acao, Object.assign({ data: a.data, hora: a.hora, barbeiro: a.barbeiro }, extra), null); if (r) { aviso('msg-ad', 'ok', ok + (r.antecipado ? ' Foi antecipado: ' + tempoTxt(r.antecipado) + ' antes do horário marcado (' + (a.data === hoje ? '' : br(a.data).slice(0, 5) + ' ') + a.hora + ').' : '') + ' O cliente saiu da lista.'); recarregar(); } };
-  const mostrarAcoes = () => {
-    acoes.textContent = '';
-    if (a.status) { acoes.append(h('span', { class: 'badge ' + a.status, text: a.status === 'concluido' ? 'Concluído' : 'Faltou' })); return; }
-    {
-      acoes.append(h('button', { type: 'button', class: 'bt ok', text: a.data > hoje ? 'Atender agora (antecipado)' : 'Concluir', onclick: () => {
-        if (!ehDono()) { if (confirm((a.data > hoje ? 'Este cliente estava marcado para ' + br(a.data).slice(0, 5) + ' às ' + a.hora + '. Atender agora e registrar como antecipado? ' : 'Marcar como concluído? ') + 'Vira uma venda de ' + R$(a.valor) + '.')) agir('admin_concluir', { status: 'concluido' }, 'Atendimento concluído e registrado nas vendas.'); return; }
-        acoes.textContent = '';
-        const v = h('input', { type: 'number', min: '0', step: '0.01', value: String(a.valor), class: 'valor-in', 'aria-label': 'Valor cobrado' });
-        acoes.append(v, h('button', { type: 'button', class: 'bt ok', text: 'Confirmar', onclick: () => agir('admin_concluir', { status: 'concluido', valor: v.value }, 'Atendimento concluído e registrado nas vendas.') }),
-          h('button', { type: 'button', class: 'bt', text: 'Voltar', onclick: mostrarAcoes }));
-      } }));
-      if (a.data <= hoje) acoes.append(h('button', { type: 'button', class: 'bt', text: 'Faltou', onclick: () => { if (confirm('Marcar que o cliente faltou?')) agir('admin_concluir', { status: 'faltou' }, 'Marcado como falta.'); } }));
-    }
-    if (a.gratis) acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Concluir grátis', onclick: () => { if (confirm('Dar o corte grátis a ' + a.cliente + '? O valor fica R$ 0,00 e a comissão do barbeiro continua sobre o preço da tabela.')) agir('admin_concluir', { status: 'concluido', gratis: true }, 'Corte grátis registrado.'); } }));
-    acoes.append(h('button', { type: 'button', class: 'bt perigo', text: 'Cancelar', onclick: () => { if (confirm('Cancelar o horário de ' + a.cliente + '? O horário volta a ficar livre.')) agir('admin_cancelar', {}, 'Horário cancelado.'); } }));
-  };
-  mostrarAcoes();
-  return row;
 }
 function avulsaForm(aoSalvar) {
   const srv = h('select', {}, ((config && config.servicos) || []).map(s => h('option', { value: s.nome, text: s.nome + ' · ' + R$(s.preco) })));
@@ -1957,43 +2548,17 @@ function abVendas(box, vivo) {
 }
 
 // ---- Serviços e preços (dono) ----
-async function abServicos(box, vivo) {
-  box.append(h('h3', { text: 'Serviços e preços' }), h('p', { class: 'ad-nota', text: 'Mudou o preço? Salve e o site já mostra o valor novo. Serviços desativados somem do site, mas o histórico de vendas continua.' }));
-  const r = await apost('admin_dados'); if (!vivo() || !r) return;
-  const lista = r.servicos.map(s => Object.assign({}, s)), grade = h('div', { class: 'ad-grade' });
-  const desenhar = () => {
-    grade.textContent = '';
-    lista.forEach((s, i) => grade.append(h('div', { class: 'ad-item' + (s.ativo ? '' : ' off') },
-      h('button', { type: 'button', class: 'bt perigo rem', text: 'Remover', onclick: () => { if (confirm('Remover "' + (s.nome || 'este serviço') + '" da lista?')) { lista.splice(i, 1); desenhar(); } } }),
-      campo('Nome', h('input', { type: 'text', maxlength: '40', value: s.nome, oninput: e => { s.nome = e.target.value; } })),
-      h('div', { class: 'ad-2' },
-        campo('Preço (R$)', h('input', { type: 'number', min: '0', step: '0.01', value: String(s.preco), oninput: e => { s.preco = e.target.value; } })),
-        campo('Ícone', h('select', { onchange: e => { s.icone = e.target.value; } }, opcoes(ICONES_SRV, s.icone)))),
-      campo('Tipo (para o relatório)', h('select', { onchange: e => { s.categoria = e.target.value; } }, opcoes(CATS_SRV, s.categoria))),
-      campo('Descrição curta', h('input', { type: 'text', maxlength: '90', value: s.desc, oninput: e => { s.desc = e.target.value; } })),
-      h('div', { class: 'ad-chk' }, marca('Selo "Mais pedido"', s.destaque, v => { s.destaque = v; }), marca('Ativo no site', s.ativo, v => { s.ativo = v; desenhar(); })))));
-  };
-  desenhar();
-  box.append(grade, h('div', { class: 'ad-salvar' },
-    h('button', { type: 'button', class: 'bt', text: '+ Adicionar serviço', onclick: () => { lista.push({ nome: '', preco: 0, icone: 'tesoura', desc: '', destaque: false, categoria: 'corte', ativo: true }); desenhar(); } }),
-    h('button', { type: 'button', class: 'btn', text: 'Salvar serviços e preços', onclick: async e => {
-      e.target.disabled = true;
-      const ok = await apost('admin_salvar_servicos', { servicos: lista }, 'Serviços salvos. O site já está atualizado.');
-      e.target.disabled = false; if (ok) carregarConfig().then(() => { if (config) renderAg(); });
-    } })));
-}
-
 // ---- Fotos do carrossel (dono) ----
 // ---- Vitrine do site (dono): cortes, produtos/marcas e promoções ----
 let adVit = 'cortes';
-const SUBS_VIT = [['cortes', 'Cortes do carrossel'], ['produtos', 'Produtos e marcas'], ['promos', 'Promoções e eventos']];
+const SUBS_VIT = [['cortes', 'Cortes do carrossel'], ['produtos', 'Produtos e marcas'], ['promos', 'Promoções e eventos'], ['tamanhos', 'Tamanhos das fotos']];
 function abVitrine(box, vivo) {
   box.append(h('h3', { text: 'Vitrine do site' }),
     h('p', { class: 'ad-nota', text: 'Tudo o que passa na tela dos clientes: cortes, produtos e promoções. Você pode adicionar, trocar fotos, mudar a ordem e tirar o que não quiser.' }));
   const chips = h('div', { class: 'ad-chips' }), corpo = h('div', {});
   SUBS_VIT.forEach(x => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adVit === x[0]), text: x[1], onclick: () => { adVit = x[0]; abrirAba('vitrine'); } })));
   box.append(chips, corpo);
-  ({ cortes: abFotos, produtos: abMarcas, promos: abPromos })[adVit](corpo, vivo);
+  ({ cortes: abFotos, produtos: abMarcas, promos: abPromos, tamanhos: abTamanhos })[adVit](corpo, vivo);
 }
 // miniatura de uma foto guardada no Drive ou em link
 function fotoEl(x, w, alt) {
@@ -2003,17 +2568,21 @@ function fotoEl(x, w, alt) {
 }
 // trocar foto por arquivo ou por link, remover, e atalho para buscar no Google Imagens
 function controleFoto(tem, ops) {
+  const d = ops.dim ? DIMS[ops.dim] : null, recorte = d ? h('input', { type: 'checkbox', checked: true }) : null;
   const arq = h('input', { type: 'file', accept: 'image/*' });
-  arq.onchange = async () => { if (!arq.files[0]) return; limpar('msg-ad'); try { await ops.upload(await lerImagem(arq.files[0], 1100)); } catch (e) { aviso('msg-ad', 'erro', e.message); } };
+  arq.onchange = async () => { if (!arq.files[0]) return; limpar('msg-ad'); try { await ops.upload(await lerImagem(arq.files[0], d ? Math.max(d.w, d.h) : 1100, d && recorte.checked ? d.w / d.h : 0)); } catch (e) { aviso('msg-ad', 'erro', e.message); } };
   const url = h('input', { type: 'url', maxlength: '1500', placeholder: 'https://… (endereço da imagem)', 'aria-label': 'Endereço da imagem' });
   const bt = h('button', { type: 'button', class: 'bt forte', text: 'Importar', onclick: async () => {
     limpar('msg-ad'); if (!/^https:\/\//i.test(url.value.trim())) { aviso('msg-ad', 'erro', 'Cole o endereço completo da imagem, começando com https://'); return; }
     bt.disabled = true; bt.textContent = 'Importando…'; await ops.url(url.value.trim()); bt.disabled = false; bt.textContent = 'Importar';
   } });
-  return h('div', {}, campo(tem ? 'Trocar a foto (arquivo)' : 'Enviar foto (arquivo)', arq),
+  return h('div', {}, d ? dimBloco(ops.dim, ops.buscar) : null,
+    d ? h('div', { class: 'ad-chk' }, h('label', {}, recorte, 'Ajustar a foto enviada por arquivo para a proporção ideal (corta o excesso nas bordas)')) : null,
+    campo(tem ? 'Trocar a foto (arquivo)' : 'Enviar foto (arquivo)', arq),
     h('div', { class: 'campo' }, 'Ou importar por link', h('div', { class: 'ad-link' }, url, bt)),
-    h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, tem ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: () => ops.remover() }) : null,
-      ops.buscar ? h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent(ops.buscar), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'text-decoration:none' }) : null));
+    d ? h('p', { class: 'ad-nota', text: 'Fotos importadas por link entram como estão (sem ajuste de proporção).' }) : null,
+    h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, tem && ops.remover ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: () => ops.remover() }) : null,
+      ops.buscar && !d ? h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent(ops.buscar), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'text-decoration:none' }) : null));
 }
 async function abFotos(box, vivo) {
   box.append(h('h4', { text: 'Cortes que saem daqui (carrossel do site)' }),
@@ -2040,7 +2609,7 @@ async function abFotos(box, vivo) {
             upload: u => depois('admin_foto_img', { id: f.id, imagem: u }, 'Foto trocada.'),
             url: u => depois('admin_foto_img', { id: f.id, url: u }, 'Foto importada.'),
             remover: () => depois('admin_foto_img', { id: f.id, remover: true }, 'Foto removida (aparece a ilustração).'),
-            buscar: f.titulo + ' corte masculino barbearia' }),
+            dim: 'corte', buscar: f.titulo + ' corte masculino barbearia' }),
           h('button', { type: 'button', class: 'bt perigo', text: 'Apagar este corte', onclick: async () => {
             if (!confirm('Apagar o corte "' + f.titulo + '" do carrossel?')) return;
             await textos(); if (await apost('admin_foto_del', { id: f.id }, null, true)) await recarregar('Corte apagado.');
@@ -2053,7 +2622,7 @@ async function abFotos(box, vivo) {
   let pronto = null;
   arq.onchange = async () => {
     pronto = null; prev.hidden = true; limpar('msg-ad'); if (!arq.files[0]) return;
-    try { pronto = await lerImagem(arq.files[0], 1100); prev.src = pronto; prev.hidden = false; } catch (e) { aviso('msg-ad', 'erro', e.message); }
+    try { pronto = await lerImagem(arq.files[0], 1000, 4 / 5); prev.src = pronto; prev.hidden = false; } catch (e) { aviso('msg-ad', 'erro', e.message); }
   };
   const enviar = h('button', { type: 'button', class: 'btn', text: 'Adicionar ao carrossel', onclick: async () => {
     if (!nv.titulo.trim()) { aviso('msg-ad', 'erro', 'Dê um título para o corte.'); return; }
@@ -2071,7 +2640,7 @@ async function abFotos(box, vivo) {
       h('div', { class: 'ad-2' }, campo('Título', h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Degradê navalhado', oninput: e => { nv.titulo = e.target.value; } })),
         campo('Frase curta (opcional)', h('input', { type: 'text', maxlength: '60', placeholder: 'Ex.: Baixo, com acabamento na navalha', oninput: e => { nv.desc = e.target.value; } }))),
       campo('Botão "Agendar este corte" leva para', h('select', { onchange: e => { nv.servico = e.target.value; } }, opcoes(servs, ''))),
-      campo('Foto (arquivo, opcional)', arq), prev,
+      dimBloco('corte', 'corte masculino barbearia'), campo('Foto (arquivo, opcional; ajustada para 4:5 automaticamente)', arq), prev,
       campo('Ou importar a foto por link (opcional)', h('input', { type: 'url', maxlength: '1500', placeholder: 'https://…', oninput: e => { nv.url = e.target.value; } })),
       enviar));
 }
@@ -2109,9 +2678,9 @@ async function abPromos(box, vivo) {
     h('p', { class: 'ad-nota', text: 'Promoções ligadas aparecem no site na seção "Promoções" durante as datas escolhidas. Se tiver desconto, ele já entra no valor da Agenda e das vendas (você ainda pode mudar o valor na hora de concluir). Desconto 0 serve só para divulgar.' }));
   const r = await apost('admin_dados'); if (!vivo() || !r) return;
   const hoje = r.hoje, nomesServ = r.servicos.filter(s => s.ativo).map(s => s.nome);
-  const promos = r.promos.map(p => Object.assign({}, p)), grade = h('div', { class: 'ad-grade' });
+  const promos = rascunhoPromos || r.promos.map(p => Object.assign({}, p)), grade = h('div', { class: 'ad-grade' }); rascunhoPromos = null;
   const servs = [['', 'Todos os serviços']].concat(nomesServ.map(n => [n, n]));
-  const envio = () => promos.map(p => ({ id: p.id || '', titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, ativa: p.ativa }));
+  const envio = () => promos.map(p => ({ id: p.id || '', titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, ativa: p.ativa, tema: p.tema }));
   const salvarTudo = quieto => apost('admin_promos_salvar', { promos: envio() }, quieto ? null : 'Promoções salvas.', quieto);
   const recarregar = async msg => { await carregarConfig(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); };
   const depois = async (acao, extra, msg) => { if (!(await salvarTudo(true))) return; const ok = await apost(acao, extra, null, true); if (ok) await recarregar(msg); };
@@ -2133,11 +2702,12 @@ async function abPromos(box, vivo) {
         h('div', { class: 'ad-2' }, campo('Começa em (vazio = já)', h('input', { type: 'date', value: p.de, onchange: e => { p.de = e.target.value; desenhar(); } })),
           campo('Termina em (vazio = sem fim)', h('input', { type: 'date', value: p.ate, onchange: e => { p.ate = e.target.value; desenhar(); } }))),
         h('div', { class: 'ad-chk' }, marca('Promoção ligada (aparece no site)', p.ativa, v => { p.ativa = v; desenhar(); })),
+        blocoTema(p, promos),
         p.id ? h('div', {}, h('div', { class: 'ad-prevpromo' }, fotoEl(p, 300, p.titulo)), controleFoto(!!(p.fileId || p.url), {
             upload: u => depois('admin_promo_img', { id: p.id, imagem: u }, 'Foto da promoção trocada.'),
             url: u => depois('admin_promo_img', { id: p.id, url: u }, 'Foto da promoção importada.'),
             remover: () => depois('admin_promo_img', { id: p.id, remover: true }, 'Foto removida.'),
-            buscar: p.titulo + ' promoção barbearia' }))
+            dim: 'promo', buscar: p.titulo + ' promoção barbearia' }))
           : h('p', { class: 'ad-nota', text: 'Promoção nova: clique em "Salvar promoções" e depois adicione a foto (opcional).' }),
         h('button', { type: 'button', class: 'bt perigo', text: 'Apagar promoção', onclick: () => { if (confirm('Apagar "' + (p.titulo || 'esta promoção') + '"? Clique em "Salvar promoções" para confirmar.')) { promos.splice(i, 1); desenhar(); } } })));
     });
@@ -2151,8 +2721,8 @@ async function abPromos(box, vivo) {
     ideias.append(h('div', { class: 'ad-card' }, h('small', { text: quando + (x.desconto ? ' · ' + x.desconto + '% off' : ' · divulgação') }), h('b', { text: x.titulo, style: 'font-size:1.1rem' }),
       h('span', { class: 'ad-delta', text: x.desc }),
       h('button', { type: 'button', class: 'bt forte', style: 'margin-top:10px', text: 'Usar esta ideia', onclick: () => {
-        promos.unshift(novaPromo({ titulo: x.titulo, desc: x.desc, desconto: x.desconto, servico: x.servico, de: x.per[0], ate: x.per[1] })); desenhar();
-        aviso('msg-ad', 'ok', 'Ideia adicionada no topo da lista. Ajuste o que quiser e clique em "Salvar promoções".'); grade.scrollIntoView({ behavior: 'smooth' });
+        promos.unshift(novaPromo({ titulo: x.titulo, desc: x.desc, desconto: x.desconto, servico: x.servico, de: x.per[0], ate: x.per[1], tema: presetDe(x.titulo) === 'custom' ? undefined : temaNovo(presetDe(x.titulo)), aberto: presetDe(x.titulo) !== 'custom' })); desenhar();
+        aviso('msg-ad', 'ok', 'Ideia adicionada no topo da lista' + (presetDe(x.titulo) !== 'custom' ? ', já com o tema do site' : '') + '. Ajuste o que quiser, veja a prévia do tema e clique em "Salvar promoções".'); grade.scrollIntoView({ behavior: 'smooth' });
       } })));
   });
   box.append(grade, h('div', { class: 'ad-salvar' },
@@ -2201,7 +2771,7 @@ async function abMarcas(box, vivo) {
               if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); }
             } });
             return h('div', {}, h('div', { class: 'campo' }, 'Importar por link', h('div', { class: 'ad-link' }, url, bt)),
-              h('a', { class: 'bt', href: 'https://www.google.com/search?tbm=isch&tbs=isz:l&q=' + encodeURIComponent((m.nome || '') + ' produtos barbearia'), target: '_blank', rel: 'noopener noreferrer', text: 'Buscar no Google Imagens ↗', style: 'display:inline-block;margin-top:8px;text-decoration:none' }));
+              dimBloco('marca', (m.nome || '') + ' logo produtos barbearia'));
           })() : null,
           m.fileId ? h('button', { type: 'button', class: 'bt', text: 'Remover foto', onclick: async () => { if (await apost('admin_marca_foto', { id: m.id, remover: true }, 'Foto removida.')) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); } } }) : null,
           h('button', { type: 'button', class: 'bt perigo', text: 'Apagar marca', onclick: () => { if (confirm('Apagar a marca ' + (m.nome || '') + '? Clique em "Salvar marcas" para confirmar.')) { marcas.splice(i, 1); desenhar(); } } }))));
@@ -2215,65 +2785,6 @@ async function abMarcas(box, vivo) {
       const ok = await apost('admin_marcas_salvar', { marcas: marcas.map(m => ({ id: m.id, nome: m.nome, desc: m.desc })) }, 'Marcas salvas. Já aparecem no site.');
       e.target.disabled = false;
       if (ok) { const msg = $('msg-ad').textContent; await carregarConfig(); renderMarcas(); abrirAba('vitrine'); aviso('msg-ad', 'ok', msg); }
-    } })));
-}
-
-// ---- Equipe (dono) ----
-async function abEquipe(box, vivo) {
-  box.append(h('h3', { text: 'Barbeiros e comissões' }),
-    h('div', { class: 'ad-acesso' }, h('b', { text: 'Como o barbeiro entra na Área privada' }),
-      h('ul', {}, h('li', { text: 'Você cadastra o nome e o e-mail dele aqui, abaixo.' }),
-        h('li', { text: 'Ele cria uma conta no site usando exatamente esse e-mail (ou entra, se já tiver conta).' }),
-        h('li', { text: 'Pronto: aparece o botão da Área privada, só com "Meu desempenho" e "Minha agenda" — apenas os números e os clientes dele. Ele não vê os outros barbeiros, o lucro da casa, preços nem configurações.' }))));
-  const r = await apost('admin_dados'); if (!vivo() || !r) return;
-  // formulário de cadastro rápido
-  const nv = { nome: '', email: '', telefone: '', comissao: String(r.comissaoPadrao), cursos: '', atende: true, obs: '' };
-  const btCad = h('button', { type: 'button', class: 'btn', text: 'Cadastrar barbeiro', onclick: async () => {
-    btCad.disabled = true;
-    const ok = await apost('admin_barbeiro_cadastrar', { nome: nv.nome, email: nv.email, telefone: nv.telefone, comissao: nv.comissao, atende: nv.atende, obs: nv.obs, cursos: nv.cursos.split('\n').map(x => x.trim()).filter(Boolean) });
-    btCad.disabled = false;
-    if (!ok) return;
-    await carregarConfig(); abrirAba('equipe');
-    aviso('msg-ad', 'ok', ok.temConta ? nv.nome.trim() + ' cadastrado. Ele já tem conta no site: ao entrar, a Área privada dele já está liberada.' : nv.nome.trim() + ' cadastrado! Peça para ele criar uma conta no site com o e-mail ' + nv.email.trim().toLowerCase() + ' — assim que entrar, a Área privada dele estará liberada.');
-  } });
-  box.append(h('div', { class: 'ad-novo' }, h('h4', { text: 'Cadastrar novo barbeiro' }),
-    h('div', { class: 'ad-2' },
-      campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Rafael', oninput: e => { nv.nome = e.target.value; } })),
-      campo('E-mail (será o login dele)', h('input', { type: 'email', maxlength: '80', placeholder: 'barbeiro@email.com', autocomplete: 'off', oninput: e => { nv.email = e.target.value; } }))),
-    h('div', { class: 'ad-2' },
-      campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', placeholder: '(61) 99999-9999', oninput: e => { nv.telefone = e.target.value; } })),
-      campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: nv.comissao, oninput: e => { nv.comissao = e.target.value; } }))),
-    campo('Cursos e formações (um por linha)', h('textarea', { maxlength: '500', oninput: e => { nv.cursos = e.target.value; } })),
-    campo('Observação', h('input', { type: 'text', maxlength: '160', placeholder: 'Ex.: especialista em degradê', oninput: e => { nv.obs = e.target.value; } })),
-    h('div', { class: 'ad-chk' }, marca('Atende clientes (aparece para agendar)', true, v => { nv.atende = v; })),
-    btCad));
-  box.append(h('h4', { text: 'Equipe cadastrada' }));
-  const lista = r.equipe.map(p => Object.assign({}, p, { existe: true, cursosTxt: p.cursos.join('\n'), comissao: p.comissao })), grade = h('div', { class: 'ad-grade' });
-  const desenhar = () => {
-    grade.textContent = '';
-    lista.forEach((p, i) => {
-      const donoFixo = p.email && p.email === r.dono;
-      grade.append(h('div', { class: 'ad-item' + (p.ativo ? '' : ' off') },
-        campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', value: p.nome, disabled: p.existe, oninput: e => { p.nome = e.target.value; } })),
-        campo('E-mail da conta no site', h('input', { type: 'email', maxlength: '80', value: p.email, disabled: donoFixo, placeholder: 'barbeiro@email.com', oninput: e => { p.email = e.target.value; } })),
-        campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', value: p.telefone || '', placeholder: '(61) 99999-9999', oninput: e => { p.telefone = e.target.value; } })),
-        h('div', { class: 'ad-2' },
-          campo('Acesso', h('select', { disabled: donoFixo, onchange: e => { p.papel = e.target.value; } }, opcoes([['barbeiro', 'Barbeiro'], ['dono', 'Dono']], p.papel))),
-          campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: String(p.comissao), oninput: e => { p.comissao = e.target.value; } }))),
-        h('div', { class: 'ad-chk' }, marca('Atende clientes (aparece p/ agendar)', p.atende, v => { p.atende = v; }), p.existe && !donoFixo ? marca('Ativo', p.ativo, v => { p.ativo = v; }) : null),
-        campo('Cursos e formações (um por linha)', h('textarea', { maxlength: '500', oninput: e => { p.cursosTxt = e.target.value; } }, p.cursosTxt)),
-        campo('Observação', h('input', { type: 'text', maxlength: '160', value: p.obs, oninput: e => { p.obs = e.target.value; } })),
-        !p.existe ? h('button', { type: 'button', class: 'bt perigo', text: 'Descartar', onclick: () => { lista.splice(i, 1); desenhar(); } }) : null));
-    });
-  };
-  desenhar();
-  box.append(grade, h('div', { class: 'ad-salvar' },
-    h('button', { type: 'button', class: 'bt', text: '+ Adicionar profissional', onclick: () => { lista.push({ nome: '', email: '', telefone: '', papel: 'barbeiro', comissao: r.comissaoPadrao, atende: true, ativo: true, obs: '', cursos: [], cursosTxt: '', existe: false }); desenhar(); } }),
-    h('button', { type: 'button', class: 'btn', text: 'Salvar equipe', onclick: async e => {
-      e.target.disabled = true;
-      const envio = lista.map(p => ({ nome: p.nome, email: p.email, telefone: p.telefone || '', papel: p.papel, comissao: p.comissao, atende: p.atende, ativo: p.ativo, obs: p.obs, cursos: p.cursosTxt.split('\n').map(x => x.trim()).filter(Boolean) }));
-      const ok = await apost('admin_salvar_equipe', { equipe: envio }, 'Equipe salva.');
-      e.target.disabled = false; if (ok) { await carregarConfig(); abrirAba('equipe'); aviso('msg-ad', 'ok', 'Equipe salva.'); }
     } })));
 }
 
@@ -2333,14 +2844,18 @@ async function abVisual(box, vivo) {
     txt('heroTitulo', 'Título grande do topo', 70), txt('heroTexto', 'Texto abaixo do título (aparece depois de "Olá, nome.")', 140),
     h('h4', { text: 'Cores e clima' }), h('div', { class: 'ad-2' }, cor('corBotao', 'Cor dos botões e destaques'), cor('corMadeira', 'Cor da madeira')),
     h('p', { class: 'ad-nota', text: 'Céu da paisagem do deserto:' }), ceus,
-    h('h4', { text: 'Foto do topo' }), heroImg,
-    h('h4', { text: 'Foto da fachada (mapa)' }), fachImg,
+    h('h4', { text: 'Foto do topo' }), dimBloco('hero', 'barbearia interior vintage'), heroImg,
+    h('h4', { text: 'Foto da fachada (mapa)' }), dimBloco('fachada', 'fachada barbearia'), fachImg,
     h('h4', { text: 'Contato e endereço' }), h('div', { class: 'ad-2' }, txt('whatsapp', 'WhatsApp (55 + DDD + número)', 20, '5561999999999'), txt('instagram', 'Instagram (sem @)', 30)),
     txt('endereco', 'Endereço completo', 200), txt('regiao', 'Bairro / região (escrito no mapa)', 60),
     h('div', { class: 'ad-2' }, txt('lat', 'Latitude do mapa', 24, '-15.771585825269458'), txt('lon', 'Longitude do mapa', 24, '-48.281261505017945')),
     h('p', { class: 'ad-nota', text: 'Dica: no Google Maps, clique com o botão direito no local da barbearia e toque nos números para copiar as coordenadas.' }),
     h('h4', { text: 'Cartão do Xerife (fidelidade)' }), nume('metaCortes', 'A cada quantos cortes o cliente ganha 1 grátis (0 = desligar o cartão)', 0, 30),
     h('p', { class: 'ad-nota', text: 'Só serviços de categoria "corte" contam (veja na aba Serviços). O cliente precisa estar logado no site; vendas avulsas contam se você informar o e-mail dele.' }),
+    h('h4', { text: 'Confirmação dos horários e avisos' }),
+    h('div', { class: 'ad-chk' }, marca('O barbeiro precisa confirmar cada horário marcado (recomendado)', c.exigirConfirmacao !== '0', v => { c.exigirConfirmacao = v ? '1' : '0'; }),
+      marca('Mandar os avisos também por e-mail', c.emailAvisos !== '0', v => { c.emailAvisos = v ? '1' : '0'; })),
+    h('p', { class: 'ad-nota', text: 'Com a confirmação ligada, o cliente que marca fica "aguardando" e o barbeiro recebe um aviso no sino do site (e no e-mail, se estiver ligado). Barbeiro sem e-mail cadastrado não tem como confirmar, então os horários dele valem direto.' }),
     h('h4', { text: 'Funcionamento' }), h('div', { class: 'ad-2' }, nume('abre', 'Abre às (hora)', 0, 23), nume('fecha', 'Fecha às (hora)', 1, 24)),
     h('div', { class: 'ad-2' }, campo('Intervalo entre horários', h('select', { onchange: e => { c.intervalo = e.target.value; } }, opcoes([['15', '15 minutos'], ['20', '20 minutos'], ['30', '30 minutos'], ['45', '45 minutos'], ['60', '1 hora']], String(c.intervalo)))), nume('diasAFrente', 'Quantos dias à frente o cliente pode marcar', 1, 60)),
     h('p', { class: 'ad-nota', text: 'Dias em que a barbearia fecha:' }), chkDias,
@@ -2351,6 +2866,535 @@ async function abVisual(box, vivo) {
       e.target.disabled = false;
       if (ok) { const m = $('msg-ad').textContent; await carregarConfig(); aplicarSite(); reiniciarMapa(); carregarFid(); aviso('msg-ad', 'ok', m); }
     } })));
+}
+
+
+// =====================================================================
+//  v12 · PAINEL: confirmar/recusar horários, clientes (munições, avaliação, bloqueio) e tamanhos de foto
+// =====================================================================
+function abrirModal(corpo) {
+  $('modal-corpo').textContent = ''; $('modal-corpo').append(corpo); $('modal').hidden = false; $('modal').scrollTop = 0; document.body.style.overflow = 'hidden';
+}
+function fecharModal() { $('modal').hidden = true; $('modal-corpo').textContent = ''; document.body.style.overflow = ''; }
+$('modal').addEventListener('click', e => { if (e.target === $('modal')) fecharModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('modal').hidden && $('lightbox').hidden) fecharModal(); });
+
+// pedido com a resposta escrita dentro da própria ficha (a mensagem geral da página fica atrás da janela)
+async function fpost(msg, acao, extra, ok) {
+  msg.className = 'msg'; msg.textContent = '';
+  try {
+    const r = await post(Object.assign({ action: acao, token: sessao.token }, extra || {}));
+    if (r.expirada) { fecharModal(); sair(); aviso('msg-login', 'erro', r.erro); return null; }
+    if (!r.ok) { msg.className = 'msg erro'; msg.textContent = r.erro || 'Algo deu errado.'; return null; }
+    if (ok) { msg.className = 'msg ok'; msg.textContent = ok; }
+    return r;
+  } catch (e) { msg.className = 'msg erro'; msg.textContent = 'Não foi possível conectar. Tente de novo.'; return null; }
+}
+const RISCO_TXT = { novo: 'Cliente novo', conhecido: 'Já cortou aqui', bom: 'Bom cliente', atencao: 'Atenção', risco: 'Risco', bloqueado: 'Bloqueado' };
+function chipRisco(c) {
+  if (!c) return null;
+  return h('span', { class: 'cli-chip ' + (c.risco || 'novo'), text: (RISCO_TXT[c.risco] || 'Cliente novo') + (c.n ? ' · ★ ' + String(c.media).replace('.', ',') + ' (' + c.n + ')' : '') + (c.faltas ? ' · ' + c.faltas + (c.faltas === 1 ? ' falta' : ' faltas') : '') });
+}
+function municoes(balas, meta) {
+  if (!meta || meta > 14) return null;
+  const w = h('span', { class: 'mun', 'aria-hidden': 'true' });
+  for (let i = 0; i < meta; i++) w.append(h('i', { class: i < balas ? 'on' : '' }));
+  return w;
+}
+function estrelasIn(est) {
+  const w = h('div', { class: 'estrelas-in', role: 'radiogroup', 'aria-label': 'Nota do cliente' });
+  const pintar = () => [...w.children].forEach((b, i) => { b.classList.toggle('on', i < est.nota); b.setAttribute('aria-checked', String(i + 1 === est.nota)); });
+  for (let i = 1; i <= 5; i++) w.append(h('button', { type: 'button', role: 'radio', 'aria-label': i + (i === 1 ? ' estrela' : ' estrelas'), text: '★', onclick: () => { est.nota = i; pintar(); } }));
+  pintar(); return w;
+}
+// ficha completa do cliente: números, avaliação do barbeiro e bloqueio com justificativa
+function fichaCliente(c, D, recarregar) {
+  const dono = ehDono(), meta = D.meta, box = h('div', { class: 'cli-ficha' }), msg = h('div', { class: 'msg', role: 'alert' });
+  const dig = String(c.telefone || '').replace(/\D/g, ''), zap = dig.length <= 11 ? '55' + dig : dig;
+  box.append(h('p', {}, c.email, ' · ', dig ? [h('a', { href: 'tel:' + dig, text: c.telefone }), ' · ', h('a', { href: 'https://wa.me/' + zap, target: '_blank', rel: 'noopener', text: 'WhatsApp' })] : 'sem telefone', c.desde ? ' · cliente desde ' + br(c.desde) : ''));
+  box.append(h('div', {}, chipRisco(c.aval), c.tags.map(t => h('span', { class: 'cli-chip', text: t }))));
+  const card = (t, v, s) => h('div', { class: 'ad-card' }, h('small', { text: t }), h('b', { text: v }), s ? h('span', { class: 'ad-delta', text: s }) : null);
+  box.append(h('div', { class: 'ad-cards' },
+    card('Cortes feitos', String(c.cortes), c.gratisUsados ? c.pagos + ' pagos + ' + c.gratisUsados + ' grátis' : (c.ultimo ? 'último em ' + br(c.ultimo).slice(0, 5) : 'ainda não cortou')),
+    meta ? card('Munições no revólver', c.balas + ' de ' + meta, c.faltam === 1 ? 'falta 1 para o grátis' : 'faltam ' + c.faltam + ' para o grátis') : null,
+    meta ? card('Corte grátis', c.creditos > 0 ? String(c.creditos) : 'não', c.creditos > 0 ? 'esperando ser usado' : null) : null,
+    card('Marcações', String(c.marcacoes), c.faltas ? c.faltas + (c.faltas === 1 ? ' falta' : ' faltas') : 'sem faltas'),
+    card('Próximo horário', c.proxima ? br(c.proxima).slice(0, 5) : 'nenhum')));
+  // ---- avaliação do barbeiro
+  const est = { nota: c.minha ? c.minha.nota : 0, tags: c.minha ? c.minha.tags.slice() : [], comentario: c.minha ? c.minha.comentario : '' };
+  const tagsBox = h('div', { class: 'tags-in' });
+  const pintarTags = () => { tagsBox.textContent = ''; D.tags.forEach(t => tagsBox.append(h('button', { type: 'button', 'aria-pressed': String(est.tags.indexOf(t) !== -1), text: t, onclick: () => { const k = est.tags.indexOf(t); if (k === -1) est.tags.push(t); else est.tags.splice(k, 1); pintarTags(); } }))); };
+  pintarTags();
+  box.append(h('h4', { text: 'Sua avaliação deste cliente' }),
+    h('p', { class: 'ad-nota', text: 'Só a equipe vê. Use para decidir se vale a pena aceitar os próximos horários dele (pontualidade, educação, se paga bem, se costuma faltar).' }),
+    estrelasIn(est), tagsBox,
+    campo('Comentário (opcional)', h('textarea', { maxlength: '200', value: est.comentario, oninput: e => { est.comentario = e.target.value; } }, est.comentario)),
+    h('div', { class: 'ad-acoes' },
+      h('button', { type: 'button', class: 'bt forte', text: c.minha ? 'Atualizar avaliação' : 'Salvar avaliação', onclick: async e => {
+        if (!est.nota) { msg.className = 'msg erro'; msg.textContent = 'Escolha de 1 a 5 estrelas.'; return; }
+        e.target.disabled = true;
+        const r = await fpost(msg, 'admin_cliente_avaliar', { email: c.email, nota: est.nota, tags: est.tags, comentario: est.comentario }, 'Avaliação salva.');
+        e.target.disabled = false; if (r) recarregar(true);
+      } }),
+      c.minha ? h('button', { type: 'button', class: 'bt', text: 'Remover minha avaliação', onclick: async () => { if (await fpost(msg, 'admin_cliente_avaliar', { email: c.email, remover: true }, 'Avaliação removida.')) recarregar(true); } }) : null));
+  if (c.avaliacoes.length) box.append(h('p', { class: 'ad-nota', text: 'O que a equipe já disse (últimas avaliações):' }),
+    h('ul', { class: 'aval-hist' }, c.avaliacoes.map(a => h('li', {}, h('b', { text: '★'.repeat(a.nota) + '☆'.repeat(5 - a.nota) }), ' ' + a.barbeiro + (a.data ? ' · ' + br(a.data).slice(0, 5) : ''), a.tags.length ? ' · ' + a.tags.join(', ') : '', a.comentario ? h('div', { text: a.comentario }) : null))));
+  // ---- bloqueio
+  const b = c.bloqueio, nota = h('input', { type: 'text', maxlength: '200', placeholder: 'Recado (opcional)' }), bq = h('div', { class: 'bloq-box' });
+  const decidir = (acao, extra, ok, perg) => async () => { if (perg && !confirm(perg)) return; if (await fpost(msg, acao, Object.assign({ id: b && b.id, nota: nota.value }, extra), ok)) recarregar(true); };
+  if (b && b.status === 'ativo') {
+    bq.append(h('h5', { text: 'Cliente bloqueado' }), h('p', {}, h('b', { text: 'Motivo: ' }), b.motivo, h('br'), h('small', { text: 'Pedido por ' + b.por })),
+      h('p', { class: 'ad-nota', text: 'Enquanto estiver bloqueado ele não consegue marcar horários, e os pedidos em aberto foram recusados.' }),
+      dono ? h('div', {}, nota, h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, h('button', { type: 'button', class: 'bt', text: 'Remover o bloqueio', onclick: decidir('admin_bloqueio_remover', {}, 'Bloqueio removido.', 'Liberar ' + c.nome + ' para marcar horários de novo?') })))
+        : h('p', { class: 'ad-nota', text: 'Só o dono pode remover um bloqueio.' }));
+  } else if (b && b.status === 'pendente') {
+    bq.append(h('h5', { text: 'Pedido de bloqueio aguardando o dono' }), h('p', {}, h('b', { text: 'Motivo informado por ' + b.por + ': ' }), b.motivo),
+      dono ? h('div', {}, nota, h('div', { class: 'ad-acoes', style: 'margin-top:8px' },
+        h('button', { type: 'button', class: 'bt perigo', text: 'Aprovar bloqueio', onclick: decidir('admin_bloqueio_decidir', { decisao: 'aprovar' }, 'Bloqueio aprovado.', 'Bloquear ' + c.nome + '? Ele não vai mais conseguir marcar horários.') }),
+        h('button', { type: 'button', class: 'bt', text: 'Negar pedido', onclick: decidir('admin_bloqueio_decidir', { decisao: 'negar' }, 'Pedido negado. O cliente continua liberado.') })))
+        : h('p', { class: 'ad-nota', text: b.por === D.eu ? 'Você já pediu o bloqueio. Ele só vale quando o dono autorizar.' : 'Já existe um pedido em análise pelo dono.' }));
+  } else {
+    const motivo = h('textarea', { maxlength: '300', placeholder: 'Ex.: faltou 3 vezes sem avisar e já foi mal-educado com a equipe.' }), cont = h('small', { text: '0/300' });
+    motivo.addEventListener('input', () => { cont.textContent = motivo.value.length + '/300'; });
+    bq.append(h('h5', { text: dono ? 'Bloquear este cliente' : 'Pedir o bloqueio deste cliente' }),
+      h('p', { class: 'ad-nota', text: dono ? 'Como dono, o bloqueio vale na hora. Explique o motivo para ficar registrado.' : 'O bloqueio só é aplicado quando o dono autorizar. Explique o motivo para ele decidir.' }),
+      campo('Motivo (obrigatório, mínimo de 10 letras)', motivo), cont,
+      h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, h('button', { type: 'button', class: 'bt perigo', text: dono ? 'Bloquear agora' : 'Enviar pedido de bloqueio', onclick: async e => {
+        if (motivo.value.trim().length < 10) { msg.className = 'msg erro'; msg.textContent = 'Explique o motivo do bloqueio (mínimo de 10 letras).'; return; }
+        if (dono && !confirm('Bloquear ' + c.nome + ' agora? Ele não vai mais conseguir marcar horários.')) return;
+        e.target.disabled = true;
+        const r = await fpost(msg, 'admin_bloqueio_pedir', { email: c.email, motivo: motivo.value }, dono ? 'Cliente bloqueado.' : 'Pedido enviado ao dono. Você será avisado da decisão.');
+        e.target.disabled = false; if (r) recarregar(true);
+      } })));
+  }
+  box.append(bq, msg);
+  return box;
+}
+// abre a ficha em uma janela (usada na Agenda)
+async function abrirFicha(email, aoMudar) {
+  const corpo = h('div', {}, h('p', { class: 'ad-nota', text: 'Carregando…' })); abrirModal(corpo);
+  let mudou = false;
+  const desenhar = async primeira => {
+    let D;
+    try { D = await post({ action: 'admin_clientes', token: sessao.token }); } catch (e) { corpo.textContent = 'Não foi possível conectar.'; return; }
+    if (D.expirada) { fecharModal(); sair(); return; }
+    if (!D.ok) { corpo.textContent = D.erro || 'Algo deu errado.'; return; }
+    const c = D.lista.filter(x => x.email === email)[0];
+    corpo.textContent = '';
+    corpo.append(h('div', { class: 'ad-acoes', style: 'justify-content:space-between;margin-bottom:6px' }, h('h3', { text: c ? c.nome : email, style: 'margin:0' }),
+      h('button', { type: 'button', class: 'bt', text: 'Fechar ✕', onclick: () => { fecharModal(); if (mudou && aoMudar) aoMudar(); } })));
+    if (!c) { corpo.append(h('p', { text: 'Este cliente não está na lista (talvez seja da equipe).' })); return; }
+    corpo.append(fichaCliente(c, D, async m => { if (m) mudou = true; await desenhar(false); }));
+  };
+  await desenhar(true);
+}
+
+// ---------- Clientes (parte de baixo do Dashboard) ----------
+async function secClientes(box, vivo) {
+  box.append(h('h3', { text: 'Clientes' }), h('p', { class: 'ad-nota', text: 'Todos os clientes cadastrados no site: quantos cortes fizeram, quantas munições faltam para o corte grátis, e a avaliação da equipe para você decidir se vale a pena aceitar o horário.' }));
+  const alvo = h('div', {}); box.append(alvo);
+  const F = { q: '', filtro: 'todos', ordem: 'nome', limite: 40, aberto: '' };
+  let D = null;
+  async function carregar() {
+    alvo.textContent = ''; alvo.append(h('p', { class: 'ad-nota', text: 'Carregando clientes…' }));
+    const r = await apost('admin_clientes', {}, null, true);
+    if (!vivo() || !r) return; D = r; desenhar();
+  }
+  function desenhar() {
+    alvo.textContent = '';
+    const meta = D.meta, R = D.resumo, dono = ehDono();
+    const card = (t, v, s) => h('div', { class: 'ad-card' }, h('small', { text: t }), h('b', { text: String(v) }), s ? h('span', { class: 'ad-delta', text: s }) : null);
+    alvo.append(h('div', { class: 'ad-cards' }, card('Clientes cadastrados', R.total), meta ? card('Com corte grátis', R.comGratis, 'esperando para usar') : null,
+      meta ? card('A 1 corte do grátis', R.quaseLa) : null, card('Bloqueados', R.bloqueados), dono ? card('Pedidos de bloqueio', R.pedidos, R.pedidos ? 'aguardando você' : 'nenhum') : null));
+    const pend = D.bloqueios.filter(b => b.status === 'pendente');
+    if (pend.length) {
+      alvo.append(h('h4', { text: dono ? 'Pedidos de bloqueio aguardando você' : 'Seus pedidos de bloqueio em análise' }));
+      pend.forEach(b => {
+        const nota = h('input', { type: 'text', maxlength: '200', placeholder: 'Recado (opcional)' });
+        const dec = d => async () => { if (d === 'aprovar' && !confirm('Bloquear ' + b.cliente + '?')) return; if (await apost('admin_bloqueio_decidir', { id: b.id, decisao: d, nota: nota.value }, d === 'aprovar' ? 'Bloqueio aprovado.' : 'Pedido negado.')) carregar(); };
+        alvo.append(h('div', { class: 'bloq-box' }, h('h5', { text: b.cliente }), h('p', {}, h('b', { text: 'Pedido de ' + b.por + (b.pedidoEm ? ' em ' + b.pedidoEm.slice(0, 10).split('-').reverse().join('/') : '') + ': ' }), b.motivo),
+          dono ? h('div', {}, nota, h('div', { class: 'ad-acoes', style: 'margin-top:8px' }, h('button', { type: 'button', class: 'bt perigo', text: 'Aprovar bloqueio', onclick: dec('aprovar') }), h('button', { type: 'button', class: 'bt', text: 'Negar', onclick: dec('negar') }))) : null));
+      });
+    }
+    // filtros
+    const FILTROS = [['todos', 'Todos'], ['gratis', 'Com corte grátis'], ['quase', 'A 1 corte do grátis'], ['novo', 'Novos (sem corte)'], ['atencao', 'Atenção / risco'], ['bloq', 'Bloqueados'], ['pedido', 'Com pedido de bloqueio']];
+    const ORDENS = [['nome', 'Nome (A–Z)'], ['cortes', 'Mais cortes'], ['faltam', 'Mais perto do grátis'], ['ultimo', 'Visitou há menos tempo'], ['nota', 'Melhor avaliados']];
+    const busca = h('input', { type: 'search', placeholder: 'Buscar por nome, e-mail ou telefone', value: F.q, 'aria-label': 'Buscar cliente' });
+    const lista = h('div', { class: 'cli-grade' });
+    busca.addEventListener('input', () => { F.q = busca.value; F.limite = 40; pintar(); });
+    alvo.append(h('div', { class: 'ad-filtros' }, h('label', {}, 'Buscar', busca),
+      h('label', {}, 'Mostrar', h('select', { onchange: e => { F.filtro = e.target.value; F.limite = 40; pintar(); } }, opcoes(FILTROS, F.filtro))),
+      h('label', {}, 'Ordenar', h('select', { onchange: e => { F.ordem = e.target.value; pintar(); } }, opcoes(ORDENS, F.ordem)))), lista);
+    function pintar() {
+      lista.textContent = '';
+      const q = F.q.trim().toLowerCase(), dg = q.replace(/\D/g, '');
+      let l = D.lista.filter(c => !q || c.nome.toLowerCase().indexOf(q) !== -1 || c.email.indexOf(q) !== -1 || (dg.length >= 3 && String(c.telefone).replace(/\D/g, '').indexOf(dg) !== -1));
+      l = l.filter(c => ({
+        todos: true, gratis: c.creditos > 0, quase: meta && c.creditos === 0 && c.faltam === 1, novo: c.cortes === 0,
+        atencao: c.aval.risco === 'atencao' || c.aval.risco === 'risco', bloq: c.bloqueio && c.bloqueio.status === 'ativo', pedido: c.bloqueio && c.bloqueio.status === 'pendente'
+      })[F.filtro]);
+      const ord = { nome: (a, b) => a.nome.localeCompare(b.nome), cortes: (a, b) => b.cortes - a.cortes || a.nome.localeCompare(b.nome), faltam: (a, b) => a.faltam - b.faltam || b.cortes - a.cortes,
+        ultimo: (a, b) => String(b.ultimo).localeCompare(String(a.ultimo)), nota: (a, b) => b.aval.media - a.aval.media || b.aval.n - a.aval.n }[F.ordem];
+      l = l.slice().sort(ord);
+      if (!l.length) { lista.append(h('div', { class: 'ad-vazio', text: D.lista.length ? 'Nenhum cliente com esse filtro.' : 'Ainda não há clientes cadastrados.' })); return; }
+      l.slice(0, F.limite).forEach(c => {
+        const det = h('details', { class: 'cli-card' + (c.creditos > 0 ? ' gratis' : '') + (c.bloqueio && c.bloqueio.status === 'ativo' ? ' bloq' : '') });
+        det.open = F.aberto === c.email;
+        const sinal = c.bloqueio && c.bloqueio.status === 'pendente' ? h('span', { class: 'cli-chip atencao', text: 'Pedido de bloqueio' }) : null;
+        det.append(h('summary', {},
+          h('div', { class: 'nm' }, h('b', { text: c.nome }), h('small', { text: c.email }), h('div', {}, chipRisco(c.aval), sinal)),
+          h('div', {}, meta ? [municoes(c.balas, meta), h('small', { text: ' ' + c.balas + '/' + meta + ' · faltam ' + c.faltam })] : null,
+            c.creditos > 0 ? h('div', {}, h('span', { class: 'cli-chip bom', text: '🎁 ' + c.creditos + (c.creditos === 1 ? ' corte grátis' : ' cortes grátis') })) : null),
+          h('div', {}, h('b', { text: c.cortes + (c.cortes === 1 ? ' corte' : ' cortes') }), h('small', { text: c.ultimo ? ' · último ' + br(c.ultimo).slice(0, 5) : '' }))));
+        const corpo = h('div', { class: 'corpo' });
+        det.append(corpo);
+        const montar = () => { if (corpo.firstChild) return; corpo.append(fichaCliente(c, D, async () => { F.aberto = c.email; await carregar(); })); };
+        det.addEventListener('toggle', () => { if (det.open) { F.aberto = c.email; montar(); } else if (F.aberto === c.email) F.aberto = ''; });
+        if (det.open) montar();
+        lista.append(det);
+      });
+      if (l.length > F.limite) lista.append(h('button', { type: 'button', class: 'bt', text: 'Mostrar mais (' + (l.length - F.limite) + ' restantes)', onclick: () => { F.limite += 40; pintar(); } }));
+    }
+    pintar();
+  }
+  carregar();
+}
+
+// ---------- tamanho ideal das fotos (e busca no Google já com a medida) ----------
+const DIMS = {
+  corte:       { rot: 'Corte do carrossel', w: 800, h: 1000, prop: '4:5', forma: 'vertical', onde: 'Cartão do carrossel "Cortes que saem daqui" na página inicial.', dica: 'Foto do corte de frente ou de lado, com o cabelo bem visível e fundo limpo.', busca: 'corte masculino barbearia' },
+  galeria:     { rot: 'Foto de corte do serviço', w: 800, h: 1000, prop: '4:5', forma: 'vertical', onde: 'Prévia que o cliente vê ao tocar em um serviço para marcar.', dica: 'Quanto mais variados os exemplos (altura da máquina, estilos), melhor para o cliente escolher.', busca: 'corte masculino degradê' },
+  marca:       { rot: 'Logo de produto ou marca', w: 900, h: 600, prop: '3:2', forma: 'horizontal', onde: 'Carrossel "Marcas que usamos".', dica: 'Prefira logotipo com fundo branco ou transparente (PNG), centralizado.', busca: 'logo' },
+  promo:       { rot: 'Foto da promoção', w: 1280, h: 720, prop: '16:9', forma: 'horizontal', onde: 'Cartão da promoção na seção "Promoções".', dica: 'Deixe um espaço limpo nas bordas: o cartão corta um pouco nas laterais no celular.', busca: 'promoção barbearia' },
+  hero:        { rot: 'Foto do topo do site', w: 1920, h: 900, prop: '≈ 2:1', forma: 'horizontal (panorâmica)', onde: 'Fundo grande do topo da página inicial.', dica: 'O texto fica por cima: prefira fotos com áreas escuras ou desfocadas à esquerda.', busca: 'barbearia interior vintage' },
+  fachada:     { rot: 'Fachada da barbearia', w: 1200, h: 900, prop: '4:3', forma: 'horizontal', onde: 'Janelinha que abre ao tocar na marcação do mapa.', dica: 'Foto da frente do ponto, de dia, para o cliente reconhecer na rua.', busca: 'fachada barbearia' },
+  perfil:      { rot: 'Foto de perfil do barbeiro', w: 800, h: 800, prop: '1:1', forma: 'quadrada', onde: 'Cartão do profissional em "Comodidades / Profissionais".', dica: 'Rosto centralizado, boa luz. A foto aparece em círculo.', busca: 'retrato barbeiro' },
+  certificado: { rot: 'Certificado ou curso', w: 1200, h: 900, prop: '4:3', forma: 'horizontal', onde: 'Miniatura no cartão do profissional (abre ampliada ao tocar).', dica: 'Foto reta do certificado, sem cortar o texto nem o nome.', busca: 'certificado' }
+};
+function linksDim(d, busca) {
+  const q = encodeURIComponent((busca || d.busca || 'barbearia').trim()), base = 'https://www.google.com/search?tbm=isch&q=' + q, r = d.w / d.h, a = r >= 1.2 ? 'w' : r <= 0.85 ? 't' : 's';
+  const forma = { w: 'horizontal', t: 'vertical', s: 'quadrado' }[a];
+  return [['Tamanho exato ' + d.w + '×' + d.h, base + '&tbs=isz:ex,iszw:' + d.w + ',iszh:' + d.h],
+    ['Grandes · ' + forma, base + '&tbs=isz:l,iar:' + a], ['Acima de 2 MP · ' + forma, base + '&tbs=isz:lt,islt:2mp,iar:' + a]];
+}
+function dimBloco(chave, busca) {
+  const d = DIMS[chave]; if (!d) return null;
+  return h('div', {}, h('span', { class: 'dim-nota', text: 'Tamanho ideal: ' + d.w + ' × ' + d.h + ' px · proporção ' + d.prop + ' (' + d.forma + '). ' + d.dica }),
+    h('div', { class: 'dim-links' }, linksDim(d, busca).map(l => h('a', { class: 'bt', href: l[1], target: '_blank', rel: 'noopener noreferrer', text: 'Google Imagens: ' + l[0] + ' ↗' }))));
+}
+function abTamanhos(box) {
+  box.append(h('h4', { text: 'Tamanho ideal de cada foto' }),
+    h('p', { class: 'ad-nota', text: 'Cada botão abre o Google Imagens já filtrado pela medida (ou pelo formato e qualidade). "Tamanho exato" mostra só imagens com exatamente aquela medida: se vier pouca coisa, use "Grandes" ou "Acima de 2 MP". Ao enviar um arquivo, o site pode ajustar a proporção sozinho (corta o excesso nas bordas).' }),
+    h('p', { class: 'ad-nota', text: 'Atenção: baixe só imagens que você tem direito de usar (suas fotos, ou com licença livre).' }));
+  const g = h('div', { class: 'ad-grade' });
+  Object.keys(DIMS).forEach(k => { const d = DIMS[k]; g.append(h('div', { class: 'ad-item' }, h('b', { text: d.rot }), h('p', { class: 'ad-nota', text: d.onde }), dimBloco(k, d.busca))); });
+  box.append(g);
+}
+
+
+// =====================================================================
+//  v12 · PAINEL (parte 2): agenda com confirmação, barbeiros completos, serviços com fotos de cortes, tema de promoção
+// =====================================================================
+const MOTIVOS_RECUSA = ['Horário indisponível', 'Já tenho cliente nesse horário', 'Não estarei na barbearia nesse dia', 'Prefiro atender em outro horário'];
+function linhaAgenda(a, hoje, recarregar) {
+  const dig = String(a.telefone).replace(/\D/g, ''), zap = dig.length <= 11 ? '55' + dig : dig;
+  const acoes = h('div', { class: 'ad-acoes' }), pendente = a.conf === 'pendente' && !a.status;
+  const row = h('div', { class: 'ad-linha' + (a.status ? ' fim-' + a.status : '') + (pendente ? ' pendente' : '') },
+    h('div', { class: 'hr', text: a.hora }),
+    h('div', { class: 'cl' }, h('b', { text: a.cliente }),
+      h('small', {}, dig ? h('a', { href: 'tel:' + dig, text: a.telefone }) : '', dig ? ' · ' : '', dig ? h('a', { href: 'https://wa.me/' + zap, target: '_blank', rel: 'noopener', text: 'WhatsApp' }) : '')),
+    h('div', { class: 'sv' }, h('b', { text: a.servico }), h('small', { text: (ehDono() ? a.barbeiro + ' · ' : '') + R$(a.valor) }), a.promo ? h('span', { class: 'badge promo', text: 'Promoção: ' + a.promo.titulo + ' (−' + Math.round(a.promo.desconto) + '%)' }) : null, a.gratis ? h('span', { class: 'badge gratis', text: 'Tem corte grátis no cartão' }) : null), acoes,
+    h('div', { class: 'cli-chips' }, pendente ? h('span', { class: 'cli-chip atencao', text: 'Aguardando a sua confirmação' }) : null, chipRisco(a.cli),
+      a.email ? h('button', { type: 'button', class: 'bt', text: 'Ver cliente, avaliar ou bloquear', onclick: () => abrirFicha(a.email, recarregar) }) : null));
+  const agir = async (acao, extra, ok, fica) => { const r = await apost(acao, Object.assign({ data: a.data, hora: a.hora, barbeiro: a.barbeiro }, extra), null); if (r) { aviso('msg-ad', 'ok', ok + (r.antecipado ? ' Foi antecipado: ' + tempoTxt(r.antecipado) + ' antes do horário marcado (' + (a.data === hoje ? '' : br(a.data).slice(0, 5) + ' ') + a.hora + ').' : '') + (fica ? '' : ' O cliente saiu da lista.')); recarregar(); } };
+  const pedirMotivo = () => {
+    acoes.textContent = '';
+    const sel = h('select', { 'aria-label': 'Motivo da recusa' }, opcoes(MOTIVOS_RECUSA.map(m => [m, m]).concat([['__outro', 'Outro motivo…']]), MOTIVOS_RECUSA[0]));
+    const outro = h('input', { type: 'text', maxlength: '160', placeholder: 'Escreva o motivo', hidden: true, 'aria-label': 'Outro motivo' });
+    sel.onchange = () => { outro.hidden = sel.value !== '__outro'; if (!outro.hidden) outro.focus(); };
+    acoes.append(sel, outro,
+      h('button', { type: 'button', class: 'bt perigo', text: 'Enviar recusa', onclick: () => { const m = sel.value === '__outro' ? outro.value.trim() : sel.value; if (!m) { aviso('msg-ad', 'erro', 'Escreva o motivo para o cliente.'); return; } agir('admin_recusar', { motivo: m }, 'Pedido recusado. O cliente foi avisado.', true); } }),
+      h('button', { type: 'button', class: 'bt', text: 'Voltar', onclick: mostrarAcoes }));
+  };
+  const mostrarAcoes = () => {
+    acoes.textContent = '';
+    if (a.status) { acoes.append(h('span', { class: 'badge ' + a.status, text: a.status === 'concluido' ? 'Concluído' : 'Faltou' })); return; }
+    if (pendente) {
+      acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Confirmar', onclick: () => agir('admin_confirmar', {}, 'Horário confirmado. O cliente foi avisado.', true) }),
+        h('button', { type: 'button', class: 'bt perigo', text: 'Recusar', onclick: pedirMotivo }));
+      return;
+    }
+    {
+      acoes.append(h('button', { type: 'button', class: 'bt ok', text: a.data > hoje ? 'Atender agora (antecipado)' : 'Concluir', onclick: () => {
+        if (!ehDono()) { if (confirm((a.data > hoje ? 'Este cliente estava marcado para ' + br(a.data).slice(0, 5) + ' às ' + a.hora + '. Atender agora e registrar como antecipado? ' : 'Marcar como concluído? ') + 'Vira uma venda de ' + R$(a.valor) + '.')) agir('admin_concluir', { status: 'concluido' }, 'Atendimento concluído e registrado nas vendas.'); return; }
+        acoes.textContent = '';
+        const v = h('input', { type: 'number', min: '0', step: '0.01', value: String(a.valor), class: 'valor-in', 'aria-label': 'Valor cobrado' });
+        acoes.append(v, h('button', { type: 'button', class: 'bt ok', text: 'Confirmar', onclick: () => agir('admin_concluir', { status: 'concluido', valor: v.value }, 'Atendimento concluído e registrado nas vendas.') }),
+          h('button', { type: 'button', class: 'bt', text: 'Voltar', onclick: mostrarAcoes }));
+      } }));
+      if (a.data <= hoje) acoes.append(h('button', { type: 'button', class: 'bt', text: 'Faltou', onclick: () => { if (confirm('Marcar que o cliente faltou?')) agir('admin_concluir', { status: 'faltou' }, 'Marcado como falta.'); } }));
+    }
+    if (a.gratis) acoes.append(h('button', { type: 'button', class: 'bt ok', text: 'Concluir grátis', onclick: () => { if (confirm('Dar o corte grátis a ' + a.cliente + '? O valor fica R$ 0,00 e a comissão do barbeiro continua sobre o preço da tabela.')) agir('admin_concluir', { status: 'concluido', gratis: true }, 'Corte grátis registrado.'); } }));
+    acoes.append(h('button', { type: 'button', class: 'bt perigo', text: 'Cancelar', onclick: () => { if (confirm('Cancelar o horário de ' + a.cliente + '? O horário volta a ficar livre.')) agir('admin_cancelar', {}, 'Horário cancelado.'); } }));
+  };
+  mostrarAcoes();
+  return row;
+}
+
+// ---------- Serviços e preços (com fotos de cortes de cada serviço) ----------
+async function abServicos(box, vivo) {
+  box.append(h('h3', { text: 'Serviços e preços' }), h('p', { class: 'ad-nota', text: 'Mudou o preço? Salve e o site já mostra o valor novo. Serviços desativados somem do site, mas o histórico de vendas continua. Em cada serviço você pode anexar fotos de cortes feitos aqui: o cliente vê essas fotos (e pode ampliar) ao tocar no serviço para marcar.' }));
+  const r = await apost('admin_dados'); if (!vivo() || !r) return;
+  let gal = r.galeria || [];
+  const lista = r.servicos.map(s => Object.assign({}, s, { antigo: s.nome })), grade = h('div', { class: 'ad-grade' });
+  const refrescarGal = async () => { const x = await apost('admin_dados', {}, null, true); if (x && vivo()) { gal = x.galeria || []; desenhar(); } };
+  const desenhar = () => {
+    grade.textContent = '';
+    lista.forEach((s, i) => {
+      const fotos = s.antigo ? gal.filter(g => g.tipo === 'servico' && g.chave === s.antigo) : [];
+      const addFoto = async extra => { const ok = await apost('admin_galeria_add', Object.assign({ tipo: 'servico', chave: s.antigo, titulo: s.galTitulo || '' }, extra), 'Foto anexada ao serviço "' + s.antigo + '".'); if (ok) { s.galTitulo = ''; s.galAberta = true; await refrescarGal(); } };
+      const det = h('details', { class: 'tm-sub' }, h('summary', { text: 'Fotos de cortes deste serviço (' + fotos.length + ') · aparecem para o cliente ao marcar' }));
+      det.open = !!s.galAberta; det.addEventListener('toggle', () => { s.galAberta = det.open; });
+      if (!s.antigo) det.append(h('p', { class: 'ad-nota', text: 'Salve o serviço primeiro. Depois dá para anexar as fotos dos cortes.' }));
+      else {
+        det.append(h('div', { class: 'galeria-mini' }, fotos.length ? fotos.map(g => h('figure', {}, fotoEl(g, 240, g.titulo || s.nome),
+          h('button', { type: 'button', 'aria-label': 'Apagar esta foto', text: '×', onclick: async () => { if (confirm('Apagar esta foto de corte?')) { const ok = await apost('admin_galeria_del', { id: g.id }, 'Foto apagada.'); if (ok) { s.galAberta = true; await refrescarGal(); } } } }))) : h('div', { class: 'ad-vazio', text: 'Nenhuma foto ainda. Sem fotos, o site usa as do carrossel que forem deste serviço.' })),
+          campo('Legenda da próxima foto (opcional)', h('input', { type: 'text', maxlength: '60', placeholder: 'Ex.: Degradê médio com risco', value: s.galTitulo || '', oninput: e => { s.galTitulo = e.target.value; } })),
+          controleFoto(false, { dim: 'galeria', buscar: s.antigo + ' corte masculino', upload: u => addFoto({ imagem: u }), url: u => addFoto({ url: u }) }),
+          h('p', { class: 'ad-nota', text: 'Até 12 fotos por serviço.' }));
+      }
+      grade.append(h('div', { class: 'ad-item com-rem' + (s.ativo ? '' : ' off') },
+        h('button', { type: 'button', class: 'bt perigo rem', text: 'Remover', onclick: () => { if (confirm('Remover "' + (s.nome || 'este serviço') + '" da lista? Clique em "Salvar serviços e preços" para confirmar.')) { lista.splice(i, 1); desenhar(); } } }),
+        campo('Nome', h('input', { type: 'text', maxlength: '40', value: s.nome, oninput: e => { s.nome = e.target.value; } })),
+        h('div', { class: 'ad-2' },
+          campo('Preço (R$)', h('input', { type: 'number', min: '0', step: '0.01', value: String(s.preco), oninput: e => { s.preco = e.target.value; } })),
+          campo('Ícone', h('select', { onchange: e => { s.icone = e.target.value; } }, opcoes(ICONES_SRV, s.icone)))),
+        campo('Tipo (para o relatório)', h('select', { onchange: e => { s.categoria = e.target.value; } }, opcoes(CATS_SRV, s.categoria))),
+        campo('Descrição curta', h('input', { type: 'text', maxlength: '90', value: s.desc, oninput: e => { s.desc = e.target.value; } })),
+        h('div', { class: 'ad-chk' }, marca('Selo "Mais pedido"', s.destaque, v => { s.destaque = v; }), marca('Ativo no site', s.ativo, v => { s.ativo = v; desenhar(); })),
+        det));
+    });
+  };
+  desenhar();
+  box.append(grade, h('div', { class: 'ad-salvar' },
+    h('button', { type: 'button', class: 'bt', text: '+ Adicionar serviço', onclick: () => { lista.push({ nome: '', antigo: '', preco: 0, icone: 'tesoura', desc: '', destaque: false, categoria: 'corte', ativo: true }); desenhar(); } }),
+    h('button', { type: 'button', class: 'btn', text: 'Salvar serviços e preços', onclick: async e => {
+      e.target.disabled = true;
+      const envio = lista.map(s => ({ nome: s.nome, antigo: s.antigo || '', preco: s.preco, icone: s.icone, desc: s.desc, destaque: s.destaque, categoria: s.categoria, ativo: s.ativo }));
+      const ok = await apost('admin_salvar_servicos', { servicos: envio }, 'Serviços salvos. O site já está atualizado.');
+      e.target.disabled = false;
+      if (ok) { await carregarConfig(); if (config) renderAg(); abrirAba('servicos'); aviso('msg-ad', 'ok', 'Serviços salvos. O site já está atualizado.'); }
+    } })));
+}
+
+// ---------- Barbeiros e donos: cadastro completo ----------
+const GENEROS = [['', 'Prefiro não informar'], ['masculino', 'Masculino'], ['feminino', 'Feminino'], ['outro', 'Outro']];
+const DIAS_LONGO = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const horaDe = n => String(n).padStart(2, '0') + ':00';
+const listaDe = (txt, sep) => String(txt || '').split(sep).map(x => x.trim()).filter(Boolean);
+async function abEquipe(box, vivo) {
+  box.append(h('h3', { text: 'Barbeiros e donos' }),
+    h('div', { class: 'ad-acesso' }, h('b', { text: 'Como a pessoa entra na Área privada' }),
+      h('ul', {}, h('li', { text: 'Cadastre o nome e o e-mail dela aqui. Escolha o acesso: Barbeiro (vê só o desempenho e os clientes dele) ou Dono (vê tudo, como você).' }),
+        h('li', { text: 'Ela cria uma conta no site usando exatamente esse e-mail (ou entra, se já tiver conta). A Área privada é liberada na hora.' }),
+        h('li', { text: 'Cada barbeiro recebe um aviso (sino e e-mail) quando um cliente marca com ele, e só vale o horário depois que ele confirmar.' }))));
+  const r = await apost('admin_dados'); if (!vivo() || !r) return;
+  let gal = r.galeria || [];
+  const fechadosLoja = String((r.config && r.config.diasFechados) || '').split(',').filter(Boolean).map(Number);
+  const abreLoja = horaDe(Number(r.config && r.config.abre) || 9), fechaLoja = horaDe(Number(r.config && r.config.fecha) || 19);
+  // ---- cadastro de pessoa nova
+  const nv = { nome: '', email: '', telefone: '', papel: 'barbeiro', comissao: String(r.comissaoPadrao), cursos: '', atende: true, obs: '', instagram: '', idade: '', genero: '', anos: '', espTxt: '', bio: '' };
+  const btCad = h('button', { type: 'button', class: 'btn', text: 'Cadastrar', onclick: async () => {
+    btCad.disabled = true;
+    const ok = await apost('admin_barbeiro_cadastrar', { nome: nv.nome, email: nv.email, telefone: nv.telefone, papel: nv.papel, comissao: nv.comissao, atende: nv.atende, obs: nv.obs, cursos: listaDe(nv.cursos, '\n'),
+      instagram: nv.instagram, idade: nv.idade, genero: nv.genero, anos: nv.anos, especialidades: listaDe(nv.espTxt, ','), bio: nv.bio });
+    btCad.disabled = false;
+    if (!ok) return;
+    await carregarConfig(); abrirAba('equipe');
+    const papel = nv.papel === 'dono' ? 'dono' : 'barbeiro';
+    aviso('msg-ad', 'ok', ok.temConta ? nv.nome.trim() + ' cadastrado como ' + papel + '. Ele já tem conta no site: ao entrar, a Área privada já está liberada. Agora é só abrir o cartão dele abaixo para colocar foto e horários.' : nv.nome.trim() + ' cadastrado como ' + papel + '! Peça para criar uma conta no site com o e-mail ' + nv.email.trim().toLowerCase() + ' — assim que entrar, a Área privada estará liberada. Abra o cartão abaixo para colocar foto e horários.');
+  } });
+  box.append(h('details', { class: 'ad-novo' }, h('summary', { text: 'Cadastrar novo barbeiro ou dono' }),
+    h('div', { class: 'ad-2' },
+      campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: Rafael', oninput: e => { nv.nome = e.target.value; } })),
+      campo('E-mail (será o login)', h('input', { type: 'email', maxlength: '80', placeholder: 'pessoa@email.com', autocomplete: 'off', oninput: e => { nv.email = e.target.value; } }))),
+    h('div', { class: 'ad-2' },
+      campo('Acesso', h('select', { onchange: e => { nv.papel = e.target.value; } }, opcoes([['barbeiro', 'Barbeiro'], ['dono', 'Dono (vê e edita tudo)']], 'barbeiro'))),
+      campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: nv.comissao, oninput: e => { nv.comissao = e.target.value; } }))),
+    h('div', { class: 'ad-2' },
+      campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', placeholder: '(61) 99999-9999', oninput: e => { nv.telefone = e.target.value; } })),
+      campo('Instagram (sem @)', h('input', { type: 'text', maxlength: '40', placeholder: 'usuario', oninput: e => { nv.instagram = e.target.value; } }))),
+    h('div', { class: 'ad-2' },
+      campo('Idade', h('input', { type: 'number', min: '14', max: '90', oninput: e => { nv.idade = e.target.value; } })),
+      campo('Gênero', h('select', { onchange: e => { nv.genero = e.target.value; } }, opcoes(GENEROS, '')))),
+    h('div', { class: 'ad-2' },
+      campo('Anos de experiência', h('input', { type: 'number', min: '0', max: '60', oninput: e => { nv.anos = e.target.value; } })),
+      campo('Especialidades (separe por vírgula)', h('input', { type: 'text', maxlength: '200', placeholder: 'Degradê, Navalhado, Barba', oninput: e => { nv.espTxt = e.target.value; } }))),
+    campo('Sobre (aparece no site)', h('textarea', { maxlength: '400', oninput: e => { nv.bio = e.target.value; } })),
+    campo('Cursos e formações (um por linha)', h('textarea', { maxlength: '500', oninput: e => { nv.cursos = e.target.value; } })),
+    campo('Observação', h('input', { type: 'text', maxlength: '160', placeholder: 'Ex.: especialista em degradê', oninput: e => { nv.obs = e.target.value; } })),
+    h('div', { class: 'ad-chk' }, marca('Atende clientes (aparece para agendar)', true, v => { nv.atende = v; })),
+    h('p', { class: 'ad-nota', text: 'Foto, certificados e horários de trabalho são colocados no cartão da pessoa, logo depois de cadastrar.' }), btCad));
+  box.append(h('h4', { text: 'Equipe cadastrada' }), h('p', { class: 'ad-nota', text: 'Toque em um cartão para editar tudo: dados, foto, Instagram, certificados e horários. Nada vale até você clicar em "Salvar equipe". Foto e certificados são enviados na hora.' }));
+  const lista = r.equipe.map(p => Object.assign({}, p, { existe: true, antigo: p.nome, cursosTxt: (p.cursos || []).join('\n'), espTxt: (p.especialidades || []).join(', '), hor: JSON.parse(JSON.stringify(p.horarios || {})), aberto: false })), grade = h('div', {});
+  const refrescar = async () => {
+    const x = await apost('admin_dados', {}, null, true); if (!x || !vivo()) return;
+    gal = x.galeria || [];
+    lista.forEach(p => { const n = x.equipe.filter(o => o.nome === p.antigo)[0]; if (n) p.foto = n.foto; });
+    desenhar();
+  };
+  const desenhar = () => {
+    grade.textContent = '';
+    lista.forEach((p, i) => {
+      const donoFixo = !!p.email && p.email === r.dono;
+      const certs = p.existe ? gal.filter(g => g.tipo === 'certificado' && g.chave === p.antigo) : [];
+      const ini = () => h('div', { class: 'eq-foto', text: (p.nome || '?').charAt(0).toUpperCase() });
+      const fotoSm = p.existe && p.foto ? (() => { const im = imgDrive(p.foto, 160, p.nome, x => x.replaceWith(ini())); im.className = 'eq-foto'; return im; })() : ini();
+      const det = h('details', { class: 'eq-card' + (p.ativo ? '' : ' off') });
+      det.open = !!p.aberto; det.addEventListener('toggle', () => { p.aberto = det.open; });
+      det.append(h('summary', {}, fotoSm, h('div', { style: 'flex:1;min-width:0' }, h('b', { text: p.nome || 'Novo profissional' }),
+        h('div', {}, h('span', { class: 'cli-chip ' + (p.papel === 'dono' ? 'atencao' : 'conhecido'), text: p.papel === 'dono' ? 'Dono' : 'Barbeiro' }),
+          p.ativo ? null : h('span', { class: 'cli-chip', text: 'Inativo' }), p.atende ? null : h('span', { class: 'cli-chip', text: 'Não atende' }),
+          p.instagram ? h('span', { class: 'cli-chip', text: '@' + String(p.instagram).replace(/^@/, '') }) : null)), h('span', { text: 'editar ▾', class: 'ad-nota' })));
+      const corpo = h('div', { class: 'corpo' });
+      // dados
+      corpo.append(
+        h('div', { class: 'ad-2' },
+          campo('Nome (aparece no site)', h('input', { type: 'text', maxlength: '40', value: p.nome, disabled: p.existe, oninput: e => { p.nome = e.target.value; } })),
+          campo('E-mail da conta no site', h('input', { type: 'email', maxlength: '80', value: p.email, disabled: donoFixo, placeholder: 'pessoa@email.com', oninput: e => { p.email = e.target.value; } }))),
+        p.existe ? h('p', { class: 'ad-nota', text: 'O nome não muda depois de cadastrado, para não separar o histórico de agendas e vendas. Para trocar, cadastre outra pessoa e desative esta.' }) : null,
+        h('div', { class: 'ad-2' },
+          campo('Acesso', h('select', { disabled: donoFixo, onchange: e => { p.papel = e.target.value; desenhar(); } }, opcoes([['barbeiro', 'Barbeiro'], ['dono', 'Dono (vê e edita tudo)']], p.papel))),
+          campo('Comissão (%)', h('input', { type: 'number', min: '0', max: '100', step: '0.5', value: String(p.comissao), oninput: e => { p.comissao = e.target.value; } }))),
+        h('div', { class: 'ad-2' },
+          campo('Telefone / WhatsApp', h('input', { type: 'tel', maxlength: '20', value: p.telefone || '', placeholder: '(61) 99999-9999', oninput: e => { p.telefone = e.target.value; } })),
+          campo('Instagram (sem @)', h('input', { type: 'text', maxlength: '40', value: p.instagram || '', placeholder: 'usuario', oninput: e => { p.instagram = e.target.value; } }))),
+        h('div', { class: 'ad-2' },
+          campo('Idade', h('input', { type: 'number', min: '14', max: '90', value: p.idade ? String(p.idade) : '', oninput: e => { p.idade = e.target.value; } })),
+          campo('Gênero', h('select', { onchange: e => { p.genero = e.target.value; } }, opcoes(GENEROS, p.genero || '')))),
+        h('p', { class: 'ad-nota', text: 'Idade e gênero ficam só no painel, não aparecem para os clientes.' }),
+        h('div', { class: 'ad-2' },
+          campo('Anos de experiência', h('input', { type: 'number', min: '0', max: '60', value: p.anos ? String(p.anos) : '', oninput: e => { p.anos = e.target.value; } })),
+          campo('Especialidades (separe por vírgula)', h('input', { type: 'text', maxlength: '200', value: p.espTxt, placeholder: 'Degradê, Navalhado, Barba', oninput: e => { p.espTxt = e.target.value; } }))),
+        campo('Sobre (aparece no site)', h('textarea', { maxlength: '400', value: p.bio || '', oninput: e => { p.bio = e.target.value; } }, p.bio || '')),
+        campo('Cursos e formações (um por linha)', h('textarea', { maxlength: '500', oninput: e => { p.cursosTxt = e.target.value; } }, p.cursosTxt)),
+        campo('Observação', h('input', { type: 'text', maxlength: '160', value: p.obs, oninput: e => { p.obs = e.target.value; } })),
+        h('div', { class: 'ad-chk' }, marca('Atende clientes (aparece p/ agendar)', p.atende, v => { p.atende = v; }), p.existe && !donoFixo ? marca('Ativo', p.ativo, v => { p.ativo = v; }) : null));
+      // horários
+      const horBox = h('div', { class: 'hor-grade' });
+      const desenharHor = () => {
+        horBox.textContent = '';
+        for (let d = 0; d < 7; d++) {
+          const x = p.hor[d] !== undefined ? p.hor[d] : p.hor[String(d)], modo = !x ? 'loja' : x.off ? 'folga' : 'proprio', lojaFechada = fechadosLoja.indexOf(d) !== -1;
+          const set = v => { delete p.hor[String(d)]; if (v === 'loja') delete p.hor[d]; else if (v === 'folga') p.hor[d] = { off: true }; else p.hor[d] = { a: abreLoja, f: fechaLoja }; desenharHor(); };
+          const linha = h('div', { class: 'hor-dia' }, h('b', { text: DIAS_LONGO[d] }));
+          if (lojaFechada) { linha.append(h('span', { class: 'ad-nota', text: 'A barbearia fecha neste dia.' })); horBox.append(linha); continue; }
+          const horas = h('div', { class: 'horas' }, h('select', { 'aria-label': 'Horário de ' + DIAS_LONGO[d], onchange: e => set(e.target.value) }, opcoes([['loja', 'Horário da barbearia'], ['proprio', 'Horário próprio'], ['folga', 'Folga (não atende)']], modo)));
+          if (modo === 'proprio') {
+            const hx = (k, rot) => h('label', {}, rot, h('input', { type: 'time', value: x[k] || '', onchange: e => { if (e.target.value) x[k] = e.target.value; else delete x[k]; } }));
+            horas.append(hx('a', 'das'), hx('f', 'às'), hx('pa', 'pausa das'), hx('pf', 'às'));
+          }
+          linha.append(horas); horBox.append(linha);
+        }
+      };
+      desenharHor();
+      corpo.append(h('h4', { text: 'Horários de trabalho' }), h('p', { class: 'ad-nota', text: 'Por padrão vale o horário da barbearia. Escolha "Horário próprio" para definir entrada, saída e pausa (almoço), ou "Folga" para o dia em que a pessoa não atende. O horário próprio precisa ficar dentro do funcionamento da barbearia (' + abreLoja + ' às ' + fechaLoja + ').' }), horBox);
+      // foto e certificados (só depois de cadastrado)
+      if (p.existe) {
+        corpo.append(h('h4', { text: 'Foto de perfil' }), h('div', { class: 'ad-ad-foto' },
+          controleFoto(!!p.foto, { dim: 'perfil', buscar: 'retrato barbeiro',
+            upload: async u => { if (await apost('admin_equipe_foto', { nome: p.antigo, imagem: u }, 'Foto de perfil atualizada.')) { p.aberto = true; await refrescar(); } },
+            url: async u => { if (await apost('admin_equipe_foto', { nome: p.antigo, url: u }, 'Foto de perfil importada.')) { p.aberto = true; await refrescar(); } },
+            remover: async () => { if (await apost('admin_equipe_foto', { nome: p.antigo, remover: true }, 'Foto de perfil removida.')) { p.aberto = true; await refrescar(); } } })));
+        const addCert = async extra => { if (await apost('admin_galeria_add', Object.assign({ tipo: 'certificado', chave: p.antigo, titulo: p.certTitulo || '' }, extra), 'Certificado anexado.')) { p.certTitulo = ''; p.aberto = true; await refrescar(); } };
+        corpo.append(h('h4', { text: 'Certificados' }), h('p', { class: 'ad-nota', text: 'Aparecem como miniaturas no cartão do profissional no site (o cliente toca para ampliar). Até 8 por pessoa.' }),
+          h('div', { class: 'galeria-mini' }, certs.length ? certs.map(g => h('figure', {}, fotoEl(g, 240, g.titulo || 'Certificado'), h('small', { text: g.titulo || '' }),
+            h('button', { type: 'button', 'aria-label': 'Apagar certificado', text: '×', onclick: async () => { if (confirm('Apagar este certificado?') && await apost('admin_galeria_del', { id: g.id }, 'Certificado apagado.')) { p.aberto = true; await refrescar(); } } }))) : h('div', { class: 'ad-vazio', text: 'Nenhum certificado anexado.' })),
+          campo('Título do certificado (opcional)', h('input', { type: 'text', maxlength: '60', placeholder: 'Ex.: Curso de barboterapia', value: p.certTitulo || '', oninput: e => { p.certTitulo = e.target.value; } })),
+          controleFoto(false, { dim: 'certificado', upload: u => addCert({ imagem: u }), url: u => addCert({ url: u }) }));
+      } else corpo.append(h('p', { class: 'ad-nota', text: 'Salve a equipe para liberar a foto de perfil e os certificados.' }));
+      if (!p.existe) corpo.append(h('button', { type: 'button', class: 'bt perigo', text: 'Descartar', onclick: () => { lista.splice(i, 1); desenhar(); } }));
+      det.append(corpo); grade.append(det);
+    });
+  };
+  desenhar();
+  box.append(grade, h('div', { class: 'ad-salvar' },
+    h('button', { type: 'button', class: 'bt', text: '+ Adicionar profissional', onclick: () => { lista.push({ nome: '', email: '', telefone: '', papel: 'barbeiro', comissao: r.comissaoPadrao, atende: true, ativo: true, obs: '', cursos: [], cursosTxt: '', espTxt: '', hor: {}, existe: false, aberto: true }); desenhar(); } }),
+    h('button', { type: 'button', class: 'btn', text: 'Salvar equipe', onclick: async e => {
+      e.target.disabled = true;
+      const envio = lista.map(p => ({ nome: p.nome, antigo: p.existe ? p.antigo : undefined, email: p.email, telefone: p.telefone || '', papel: p.papel, comissao: p.comissao, atende: p.atende, ativo: p.ativo, obs: p.obs,
+        cursos: listaDe(p.cursosTxt, '\n'), instagram: p.instagram || '', idade: p.idade || '', genero: p.genero || '', anos: p.anos || '', especialidades: listaDe(p.espTxt, ','), bio: p.bio || '', horarios: p.hor }));
+      const ok = await apost('admin_salvar_equipe', { equipe: envio }, 'Equipe salva.');
+      e.target.disabled = false; if (ok) { await carregarConfig(); abrirAba('equipe'); aviso('msg-ad', 'ok', 'Equipe salva. O site já mostra os perfis atualizados.'); }
+    } })));
+}
+
+// ---------- tema de uma promoção: escolher, ajustar e ver a prévia antes de publicar ----------
+let rascunhoPromos = null;
+function presetDe(titulo) {
+  const t = String(titulo || '').toLowerCase();
+  const m = [[/natal|christmas/, 'natal'], [/black|friday/, 'blackfriday'], [/crian[cç]a/, 'criancas'], [/\bpai/, 'pais'], [/namorad/, 'namorados'], [/carnaval/, 'carnaval'], [/halloween|bruxa/, 'halloween'],
+    [/pagamento|sal[aá]rio|quinto dia/, 'pagamento'], [/ano novo|r[eé]veillon/, 'anonovo'], [/junin|s[aã]o jo[aã]o|arrai[aá]/, 'junino'], [/copa|jogo/, 'copa']];
+  for (const x of m) if (x[0].test(t)) return x[1];
+  return 'custom';
+}
+const temaNovo = preset => ({ preset: preset, nivel: 2, faixa: '', emoji: '', efeito: '', cor1: '', cor2: '', fundo: '', heroTitulo: '' });
+function previaMini(t) {
+  const f = temaFinal(t), ceu = (CEU_PRESETS[f.ceu] || CEU_PRESETS.entardecer).ceu;
+  const el = h('div', { class: 'tm-mock', style: '--m-fundo:' + f.fundo + ';--m-c1:' + f.cor1 + ';--m-c2:' + f.cor2 + ';--m-ceu:' + ceu, role: 'img', 'aria-label': 'Prévia em miniatura do site com este tema' });
+  el.append(h('div', { class: 'm-faixa', text: f.emoji + '  ' + f.faixa + '  ' + f.emoji }),
+    h('div', { class: 'm-topo' }, h('b', { text: S.nome }), h('i'), h('i'), h('i')),
+    h('div', { class: 'm-hero' }, h('h5', { text: f.nivel >= 2 && f.heroTitulo ? f.heroTitulo : S.heroTitulo }), h('span', { class: 'm-bt', text: 'Agendar horário' })),
+    h('div', { class: 'm-srv' }, h('span', { text: 'Degradê' }), h('em', { text: 'promoção' })), h('div', { class: 'm-srv' }, h('span', { text: 'Corte + barba' }), h('em', { text: 'promoção' })));
+  const fx = h('div', { class: 'm-fx' }); el.append(fx); montarFx(fx, f.efeito, f.nivel >= 3 ? 26 : f.nivel === 2 ? 10 : 0, f.cor1, f.cor2);
+  return el;
+}
+function verTemaNoSite(p, promos) {
+  rascunhoPromos = promos; previaTema = Object.assign({ _promo: { desconto: Number(p.desconto) || 0 } }, p.tema);
+  adAba = 'vitrine'; adVit = 'promos';
+  document.body.classList.add('em-previa');
+  const bar = h('div', { class: 'previa-barra', id: 'previa-barra', role: 'status' }, h('span', { text: '👁 Prévia do tema "' + (TEMAS[p.tema.preset] || TEMAS.custom).nome + '": nada foi publicado ainda.' }),
+    h('button', { type: 'button', class: 'btn', text: '← Voltar ao painel (o que você editou fica guardado)', onclick: sairPrevia }));
+  document.body.append(bar);
+  mostrar('home');
+}
+function sairPrevia() {
+  previaTema = null; const b = $('previa-barra'); if (b) b.remove(); document.body.classList.remove('em-previa');
+  mostrar('admin');
+}
+function blocoTema(p, promos) {
+  const sum = h('summary', {}), det = h('details', { class: 'tm-sub' }, sum);
+  det.open = !!p.aberto; det.addEventListener('toggle', () => { p.aberto = det.open; });
+  const corpo = h('div', {}); det.append(corpo);
+  const desenhar = () => {
+    corpo.textContent = '';
+    sum.textContent = p.tema ? 'Tema do site: ' + (TEMAS[p.tema.preset] || TEMAS.custom).nome + ' (ligado)' : 'Tema do site durante esta promoção (desligado)';
+    corpo.append(marca('Mudar o visual do site enquanto esta promoção estiver no ar', !!p.tema, v => { p.tema = v ? temaNovo(presetDe(p.titulo)) : null; p.aberto = true; desenhar(); }));
+    if (!p.tema) { corpo.append(h('p', { class: 'ad-nota', text: 'Desligado: o site fica no visual normal. Ligue para escolher um tema (Natal, Dia das Crianças, Black Friday…) e ver a prévia antes de publicar.' })); return; }
+    const t = p.tema, base = () => TEMAS[t.preset] || TEMAS.custom;
+    corpo.append(h('p', { class: 'ad-nota', text: 'O tema só vale entre as datas da promoção e muda faixa, cores, céu, título e efeitos do site. Escolha um modelo:' }),
+      h('div', { class: 'tm-presets' }, Object.keys(TEMAS).map(k => h('button', { type: 'button', 'aria-pressed': String(t.preset === k), onclick: () => { t.preset = k; t.cor1 = t.cor2 = t.fundo = t.faixa = t.emoji = t.efeito = ''; desenhar(); } },
+        h('span', { text: TEMAS[k].emoji, style: 'font-size:1.5rem' }), h('span', { class: 'sw' }, [TEMAS[k].cor1, TEMAS[k].cor2, TEMAS[k].fundo].map(c => h('i', { style: 'background:' + c }))), h('span', { text: TEMAS[k].nome })))));
+    const mock = h('div', {});
+    const atualizar = () => { mock.textContent = ''; mock.append(previaMini(t)); };
+    const txt = (rot, k, max, ph) => campo(rot, h('input', { type: 'text', maxlength: String(max), value: t[k] || '', placeholder: ph || '', oninput: e => { t[k] = e.target.value; atualizar(); } }));
+    const cor = (rot, k) => campo(rot, h('div', { class: 'ad-cor' }, h('input', { type: 'color', value: t[k] || base()[k], oninput: e => { t[k] = e.target.value; atualizar(); } })));
+    corpo.append(
+      h('div', { class: 'ad-2' },
+        campo('Intensidade da mudança', h('select', { onchange: e => { t.nivel = Number(e.target.value); atualizar(); } }, opcoes([['1', '1 · Discreta: faixa no topo e cor dos botões'], ['2', '2 · Média: muda cores, céu e título'], ['3', '3 · Total: selo flutuante e chuva de efeitos']], String(t.nivel || 2)))),
+        campo('Efeito animado', h('select', { onchange: e => { t.efeito = e.target.value; atualizar(); } }, opcoes(EFEITOS, t.efeito || '')))),
+      txt('Frase da faixa no topo', 'faixa', 60, base().faixa),
+      h('div', { class: 'ad-2' }, txt('Emoji', 'emoji', 4, base().emoji), txt('Título grande do topo (nível 2 ou 3)', 'heroTitulo', 70, 'Ex.: Natal na barbearia')),
+      h('div', { class: 'ad-2' }, cor('Cor dos botões e da faixa', 'cor1'), cor('Cor de destaque (etiquetas)', 'cor2')),
+      cor('Cor do fundo de madeira', 'fundo'),
+      h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt', text: 'Voltar às cores e textos do modelo', onclick: () => { t.cor1 = t.cor2 = t.fundo = t.faixa = t.emoji = t.efeito = t.heroTitulo = ''; desenhar(); } })),
+      h('h5', { text: 'Prévia' }), mock,
+      h('div', { class: 'ad-acoes', style: 'margin-top:10px' }, h('button', { type: 'button', class: 'bt forte', text: 'Ver no site inteiro antes de publicar', onclick: () => verTemaNoSite(p, promos) })),
+      h('p', { class: 'ad-nota', text: 'A prévia da miniatura muda enquanto você mexe. "Ver no site inteiro" abre a página inicial real com este tema; ao voltar, o que você editou continua aqui. Só vai ao ar quando você clicar em "Salvar promoções" (e dentro das datas).' }));
+    atualizar();
+  };
+  desenhar();
+  return det;
 }
 
 mostrar(sessao && sessao.token ? 'home' : 'login');

@@ -37,7 +37,8 @@ const CFG_PADRAO = {
   endereco: 'Quadra 11 Lote 1 Casa B - Mansões Odisséia, Águas Lindas de Goiás - GO, 72927-185',
   regiao: 'Mansões Odisséia', lat: '-15.771585825269458', lon: '-48.281261505017945',
   abre: '9', fecha: '19', intervalo: '30', diasFechados: '0', diasAFrente: '14',
-  corBotao: '#8f3b22', corMadeira: '#382a20', ceu: 'entardecer', fotoHero: '', fotoFachada: '', metaCortes: '7'
+  corBotao: '#8f3b22', corMadeira: '#382a20', ceu: 'entardecer', fotoHero: '', fotoFachada: '', metaCortes: '7',
+  exigirConfirmacao: '1', emailAvisos: '1'
 };
 const SEMENTE_MARCAS = [['m1', '', 'Fox For Men', '', 1], ['m2', '', 'QOD Barber Shop', '', 2], ['m3', '', 'Roger', '', 3], ['m4', '', 'Shark Barber', '', 4]];
 const ICONES = ['tesoura', 'navalha', 'gota', 'estrela', 'crianca', 'pincel'];
@@ -45,16 +46,24 @@ const CATEGORIAS = ['corte', 'barba', 'quimica', 'outro'];
 const CEUS = ['entardecer', 'noite', 'dia', 'madrugada'];
 
 // ---- Cabeçalhos das abas ----
-const CAB_AG = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Nome', 'Telefone', 'Criado em', 'Email', 'Status', 'Finalizado em', 'Antecipado (min)'];
+const CAB_AG = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Nome', 'Telefone', 'Criado em', 'Email', 'Status', 'Finalizado em', 'Antecipado (min)', 'Confirmação', 'Motivo da recusa'];
+const SITE_URL = 'https://lucasnicaci0.github.io/barbearia/';
+const NOMES_DIA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
 const CAB_US = ['Email', 'Nome', 'Telefone', 'Salt', 'SenhaHash', 'Criado em'];
 const CAB_FB = ['Data', 'Nome', 'Nota', 'Comentário', 'Email'];
 const CAB_SV = ['Nome', 'Preço', 'Ícone', 'Descrição', 'Destaque', 'Categoria', 'Ativo'];
-const CAB_EQ = ['Email', 'Nome', 'Papel', 'Comissão %', 'Atende', 'Cursos', 'Observação', 'Ativo', 'Telefone'];
-const FMT_EQ = ['@', '@', '@', '0.##', '@', '@', '@', '@', '@'];
+const CAB_EQ = ['Email', 'Nome', 'Papel', 'Comissão %', 'Atende', 'Cursos', 'Observação', 'Ativo', 'Telefone',
+  'Foto', 'Instagram', 'Idade', 'Gênero', 'Especialidades', 'Anos', 'Bio', 'Horários'];
+const FMT_EQ = CAB_EQ.map((c, i) => i === 3 ? '0.##' : '@');
+const CAB_NT = ['Id', 'Para', 'Tipo', 'Título', 'Texto', 'Criado em', 'Lida', 'Ref'];
+const CAB_AC = ['Email', 'Cliente', 'Barbeiro', 'Nota', 'Tags', 'Comentário', 'Data'];
+const CAB_BQ = ['Id', 'Email', 'Cliente', 'Pedido por', 'Motivo', 'Status', 'Pedido em', 'Decidido por', 'Decidido em', 'Observação do dono'];
+const CAB_GL = ['Id', 'Tipo', 'Chave', 'FileId', 'Url', 'Título', 'Ordem', 'Criado em'];
+const FMT_GL = ['@', '@', '@', '@', '@', '@', '0', '@'];
 const CAB_FT = ['Id', 'FileId', 'Título', 'Descrição', 'Serviço', 'Ordem', 'Criado em', 'Url'];
 const FMT_FT = ['@', '@', '@', '@', '@', '0', '@', '@'];
-const CAB_PR = ['Id', 'Título', 'Descrição', 'Desconto %', 'Serviço', 'De', 'Até', 'Ativa', 'FileId', 'Url', 'Ordem'];
-const FMT_PR = ['@', '@', '@', '0.##', '@', '@', '@', '@', '@', '@', '0'];
+const CAB_PR = ['Id', 'Título', 'Descrição', 'Desconto %', 'Serviço', 'De', 'Até', 'Ativa', 'FileId', 'Url', 'Ordem', 'Tema'];
+const FMT_PR = ['@', '@', '@', '0.##', '@', '@', '@', '@', '@', '@', '0', '@'];
 const FOTO_UNS = id => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=1000&q=80';
 // cortes que já vêm no carrossel (o dono edita, troca a foto ou apaga)
 const SEMENTE_FOTOS = [
@@ -109,13 +118,17 @@ const vd_ = () => aba_('Vendas', CAB_VD);
 const mc_ = () => aba_('Marcas', CAB_MC, sh => reescrever_(sh, CAB_MC, SEMENTE_MARCAS, ['@', '@', '@', '@', '0']));
 const ft_ = () => aba_('Fotos', CAB_FT);
 const pr_ = () => aba_('Promocoes', CAB_PR);
+const nt_ = () => aba_('Notificacoes', CAB_NT);
+const ac_ = () => aba_('AvalClientes', CAB_AC);
+const bq_ = () => aba_('Bloqueios', CAB_BQ);
+const gl_ = () => aba_('Galeria', CAB_GL);
 const cf_ = () => aba_('Config', CAB_CF, sh => reescrever_(sh, CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, CFG_PADRAO[k]]), FMT_TXT(2)));
 const sv_ = () => aba_('Servicos', CAB_SV, sh =>
   reescrever_(sh, CAB_SV, SEMENTE_SERVICOS, ['@', '0.##', '@', '@', '@', '@', '@']));
 const eq_ = () => aba_('Equipe', CAB_EQ, sh => reescrever_(sh, CAB_EQ, [
-  [emailOk_(DONO_EMAIL) ? DONO_EMAIL.trim().toLowerCase() : '', 'Dono', 'dono', 0, 'não', '', '', 'sim', ''],
-  ['', 'Carlos', 'barbeiro', COMISSAO_PADRAO, 'sim', 'Curso de degradê e navalhado | Barboterapia profissional', 'Especialista em degradê e barba desenhada.', 'sim', ''],
-  ['', 'João', 'barbeiro', COMISSAO_PADRAO, 'sim', 'Colorimetria masculina | Corte infantil', 'Atende crianças com paciência e capricho.', 'sim', '']
+  linhaEq_({ email: emailOk_(DONO_EMAIL) ? DONO_EMAIL.trim().toLowerCase() : '', nome: 'Dono', papel: 'dono', comissao: 0, atende: false }),
+  linhaEq_({ nome: 'Carlos', comissao: COMISSAO_PADRAO, atende: true, cursos: ['Curso de degradê e navalhado', 'Barboterapia profissional'], obs: 'Especialista em degradê e barba desenhada.' }),
+  linhaEq_({ nome: 'João', comissao: COMISSAO_PADRAO, atende: true, cursos: ['Colorimetria masculina', 'Corte infantil'], obs: 'Atende crianças com paciência e capricho.' })
 ], FMT_EQ));
 
 // evita que o Google Planilhas execute texto digitado como fórmula
@@ -161,7 +174,10 @@ function equipe_() {
   return eq_().getDataRange().getValues().slice(1).filter(l => String(l[1]).trim()).map(l => ({
     email: String(l[0]).trim().toLowerCase(), nome: String(l[1]), papel: String(l[2]) === 'dono' ? 'dono' : 'barbeiro',
     comissao: l[3] === '' ? COMISSAO_PADRAO : Number(l[3]), atende: sim_(l[4]),
-    cursos: String(l[5]).split('|').map(s => s.trim()).filter(Boolean), obs: String(l[6]), ativo: sim_(l[7]), telefone: String(l[8] || '').replace(/\D/g, '')
+    cursos: String(l[5]).split('|').map(s => s.trim()).filter(Boolean), obs: String(l[6]), ativo: sim_(l[7]), telefone: String(l[8] || '').replace(/\D/g, ''),
+    foto: String(l[9] || ''), instagram: String(l[10] || ''), idade: Number(l[11]) || 0, genero: String(l[12] || ''),
+    especialidades: String(l[13] || '').split('|').map(x => x.trim()).filter(Boolean).slice(0, 8), anos: Number(l[14]) || 0,
+    bio: String(l[15] || ''), horarios: horariosDe_(l[16])
   }));
 }
 const barbeiros_ = () => equipe_().filter(p => p.ativo && p.atende);
@@ -198,7 +214,7 @@ function promos_() {
   return pr_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     id: String(l[0]), titulo: String(l[1]), desc: String(l[2]), desconto: Number(l[3]) || 0, servico: String(l[4]),
     de: String(l[5]).trim() ? dataTxt_(l[5]) : '', ate: String(l[6]).trim() ? dataTxt_(l[6]) : '', ativa: String(l[7]) === 'sim',
-    fileId: String(l[8]), url: String(l[9] || ''), ordem: Number(l[10]) || 0
+    fileId: String(l[8]), url: String(l[9] || ''), ordem: Number(l[10]) || 0, temaTxt: String(l[11] || ''), tema: temaDe_(l[11])
   })).sort((a, b) => a.ordem - b.ordem);
 }
 // Maior desconto vigente (ativo, dentro das datas) para o serviço naquela data
@@ -245,8 +261,9 @@ function lixeira_(fileId) {
 // todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
 function autorizar() {
   pastaFotos_();
-  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_].forEach(f => f());
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_, nt_, ac_, bq_, gl_].forEach(f => f());
   semearFotos_();
+  MailApp.getRemainingDailyQuota();            // pede a permissão de enviar e-mail (avisos para barbeiros e clientes)
 }
 
 // ---------- Cache da configuração pública ----------
@@ -259,12 +276,16 @@ function publico_() {
     const c = cfg_(), h = horario_(), limite = somarDias_(hoje_(), -1);
     const site = {};
     Object.keys(CFG_PADRAO).forEach(k => { site[k] = c[k]; });
-    delete site.abre; delete site.fecha; delete site.intervalo; delete site.diasFechados; delete site.diasAFrente;
+    delete site.abre; delete site.fecha; delete site.intervalo; delete site.diasFechados; delete site.diasAFrente; delete site.emailAvisos;
+    const certs = {}, porSrv = {};
+    galeria_().forEach(g => { const o = { id: g.id, fileId: g.fileId, url: g.url, titulo: g.titulo }; const alvo = g.tipo === 'certificado' ? certs : porSrv; (alvo[g.chave] = alvo[g.chave] || []).push(o); });
     txt = JSON.stringify({
-      barbeiros: barbeiros_().map(p => ({ nome: p.nome, cursos: p.cursos, obs: p.obs })),
+      barbeiros: barbeiros_().map(p => ({ nome: p.nome, cursos: p.cursos, obs: p.obs, foto: p.foto, instagram: p.instagram, especialidades: p.especialidades, anos: p.anos, bio: p.bio,
+        certs: certs[p.nome] || [], folgas: Object.keys(p.horarios).filter(k => p.horarios[k] && p.horarios[k].off).map(Number) })),
+      galeria: porSrv,
       servicos: servicos_().filter(s => s.ativo).map(s => ({ nome: s.nome, preco: s.preco, icone: s.icone, desc: s.desc, destaque: s.destaque })),
       fotos: fotos_().map(f => ({ id: f.id, fileId: f.fileId, url: f.url, titulo: f.titulo, desc: f.desc, servico: f.servico })), fotosOk: true,
-      promos: promos_().filter(p => p.ativa && (!p.ate || p.ate >= limite)).map(p => ({ id: p.id, titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, fileId: p.fileId, url: p.url })),
+      promos: promos_().filter(p => p.ativa && (!p.ate || p.ate >= limite)).map(p => ({ id: p.id, titulo: p.titulo, desc: p.desc, desconto: p.desconto, servico: p.servico, de: p.de, ate: p.ate, fileId: p.fileId, url: p.url, tema: p.tema })),
       marcas: marcas_().map(m => ({ id: m.id, fileId: m.fileId, nome: m.nome, desc: m.desc })),
       site: site, diasFechados: h.fechados, dias: h.dias, abre: h.abre, fecha: h.fecha
     });
@@ -304,17 +325,22 @@ function horarios_() {
 }
 function ocupados_(data, barbeiro) {
   return ag_().getDataRange().getValues().slice(1)
-    .filter(l => dataTxt_(l[0]) === data && l[2] === barbeiro)
+    .filter(l => dataTxt_(l[0]) === data && l[2] === barbeiro && String(l[8] || '').trim() !== 'recusado')
     .map(l => horaTxt_(l[1]));
 }
 // Fonte única da verdade: horários realmente livres (já tira passado, dia fechado e ocupados)
 function slots_(data, barbeiro) {
-  if (!isoOk_(data) || nomesBarbeiros_().indexOf(barbeiro) === -1) return [];
+  if (!isoOk_(data)) return [];
+  const b = barbeiros_().filter(p => p.nome === barbeiro)[0];
+  if (!b) return [];
   const h = horario_(), hoje = hoje_();
   if (data < hoje || data > somarDias_(hoje, h.dias - 1)) return [];
   if (h.fechados.indexOf(diaSemana_(data)) !== -1) return [];
+  const jan = janelaDe_(b, data);                                     // horário próprio do profissional (se tiver)
+  if (jan === null) return [];
   const usados = ocupados_(data, barbeiro), agora = agora_();
-  return horarios_().filter(x => usados.indexOf(x) === -1 && (data > hoje || x > agora));
+  return horarios_().filter(x => usados.indexOf(x) === -1 && (data > hoje || x > agora) &&
+    (!jan || (x >= jan.a && x < jan.f && !(jan.pa && x >= jan.pa && x < jan.pf))));
 }
 
 // ---------- Segurança: senha com hash e sessão assinada ----------
@@ -429,24 +455,43 @@ function agendar_(d, email) {
   const u = acharUsuario_(email);
   if (!u) return erro_('Conta não encontrada.', { expirada: true });
   if (!servicos_().some(s => s.ativo && s.nome === d.servico)) return erro_('Serviço inválido.');
+  if (bloqueioAtivo_(email)) return erro_('Não foi possível concluir o agendamento por aqui. Fale com a barbearia pelo WhatsApp.');
   if (slots_(d.data, d.barbeiro).indexOf(d.hora) === -1) return erro_('Esse horário não está mais disponível. Escolha outro.');
-  acrescentar_(ag_(), CAB_AG, [d.data, d.hora, d.barbeiro, d.servico, u.nome, u.telefone, agoraBR_(), email, '', '', ''], FMT_TXT(11));
-  return json_({ ok: true });
+  const hoje = hoje_();
+  const abertos = ag_().getDataRange().getValues().slice(1).filter(l => String(l[7]).toLowerCase() === email && dataTxt_(l[0]) >= hoje && !String(l[8] || '').trim()).length;
+  if (abertos >= 6) return erro_('Você já tem 6 horários em aberto. Cancele ou aguarde um deles para marcar outro.');
+  const barb = equipe_().filter(p => p.nome === d.barbeiro && p.ativo)[0];
+  const exige = String(cfg_().exigirConfirmacao) !== '0' && !!barb && !!barb.email;      // sem e-mail cadastrado ninguém confirmaria: já vale
+  const conf = exige ? 'pendente' : 'confirmado';
+  acrescentar_(ag_(), CAB_AG, [d.data, d.hora, d.barbeiro, d.servico, u.nome, u.telefone, agoraBR_(), email, '', '', '', conf, ''], FMT_TXT(13));
+  if (barb && barb.email) {
+    notificar_(barb.email, 'agendamento', exige ? 'Novo cliente marcando' : 'Novo horário marcado',
+      u.nome + ' · ' + d.servico + ' · ' + dataBR_(d.data) + ' às ' + d.hora + (exige ? '. Confirme ou recuse na Agenda.' : '.'), d.data + '|' + d.hora + '|' + d.barbeiro, true);
+  }
+  return json_({ ok: true, conf: conf });
 }
 function meus_(email) {
   const hoje = hoje_();
-  const lista = ag_().getDataRange().getValues().slice(1)
-    .filter(l => String(l[7]).toLowerCase() === email && dataTxt_(l[0]) >= hoje && !String(l[8] || '').trim())
-    .map(l => ({ data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]) }))
+  const v = ag_().getDataRange().getValues().slice(1).filter(l => String(l[7]).toLowerCase() === email && dataTxt_(l[0]) >= hoje);
+  const lista = v.filter(l => !String(l[8] || '').trim())
+    .map(l => ({ data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), conf: String(l[11] || '') || 'confirmado' }))
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
-  return json_({ ok: true, lista: lista });
+  const recusados = v.filter(l => String(l[8] || '').trim() === 'recusado')
+    .map(l => ({ data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), motivo: String(l[12] || '') }))
+    .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+  return json_({ ok: true, lista: lista, recusados: recusados });
 }
 function cancelar_(d, email) {
   const sh = ag_(), v = sh.getDataRange().getValues();
+  const alvoStatus = d.recusado ? 'recusado' : '';                    // "recusado": o cliente só está dispensando o aviso
   for (let i = 1; i < v.length; i++) {
     if (dataTxt_(v[i][0]) === d.data && horaTxt_(v[i][1]) === d.hora && v[i][2] === d.barbeiro &&
-        String(v[i][7]).toLowerCase() === email && !String(v[i][8] || '').trim()) {
+        String(v[i][7]).toLowerCase() === email && String(v[i][8] || '').trim() === alvoStatus) {
       sh.deleteRow(i + 1);
+      if (!d.recusado) {
+        const be = emailDe_(String(v[i][2]));
+        if (be) notificar_(be, 'cancelado', 'Cliente cancelou', String(v[i][4]) + ' cancelou ' + String(v[i][3]) + ' de ' + dataBR_(d.data) + ' às ' + d.hora + '.', '', false);
+      }
       return json_({ ok: true });
     }
   }
@@ -485,8 +530,9 @@ function mapaFid_() {
   vd_().getDataRange().getValues().slice(1).forEach(l => {
     const e = String(l[16] || '').trim().toLowerCase();
     if (!e || String(l[4]) !== 'corte') return;
-    const o = m[e] = m[e] || { cortes: 0, resg: 0 };
+    const o = m[e] = m[e] || { cortes: 0, resg: 0, ult: '' };
     if (String(l[17]) === 'sim') o.resg++; else o.cortes++;
+    const dt = dataTxt_(l[0]); if (dt > o.ult) o.ult = dt;
   });
   return m;
 }
@@ -512,20 +558,26 @@ function adminAgenda_(d, q) {
   if (ate < de) ate = de;
   if (diasEntre_(de, ate) > 62) ate = somarDias_(de, 62);
   const preco = {}, cat = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; cat[s.nome] = s.categoria; });
-  const promos = promos_(), meta = metaCortes_(), fid = meta ? mapaFid_() : {};
-  const lista = ag_().getDataRange().getValues().slice(1)
-    .filter(l => { const dt = dataTxt_(l[0]); return dt >= de && dt <= ate && (q.papel === 'dono' || String(l[2]) === q.nome); })
+  const promos = promos_(), meta = metaCortes_(), fid = mapaFid_(), av = avalMapa_();
+  const todas = ag_().getDataRange().getValues().slice(1), falt = {}, bloq = {};
+  todas.forEach(l => { if (String(l[8] || '').trim() === 'faltou') { const e = String(l[7] || '').toLowerCase(); if (e) falt[e] = (falt[e] || 0) + 1; } });
+  bloqueios_().forEach(b => { if (b.status === 'ativo') bloq[b.email] = 1; });
+  const lista = todas
+    .filter(l => { const dt = dataTxt_(l[0]); return dt >= de && dt <= ate && (q.papel === 'dono' || String(l[2]) === q.nome) && String(l[8] || '').trim() !== 'recusado'; })
     .map(l => {
-      const pm = promoPara_(promos, String(l[3]), dataTxt_(l[0])), tab = preco[String(l[3])] || 0;
+      const pm = promoPara_(promos, String(l[3]), dataTxt_(l[0])), tab = preco[String(l[3])] || 0, em = String(l[7] || '').toLowerCase();
+      const x = fid[em] || { cortes: 0, resg: 0 };
       return {
       data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), cliente: String(l[4]),
       telefone: String(l[5]), status: String(l[8] || '').trim(), finalizadoEm: String(l[9] || ''), antecipado: Number(l[10]) || 0, valor: precoPromo_(tab, pm),
+      conf: String(l[11] || '') || 'confirmado', email: em,
+      cli: em ? cliResumo_(x.cortes + x.resg, av[em], falt[em] || 0, !!bloq[em]) : null,
       promo: pm ? { titulo: pm.titulo, desconto: pm.desconto, tabela: tab } : null,
-      gratis: !!meta && !String(l[8] || '').trim() && cat[String(l[3])] === 'corte' && fidDe_(fid, String(l[7]).toLowerCase(), meta).creditos > 0
+      gratis: !!meta && !String(l[8] || '').trim() && cat[String(l[3])] === 'corte' && fidDe_(fid, em, meta).creditos > 0
       };
     })
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
-  return json_({ ok: true, de: de, ate: ate, hoje: hoje, lista: lista });
+  return json_({ ok: true, de: de, ate: ate, hoje: hoje, lista: lista, pendentes: lista.filter(x => !x.status && x.conf === 'pendente').length });
 }
 
 function registrarVenda_(o) {
@@ -534,6 +586,15 @@ function registrarVenda_(o) {
   acrescentar_(vd_(), CAB_VD, [o.data, o.hora, o.barbeiro, seguro_(o.servico), o.categoria, seguro_(o.cliente || ''), seguro_(o.telefone || ''),
     valor, com, vCom, lucro, valor ? r2_(lucro / valor * 100) : 0, o.origem, agoraBR_(), o.por, o.chave,
     String(o.email || '').toLowerCase(), o.resgate ? 'sim' : ''], FMT_VD);
+  // corte vinculado a um cadastro = mais uma munição no revólver do cliente (avisa no sino dele)
+  try {
+    const em = String(o.email || '').toLowerCase(), meta = metaCortes_();
+    if (em && meta && o.categoria === 'corte' && !o.resgate) {
+      const f = fidDe_(mapaFid_(), em, meta);
+      if (f.progresso === 0) notificar_(em, 'municao', 'Tambor cheio! Corte grátis', 'Você completou ' + meta + ' cortes e ganhou 1 corte grátis. Avise o barbeiro ao chegar.', '', false);
+      else notificar_(em, 'municao', 'Nova munição no seu revólver', 'Corte registrado: ' + f.progresso + ' de ' + meta + ' balas. Faltam ' + f.faltam + (f.faltam === 1 ? ' corte' : ' cortes') + ' para o grátis.', '', false);
+    }
+  } catch (e) {}
 }
 const valorOk_ = v => { const n = Number(String(v).replace(',', '.')); return isFinite(n) && n >= 0 && n <= 99999 ? n : null; };
 
@@ -551,6 +612,7 @@ function concluirAgenda_(d, q, servicoNome) {
   const sh = ag_(), v = sh.getDataRange().getValues();
   for (let i = 1; i < v.length; i++) {
     if (dataTxt_(v[i][0]) !== d.data || horaTxt_(v[i][1]) !== d.hora || v[i][2] !== d.barbeiro) continue;
+    if (String(v[i][8] || '').trim() === 'recusado') continue;
     if (q.papel !== 'dono' && v[i][2] !== q.nome) return { erro: 'Sem permissão para este horário.' };
     if (String(v[i][8] || '').trim()) return { erro: 'Este horário já foi finalizado.' };
     const sv = servicos_().filter(s => s.nome === (servicoNome || v[i][3]))[0];
@@ -565,6 +627,7 @@ function concluirAgenda_(d, q, servicoNome) {
     }
     const antes = status === 'concluido' ? minutosAntes_(d.data, d.hora) : 0;
     const c = sh.getRange(i + 1, 9, 1, 3); c.setNumberFormats([['@', '@', '@']]); c.setValues([[status, agoraBR_(), antes ? String(antes) : '']]);
+    if (String(v[i][11] || '') === 'pendente') { const cc = sh.getRange(i + 1, 12); cc.setNumberFormat('@'); cc.setValue('confirmado'); }
     if (status === 'concluido') {
       registrarVenda_({ data: dataTxt_(v[i][0]), hora: horaTxt_(v[i][1]), barbeiro: String(v[i][2]), servico: sv ? sv.nome : String(v[i][3]),
         categoria: sv ? sv.categoria : 'outro', cliente: String(v[i][4]), telefone: String(v[i][5]), valor: valor, origem: 'agenda',
@@ -628,9 +691,12 @@ function adminCancelar_(d, q) {
   const sh = ag_(), v = sh.getDataRange().getValues();
   for (let i = 1; i < v.length; i++) {
     if (dataTxt_(v[i][0]) === d.data && horaTxt_(v[i][1]) === d.hora && v[i][2] === d.barbeiro) {
+      if (String(v[i][8] || '').trim() === 'recusado') continue;
       if (q.papel !== 'dono' && v[i][2] !== q.nome) return erro_('Sem permissão para este horário.');
       if (String(v[i][8] || '').trim()) return erro_('Este horário já foi finalizado.');
       sh.deleteRow(i + 1);
+      const em = String(v[i][7] || '').toLowerCase();
+      if (em) notificar_(em, 'cancelado', 'Horário cancelado', 'A barbearia cancelou seu horário de ' + dataBR_(d.data) + ' às ' + d.hora + ' (' + String(v[i][3]) + '). Marque outro quando quiser.', '', true);
       return json_({ ok: true });
     }
   }
@@ -679,7 +745,7 @@ function adminExcluirVenda_(d) {
     if (chave.indexOf('avulsa|') !== 0) {            // devolve o horário para "pendente"
       const p = chave.split('|'), ag = ag_(), a = ag.getDataRange().getValues();
       for (let j = 1; j < a.length; j++) {
-        if (dataTxt_(a[j][0]) === p[0] && horaTxt_(a[j][1]) === p[1] && a[j][2] === p[2]) { ag.getRange(j + 1, 9, 1, 3).setValues([['', '', '']]); break; }
+        if (dataTxt_(a[j][0]) === p[0] && horaTxt_(a[j][1]) === p[1] && a[j][2] === p[2] && String(a[j][8] || '').trim() !== 'recusado') { ag.getRange(j + 1, 9, 1, 3).setValues([['', '', '']]); break; }
       }
     }
     return json_({ ok: true });
@@ -690,21 +756,18 @@ function adminExcluirVenda_(d) {
 
 // Cadastra UM barbeiro novo pela Área privada. Quem tem o e-mail na equipe entra na Área privada só da própria agenda.
 function adminBarbeiroCadastrar_(d) {
-  const nome = limpo_(d.nome, 40), email = limpo_(d.email, 80).toLowerCase(), tel = String(d.telefone || '').replace(/\D/g, '');
-  if (!nome) return erro_('Informe o nome do barbeiro.');
-  if (!emailOk_(email)) return erro_('Informe um e-mail válido. É com ele que o barbeiro entra no site.');
-  if (email === String(DONO_EMAIL).trim().toLowerCase()) return erro_('Esse e-mail é o do dono.');
-  if (tel && (tel.length < 10 || tel.length > 13)) return erro_('Telefone inválido. Use DDD + número.');
-  const com = valorOk_(d.comissao === undefined || d.comissao === '' ? COMISSAO_PADRAO : d.comissao);
-  if (com === null || com > 100) return erro_('A comissão deve ficar entre 0 e 100.');
-  const atuais = equipe_();
-  const igual = atuais.filter(p => p.email === email)[0];
+  const email = limpo_(d.email, 80).toLowerCase(), ehDono = d.papel === 'dono';
+  if (!limpo_(d.nome, 40)) return erro_(ehDono ? 'Informe o nome do dono.' : 'Informe o nome do barbeiro.');
+  if (!emailOk_(email)) return erro_('Informe um e-mail válido. É com ele que a pessoa entra no site.');
+  if (email === dono_()) return erro_('Esse e-mail é o do dono principal.');
+  const r = validarPessoa_(Object.assign({}, d, { email: email, atende: ehDono ? !!d.atende : d.atende !== false, ativo: true }), ehDono ? 0 : COMISSAO_PADRAO);
+  if (r.erro) return erro_(r.erro);
+  const p = r.pessoa, atuais = equipe_();
+  const igual = atuais.filter(x => x.email === email)[0];
   if (igual) return erro_('Esse e-mail já está cadastrado como ' + igual.nome + (igual.ativo ? '.' : ' (inativo): reative na lista abaixo.'));
-  const mesmoNome = atuais.filter(p => p.nome.toLowerCase() === nome.toLowerCase())[0];
-  if (mesmoNome) return erro_('Já existe alguém com o nome ' + nome + '. Use outro nome (ex.: com sobrenome).');
-  const cursos = (Array.isArray(d.cursos) ? d.cursos : []).map(c => limpo_(String(c).replace(/\|/g, ' '), 70)).filter(Boolean).slice(0, 10);
-  acrescentar_(eq_(), CAB_EQ, [email, seguro_(nome), 'barbeiro', r2_(com), simnao_(d.atende !== false), seguro_(cursos.join(' | ')),
-    seguro_(limpo_(d.obs, 160)), 'sim', tel], FMT_EQ);
+  const mesmoNome = atuais.filter(x => x.nome.toLowerCase() === p.nome.toLowerCase())[0];
+  if (mesmoNome) return erro_('Já existe alguém com o nome ' + p.nome + '. Use outro nome (ex.: com sobrenome).');
+  acrescentar_(eq_(), CAB_EQ, linhaEq_(p), FMT_EQ);
   limparCache_();
   return json_({ ok: true, temConta: !!acharUsuario_(email) });
 }
@@ -785,7 +848,9 @@ function adminPromosSalvar_(d) {
     if (de && ate && ate < de) return erro_('Em "' + titulo + '" a data final vem antes da inicial.');
     let id = String(p.id || ''); if (!atuais[id] || usados[id]) id = Utilities.getUuid().slice(0, 8);
     usados[id] = 1; const antigo = atuais[id] || {};
-    linhas.push([id, seguro_(titulo), seguro_(limpo_(p.desc, 140)), r2_(desc), servico, de, ate, simnao_(p.ativa !== false), antigo.fileId || '', antigo.url || '', i + 1]);
+    let temaJson = antigo.temaTxt || '';
+    if (p.tema !== undefined) { const t = temaOk_(p.tema); if (t.erro) return erro_(t.erro + ' (' + titulo + ')'); temaJson = t.json; }
+    linhas.push([id, seguro_(titulo), seguro_(limpo_(p.desc, 140)), r2_(desc), servico, de, ate, simnao_(p.ativa !== false), antigo.fileId || '', antigo.url || '', i + 1, temaJson]);
   }
   Object.keys(atuais).forEach(id => { if (!usados[id]) lixeira_(atuais[id].fileId); });
   reescrever_(pr_(), CAB_PR, linhas, FMT_PR);
@@ -854,12 +919,13 @@ function adminDashboard_(d, q) {
   const porBarbeiro = arr(porBar).map(b => { b.ticket = b.qtd ? r2_(b.valor / b.qtd) : 0; if (!ehDono) delete b.lucro; return b; }).sort((a, b) => b.valor - a.valor);
   // agenda
   const nomeOk = x => ehDono || String(x[2]) === q.nome;
-  const ag = ag_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim() && nomeOk(l));
-  const fim7 = somarDias_(hoje, 7), agenda = { hoje: 0, hojeFeitos: 0, proximos7: 0, faltas: 0, semBaixa: 0 };
+  const ag = ag_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim() && nomeOk(l) && String(l[8] || '').trim() !== 'recusado');
+  const fim7 = somarDias_(hoje, 7), agenda = { hoje: 0, hojeFeitos: 0, proximos7: 0, faltas: 0, semBaixa: 0, pendentes: 0 };
   ag.forEach(l => {
     const dt = dataTxt_(l[0]), st = String(l[8] || '').trim();
     if (dt === hoje) { agenda.hoje++; if (st === 'concluido') agenda.hojeFeitos++; }
     if (dt > hoje && dt <= fim7 && !st) agenda.proximos7++;
+    if (!st && dt >= hoje && String(l[11] || '') === 'pendente') agenda.pendentes++;
     if (dt >= de && dt <= ate && st === 'faltou') agenda.faltas++;
     if (dt < hoje && dt >= somarDias_(hoje, -30) && !st) agenda.semBaixa++;
   });
@@ -888,18 +954,19 @@ function adminDados_() {
   const c = cfg_(), conf = {};
   Object.keys(CFG_PADRAO).forEach(k => { conf[k] = c[k]; });
   semearFotos_();
-  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), promos: promos_(), hoje: hoje_(), marcas: marcas_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
+  return json_({ ok: true, servicos: servicos_(), equipe: equipe_(), fotos: fotos_(), promos: promos_(), galeria: galeria_(), hoje: hoje_(), marcas: marcas_(), config: conf, comissaoPadrao: COMISSAO_PADRAO, dono: String(DONO_EMAIL).trim().toLowerCase() });
 }
 
 function adminSalvarServicos_(d) {
   const lista = Array.isArray(d.servicos) ? d.servicos : [];
   if (lista.length > 60) return erro_('Serviços demais.');
-  const vistos = {}, linhas = [];
+  const vistos = {}, linhas = [], renomes = [];
   for (let i = 0; i < lista.length; i++) {
     const s = lista[i] || {}, nome = limpo_(s.nome, 40);
     if (!nome) return erro_('Todo serviço precisa de nome.');
     if (vistos[nome.toLowerCase()]) return erro_('Nome de serviço repetido: ' + nome);
     vistos[nome.toLowerCase()] = 1;
+    if (s.antigo && String(s.antigo) !== nome) renomes.push([String(s.antigo), nome]);
     const preco = valorOk_(s.preco);
     if (preco === null) return erro_('Preço inválido em ' + nome + '.');
     linhas.push([seguro_(nome), r2_(preco), ICONES.indexOf(s.icone) !== -1 ? s.icone : 'tesoura', seguro_(limpo_(s.desc, 90)),
@@ -907,6 +974,7 @@ function adminSalvarServicos_(d) {
   }
   if (!linhas.some(l => l[6] === 'sim')) return erro_('Deixe pelo menos um serviço ativo.');
   reescrever_(sv_(), CAB_SV, linhas, ['@', '0.##', '@', '@', '@', '@', '@']);
+  renomes.forEach(r => renomearChaveGaleria_('servico', r[0], r[1]));
   limparCache_();
   return json_({ ok: true });
 }
@@ -914,36 +982,33 @@ function adminSalvarServicos_(d) {
 function adminSalvarEquipe_(d) {
   const lista = Array.isArray(d.equipe) ? d.equipe : [];
   if (lista.length > 30) return erro_('Equipe grande demais.');
-  const dono = String(DONO_EMAIL).trim().toLowerCase();
-  const nomes = {}, emails = {}, linhas = [];
+  const dono = dono_(), antigos = equipe_();
+  const nomes = {}, emails = {}, pessoas = [], renomes = [];
   for (let i = 0; i < lista.length; i++) {
-    const p = lista[i] || {}, nome = limpo_(p.nome, 40), email = limpo_(p.email, 80).toLowerCase();
-    if (!nome) return erro_('Todo profissional precisa de nome.');
-    if (nomes[nome.toLowerCase()]) return erro_('Nome repetido: ' + nome);
-    nomes[nome.toLowerCase()] = 1;
-    if (email) {
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return erro_('E-mail inválido de ' + nome + '.');
-      if (emails[email]) return erro_('E-mail repetido: ' + email);
-      emails[email] = 1;
-    }
-    const com = valorOk_(p.comissao);
-    if (com === null || com > 100) return erro_('A comissão de ' + nome + ' deve ficar entre 0 e 100.');
-    const cursos = (Array.isArray(p.cursos) ? p.cursos : []).map(c => limpo_(String(c).replace(/\|/g, ' '), 70)).filter(Boolean).slice(0, 10);
-    const tel = String(p.telefone || '').replace(/\D/g, '');
-    if (tel && (tel.length < 10 || tel.length > 13)) return erro_('Telefone inválido de ' + nome + '. Use DDD + número.');
-    linhas.push([email, seguro_(nome), (dono && email === dono) || p.papel === 'dono' ? 'dono' : 'barbeiro', r2_(com), simnao_(!!p.atende),
-      seguro_(cursos.join(' | ')), seguro_(limpo_(p.obs, 160)), simnao_(p.ativo !== false), tel]);
+    const r = validarPessoa_(lista[i] || {}, 0);
+    if (r.erro) return erro_(r.erro);
+    const p = r.pessoa;
+    if (nomes[p.nome.toLowerCase()]) return erro_('Nome repetido: ' + p.nome);
+    nomes[p.nome.toLowerCase()] = 1;
+    if (p.email) { if (emails[p.email]) return erro_('E-mail repetido: ' + p.email); emails[p.email] = 1; }
+    const ant = (p.email && antigos.filter(o => o.email === p.email)[0]) || antigos.filter(o => o.nome.toLowerCase() === p.nome.toLowerCase())[0];
+    p.foto = ant ? ant.foto : '';                                      // a foto é trocada só pelo envio de imagem
+    if (dono && p.email === dono) p.papel = 'dono';
+    if (lista[i].antigo && String(lista[i].antigo) !== p.nome) renomes.push([String(lista[i].antigo), p.nome]);
+    pessoas.push(p);
   }
-  if (emailOk_(dono) && !emails[dono]) linhas.unshift([dono, 'Dono', 'dono', 0, 'não', '', '', 'sim', '']);
+  const linhas = pessoas.map(linhaEq_);
+  if (emailOk_(dono) && !emails[dono]) linhas.unshift(linhaEq_({ email: dono, nome: 'Dono', papel: 'dono', comissao: 0, atende: false }));
   // quem sumiu da lista continua existindo como "inativo" (não perde o histórico de agendas e vendas)
-  equipe_().forEach(old => {
-    if (!nomes[old.nome.toLowerCase()] && !(dono && old.email && old.email === dono)) {
-      linhas.push([old.email, seguro_(old.nome), old.papel, old.comissao, 'não', seguro_(old.cursos.join(' | ')), seguro_(old.obs), 'não', old.telefone || '']);
+  antigos.forEach(old => {
+    if (!nomes[old.nome.toLowerCase()] && !(dono && old.email && old.email === dono) && !(old.email && emails[old.email])) {
+      linhas.push(linhaEq_(Object.assign({}, old, { atende: false, ativo: false })));
     }
   });
   if (!linhas.some(l => l[7] === 'sim' && l[4] === 'sim')) return erro_('Deixe pelo menos um barbeiro ativo que atende clientes.');
   if (!linhas.some(l => l[2] === 'dono' && l[0] && l[7] === 'sim')) return erro_('Precisa existir pelo menos um dono ativo com e-mail, senão ninguém acessa a Área privada.');
   reescrever_(eq_(), CAB_EQ, linhas, FMT_EQ);
+  renomes.forEach(r => renomearChaveGaleria_('certificado', r[0], r[1]));
   limparCache_();
   return json_({ ok: true });
 }
@@ -977,6 +1042,7 @@ function adminSalvarConfig_(d) {
   if (n.abre !== undefined) novo.abre = String(inteiro_(n.abre, 9, 0, 23));
   if (n.fecha !== undefined) novo.fecha = String(inteiro_(n.fecha, 19, 1, 24));
   if (n.intervalo !== undefined) novo.intervalo = String([10, 15, 20, 30, 45, 60].indexOf(inteiro_(n.intervalo, 30, 10, 60)) !== -1 ? inteiro_(n.intervalo, 30, 10, 60) : 30);
+  ['exigirConfirmacao', 'emailAvisos'].forEach(k => { if (n[k] !== undefined) novo[k] = (n[k] === true || n[k] === 1 || n[k] === '1' || n[k] === 'sim') ? '1' : '0'; });
   if (n.metaCortes !== undefined) novo.metaCortes = String(inteiro_(n.metaCortes, 7, 0, 30));
   if (n.diasAFrente !== undefined) novo.diasAFrente = String(inteiro_(n.diasAFrente, 14, 1, 60));
   if (n.diasFechados !== undefined) {
@@ -1097,6 +1163,372 @@ function adminFotoHeroDel_() {
 }
 
 // =====================================================================
+//  PERFIL DA EQUIPE · CONFIRMAÇÃO DE HORÁRIOS · AVISOS · CLIENTES · AVALIAÇÕES · BLOQUEIOS · GALERIAS
+// =====================================================================
+const HORA_OK = s => /^([01]\d|2[0-3]):[0-5]\d$/.test(String(s || ''));
+const dono_ = () => String(DONO_EMAIL).trim().toLowerCase();
+const dataBR_ = iso => NOMES_DIA[diaSemana_(iso)].slice(0, 3) + ' ' + iso.slice(8, 10) + '/' + iso.slice(5, 7);
+const lista_ = (txt, max) => String(txt || '').split('|').map(s => s.trim()).filter(Boolean).slice(0, max);
+function horariosDe_(txt) { try { const o = JSON.parse(txt || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+
+// Linha da aba Equipe a partir de uma pessoa (tolera campos que faltam)
+function linhaEq_(p) {
+  const l = a => (Array.isArray(a) ? a : []).join(' | ');
+  return [p.email || '', seguro_(p.nome), p.papel === 'dono' ? 'dono' : 'barbeiro', p.comissao === undefined || p.comissao === '' ? COMISSAO_PADRAO : p.comissao,
+    simnao_(!!p.atende), seguro_(l(p.cursos)), seguro_(p.obs || ''), simnao_(p.ativo !== false), p.telefone || '',
+    p.foto || '', seguro_(p.instagram || ''), p.idade ? String(p.idade) : '', p.genero || '', seguro_(l(p.especialidades)),
+    p.anos ? String(p.anos) : '', seguro_(p.bio || ''), p.horarios && Object.keys(p.horarios).length ? JSON.stringify(p.horarios) : ''];
+}
+
+// Horário de trabalho de cada dia da semana: { "1": {a:"09:00", f:"18:00", pa:"12:00", pf:"13:00"}, "0": {off:true} }
+function horariosOk_(h, nome) {
+  const out = {};
+  if (!h || typeof h !== 'object') return { h: out };
+  for (let d = 0; d <= 6; d++) {
+    const x = h[d] !== undefined ? h[d] : h[String(d)];
+    if (!x || typeof x !== 'object') continue;
+    if (x.off) { out[d] = { off: true }; continue; }
+    if (!HORA_OK(x.a) || !HORA_OK(x.f) || x.a >= x.f) return { erro: 'Horário de ' + nome + ' (' + NOMES_DIA[d] + '): o fim precisa ser depois do início.' };
+    const o = { a: x.a, f: x.f };
+    if (x.pa || x.pf) {
+      if (!HORA_OK(x.pa) || !HORA_OK(x.pf) || x.pa >= x.pf || x.pa < x.a || x.pf > x.f) return { erro: 'Pausa de ' + nome + ' (' + NOMES_DIA[d] + ') inválida: ela precisa ficar dentro do expediente.' };
+      o.pa = x.pa; o.pf = x.pf;
+    }
+    out[d] = o;
+  }
+  return { h: out };
+}
+// Confere e limpa todos os campos de um profissional. Devolve {erro} ou {pessoa}
+function validarPessoa_(p, comPadrao) {
+  const nome = limpo_(p.nome, 40);
+  if (!nome) return { erro: 'Todo profissional precisa de nome.' };
+  const email = limpo_(p.email, 80).toLowerCase();
+  if (email && !emailOk_(email)) return { erro: 'E-mail inválido de ' + nome + '.' };
+  const com = valorOk_(p.comissao === undefined || p.comissao === null || p.comissao === '' ? comPadrao : p.comissao);
+  if (com === null || com > 100) return { erro: 'A comissão de ' + nome + ' deve ficar entre 0 e 100.' };
+  const tel = String(p.telefone || '').replace(/\D/g, '');
+  if (tel && (tel.length < 10 || tel.length > 13)) return { erro: 'Telefone inválido de ' + nome + '. Use DDD + número.' };
+  const insta = String(p.instagram || '').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/[\/?].*$/, '');
+  if (!/^[A-Za-z0-9._]{0,30}$/.test(insta)) return { erro: 'Instagram inválido de ' + nome + '.' };
+  const num = (v, min, max, rot) => {
+    if (v === undefined || v === null || String(v).trim() === '' || Number(v) === 0) return 0;      // vazio ou 0 = não informado
+    const n = parseInt(v, 10);
+    return n >= min && n <= max ? n : null;
+  };
+  const idade = num(p.idade, 14, 90); if (idade === null) return { erro: 'Idade inválida de ' + nome + ' (use de 14 a 90).' };
+  const anos = num(p.anos, 0, 60); if (anos === null) return { erro: 'Anos de experiência inválidos de ' + nome + ' (use de 0 a 60).' };
+  const itens = (v, n, max) => (Array.isArray(v) ? v : []).map(c => limpo_(String(c).replace(/\|/g, ' '), max)).filter(Boolean).slice(0, n);
+  const hr = horariosOk_(p.horarios, nome); if (hr.erro) return hr;
+  return { pessoa: {
+    email: email, nome: nome, papel: p.papel === 'dono' ? 'dono' : 'barbeiro', comissao: r2_(com), atende: !!p.atende,
+    cursos: itens(p.cursos, 10, 70), obs: limpo_(p.obs, 160), ativo: p.ativo !== false, telefone: tel, foto: '',
+    instagram: insta, idade: idade, genero: ['masculino', 'feminino', 'outro'].indexOf(p.genero) !== -1 ? p.genero : '',
+    especialidades: itens(p.especialidades, 8, 40), anos: anos, bio: limpo_(p.bio, 400), horarios: hr.h
+  } };
+}
+
+// Janela de trabalho do profissional naquele dia: undefined = vale o horário da barbearia, null = folga
+function janelaDe_(p, data) {
+  const x = p.horarios && p.horarios[diaSemana_(data)];
+  if (!x) return undefined;
+  return x.off ? null : x;
+}
+
+function renomearChaveGaleria_(tipo, de, para) {
+  if (!de || !para || de === para) return;
+  const sh = gl_(), v = sh.getDataRange().getValues(); let mudou = false;
+  const col = v.slice(1).map(l => { if (String(l[1]) === tipo && String(l[2]) === de) { mudou = true; return [para]; } return [l[2]]; });
+  if (mudou) { const r = sh.getRange(2, 3, col.length, 1); r.setNumberFormat('@'); r.setValues(col); limparCache_(); }
+}
+
+// ---------- Avisos (sino dentro do site + e-mail opcional) ----------
+function emailAviso_(para, assunto, corpo) {
+  try {
+    if (!emailOk_(para) || String(cfg_().emailAvisos) === '0') return;
+    const nome = cfg_().nome || 'Barbearia';
+    MailApp.sendEmail({ to: para, subject: '[' + nome + '] ' + assunto, body: corpo + '\n\nAbra o site: ' + SITE_URL, name: nome });
+  } catch (e) {}
+}
+function notificar_(para, tipo, titulo, texto, ref, comEmail) {
+  para = String(para || '').trim().toLowerCase();
+  if (!para) return;
+  try {
+    const sh = nt_();
+    acrescentar_(sh, CAB_NT, [Utilities.getUuid().slice(0, 8), para, tipo, seguro_(limpo_(titulo, 80)), seguro_(limpo_(texto, 240)), agoraBR_(), '', limpo_(ref || '', 120)], FMT_TXT(8));
+    if (sh.getLastRow() > 600) sh.deleteRows(2, 300);                 // mantém a aba pequena
+    CacheService.getScriptCache().remove('nt_' + para);
+  } catch (e) {}
+  if (comEmail) emailAviso_(para, titulo, texto);
+}
+function notifLer_(email) {
+  return nt_().getDataRange().getValues().slice(1).filter(l => String(l[1]).toLowerCase() === email).map(l => ({
+    id: String(l[0]), tipo: String(l[2]), titulo: String(l[3]), texto: String(l[4]), quando: String(l[5]), lida: String(l[6]) === 'sim', ref: String(l[7] || '')
+  }));
+}
+// Consulta barata (usa cache): devolve só o contador; a lista vem quando algo mudou ou quando pedida
+function notificacoes_(d, email) {
+  const cache = CacheService.getScriptCache(), chave = 'nt_' + email;
+  let todas = null, r = null;
+  const c = cache.get(chave);
+  if (c) r = JSON.parse(c);
+  else {
+    todas = notifLer_(email);
+    r = { n: todas.filter(x => !x.lida).length, ult: todas.length ? todas[todas.length - 1].id : '' };
+    try { cache.put(chave, JSON.stringify(r), 21600); } catch (e) {}
+  }
+  const out = { ok: true, n: r.n, ult: r.ult };
+  if (d.lista || String(d.ult || '') !== r.ult) { todas = todas || notifLer_(email); out.lista = todas.slice(-30).reverse(); }
+  return json_(out);
+}
+function notificacoesLidas_(d, email) {
+  const sh = nt_(), n = sh.getLastRow();
+  if (n < 2) return json_({ ok: true });
+  const v = sh.getRange(2, 1, n - 1, 7).getValues(), ids = Array.isArray(d.ids) ? d.ids.map(String) : [];
+  let mudou = false;
+  const col = v.map(l => {
+    if (String(l[1]).toLowerCase() === email && String(l[6]) !== 'sim' && (d.todas || ids.indexOf(String(l[0])) !== -1)) { mudou = true; return ['sim']; }
+    return [String(l[6])];
+  });
+  if (mudou) { const r = sh.getRange(2, 7, col.length, 1); r.setNumberFormat('@'); r.setValues(col); CacheService.getScriptCache().remove('nt_' + email); }
+  return json_({ ok: true });
+}
+function donos_() {
+  const m = {};
+  if (emailOk_(dono_())) m[dono_()] = 1;
+  equipe_().forEach(p => { if (p.papel === 'dono' && p.ativo && p.email) m[p.email] = 1; });
+  return Object.keys(m);
+}
+const emailDe_ = nome => (equipe_().filter(p => p.nome === nome && p.email)[0] || {}).email || '';
+
+// ---------- Confirmar / recusar horários ----------
+function decidirAgenda_(d, q, recusar) {
+  const sh = ag_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (dataTxt_(v[i][0]) !== d.data || horaTxt_(v[i][1]) !== d.hora || v[i][2] !== d.barbeiro) continue;
+    if (String(v[i][8] || '').trim() === 'recusado') continue;
+    if (q.papel !== 'dono' && v[i][2] !== q.nome) return erro_('Sem permissão para este horário.');
+    if (String(v[i][8] || '').trim()) return erro_('Este horário já foi finalizado.');
+    const em = String(v[i][7] || '').toLowerCase(), quando = dataBR_(d.data) + ' às ' + d.hora;
+    if (recusar) {
+      const motivo = limpo_(d.motivo, 160) || 'Horário indisponível.';
+      const c = sh.getRange(i + 1, 9, 1, 5); c.setNumberFormats([FMT_TXT(5)]); c.setValues([['recusado', agoraBR_(), '', 'recusado', seguro_(motivo)]]);
+      if (em) notificar_(em, 'recusado', 'Horário não confirmado', 'Seu horário de ' + quando + ' com ' + v[i][2] + ' não foi confirmado. Motivo: ' + motivo, '', true);
+    } else {
+      const era = String(v[i][11] || '');
+      const c = sh.getRange(i + 1, 12); c.setNumberFormat('@'); c.setValue('confirmado');
+      if (em && era === 'pendente') notificar_(em, 'confirmado', 'Horário confirmado', v[i][2] + ' confirmou seu horário: ' + v[i][3] + ', ' + quando + '.', '', true);
+    }
+    return json_({ ok: true });
+  }
+  return erro_('Agendamento não encontrado.');
+}
+const adminConfirmar_ = (d, q) => decidirAgenda_(d, q, false);
+const adminRecusar_ = (d, q) => decidirAgenda_(d, q, true);
+
+// Recusa (sem justificativa de barbeiro) os horários ainda pendentes de um cliente bloqueado
+function recusarPendentes_(email, motivo) {
+  const sh = ag_(), v = sh.getDataRange().getValues(), hoje = hoje_();
+  let n = 0;
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][7]).toLowerCase() !== email || String(v[i][8] || '').trim() || String(v[i][11] || '') !== 'pendente' || dataTxt_(v[i][0]) < hoje) continue;
+    const c = sh.getRange(i + 1, 9, 1, 5); c.setNumberFormats([FMT_TXT(5)]); c.setValues([['recusado', agoraBR_(), '', 'recusado', motivo]]);
+    n++;
+  }
+  return n;
+}
+
+// ---------- Avaliação de clientes (feita pelos barbeiros) e bloqueios ----------
+const TAGS_AVAL = ['Pontual', 'Educado', 'Paga bem', 'Fiel', 'Indeciso', 'Atrasa', 'Faltou', 'Pechincha', 'Difícil'];
+function avalMapa_() {
+  const m = {};
+  ac_().getDataRange().getValues().slice(1).forEach(l => {
+    const e = String(l[0]).trim().toLowerCase(); if (!e) return;
+    const o = m[e] = m[e] || { soma: 0, n: 0, tags: {}, lista: [] };
+    const nota = Number(l[3]) || 0, tags = lista_(l[4], 6);
+    o.soma += nota; o.n++;
+    tags.forEach(t => { o.tags[t] = (o.tags[t] || 0) + 1; });
+    o.lista.push({ barbeiro: String(l[2]), nota: nota, tags: tags, comentario: String(l[5] || ''), data: String(l[6] || '').slice(0, 10) });
+  });
+  return m;
+}
+// Resumo para ajudar o barbeiro a decidir se vale a pena aceitar o cliente
+function cliResumo_(cortes, av, faltas, bloqueado) {
+  const n = av ? av.n : 0, media = n ? Math.round(av.soma / n * 10) / 10 : 0;
+  let risco = 'bom';
+  if (bloqueado) risco = 'bloqueado';
+  else if (!n && !faltas) risco = cortes > 0 ? 'conhecido' : 'novo';
+  else if (faltas >= 3 || (n && media < 2.5)) risco = 'risco';
+  else if (faltas >= 1 || (n && media < 3.5)) risco = 'atencao';
+  return { media: media, n: n, faltas: faltas, risco: risco };
+}
+function bloqueios_() {
+  return bq_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    id: String(l[0]), email: String(l[1]).toLowerCase(), cliente: String(l[2]), por: String(l[3]), motivo: String(l[4]), status: String(l[5]),
+    pedidoEm: String(l[6] || ''), decididoPor: String(l[7] || ''), decididoEm: String(l[8] || ''), nota: String(l[9] || '')
+  }));
+}
+const bloqueioAtivo_ = email => bloqueios_().filter(b => b.email === email && b.status === 'ativo')[0] || null;
+
+function adminClienteAvaliar_(d, q) {
+  const email = String(d.email || '').trim().toLowerCase(), u = acharUsuario_(email);
+  if (!u) return erro_('Cliente não encontrado.');
+  const sh = ac_(), v = sh.getDataRange().getValues();
+  let linha = -1;
+  for (let i = 1; i < v.length; i++) if (String(v[i][0]).toLowerCase() === email && String(v[i][2]) === q.nome) { linha = i; break; }
+  if (d.remover) { if (linha >= 0) sh.deleteRow(linha + 1); return json_({ ok: true }); }
+  const nota = Math.round(Number(d.nota));
+  if (!(nota >= 1 && nota <= 5)) return erro_('Escolha de 1 a 5 estrelas.');
+  const tags = (Array.isArray(d.tags) ? d.tags : []).filter((t, i, a) => TAGS_AVAL.indexOf(t) !== -1 && a.indexOf(t) === i).slice(0, 6);
+  const row = [email, seguro_(u.nome), seguro_(q.nome), String(nota), tags.join(' | '), seguro_(limpo_(d.comentario, 200)), agoraBR_()];
+  if (linha >= 0) { const r = sh.getRange(linha + 1, 1, 1, 7); r.setNumberFormats([FMT_TXT(7)]); r.setValues([row]); }
+  else acrescentar_(sh, CAB_AC, row, FMT_TXT(7));
+  return json_({ ok: true });
+}
+
+// Lista de clientes: cortes feitos, munições que faltam, corte grátis, avaliação e bloqueio
+function adminClientes_(d, q) {
+  const meta = metaCortes_(), fid = mapaFid_(), av = avalMapa_(), bl = bloqueios_(), hoje = hoje_();
+  const equipeEmails = {}; equipe_().forEach(p => { if (p.email) equipeEmails[p.email] = 1; });
+  equipeEmails[dono_()] = 1;
+  const st = {};
+  ag_().getDataRange().getValues().slice(1).forEach(l => {
+    const e = String(l[7] || '').toLowerCase(), s = String(l[8] || '').trim();
+    if (!e || s === 'recusado') return;
+    const o = st[e] = st[e] || { marc: 0, faltas: 0, prox: '' };
+    o.marc++;
+    if (s === 'faltou') o.faltas++;
+    const dt = dataTxt_(l[0]);
+    if (!s && dt >= hoje && (!o.prox || dt < o.prox)) o.prox = dt;
+  });
+  const bloq = {}; bl.forEach(b => { if (b.status === 'ativo' || b.status === 'pendente') bloq[b.email] = b; });
+  const lista = [];
+  us_().getDataRange().getValues().slice(1).forEach(l => {
+    const e = String(l[0]).trim().toLowerCase(); if (!e || equipeEmails[e]) return;
+    const f = fidDe_(fid, e, meta), o = st[e] || { marc: 0, faltas: 0, prox: '' }, a = av[e], b = bloq[e], x = fid[e] || { cortes: 0, resg: 0, ult: '' };
+    const total = x.cortes + x.resg, minha = a ? a.lista.filter(z => z.barbeiro === q.nome)[0] : null;
+    lista.push({
+      email: e, nome: String(l[1]), telefone: String(l[2]), desde: String(l[5] || '').slice(0, 10),
+      cortes: total, pagos: x.cortes, gratisUsados: x.resg, balas: f.progresso, faltam: f.faltam, creditos: f.creditos,
+      ultimo: x.ult || '', marcacoes: o.marc, faltas: o.faltas, proxima: o.prox,
+      aval: cliResumo_(total, a, o.faltas, !!b && b.status === 'ativo'),
+      tags: a ? Object.keys(a.tags).sort((p, r) => a.tags[r] - a.tags[p]).slice(0, 4) : [],
+      minha: minha ? { nota: minha.nota, tags: minha.tags, comentario: minha.comentario } : null,
+      avaliacoes: a ? a.lista.slice(-5).reverse() : [],
+      bloqueio: b ? { id: b.id, status: b.status, motivo: b.motivo, por: b.por } : null
+    });
+  });
+  lista.sort((p, r) => p.nome.localeCompare(r.nome));
+  const resumo = {
+    total: lista.length, comGratis: lista.filter(c => c.creditos > 0).length,
+    quaseLa: meta ? lista.filter(c => c.creditos === 0 && c.faltam === 1).length : 0,
+    bloqueados: lista.filter(c => c.bloqueio && c.bloqueio.status === 'ativo').length,
+    pedidos: bl.filter(b => b.status === 'pendente').length
+  };
+  const ehDono = q.papel === 'dono';
+  return json_({ ok: true, meta: meta, resumo: resumo, lista: lista, tags: TAGS_AVAL, eu: q.nome,
+    bloqueios: bl.filter(b => ehDono || b.por === q.nome).reverse().slice(0, 60) });
+}
+
+function adminBloqueioPedir_(d, q) {
+  const email = String(d.email || '').trim().toLowerCase(), u = acharUsuario_(email);
+  if (!u) return erro_('Cliente não encontrado.');
+  if (email === dono_() || equipe_().some(p => p.email === email)) return erro_('Esse e-mail é da equipe e não pode ser bloqueado.');
+  const motivo = limpo_(d.motivo, 300);
+  if (motivo.length < 10) return erro_('Explique o motivo do bloqueio (mínimo de 10 letras). O dono usa essa justificativa para decidir.');
+  const atual = bloqueios_().filter(b => b.email === email && (b.status === 'ativo' || b.status === 'pendente'))[0];
+  if (atual) return erro_(atual.status === 'ativo' ? 'Este cliente já está bloqueado.' : 'Já existe um pedido de bloqueio em análise para este cliente.');
+  const ehDono = q.papel === 'dono', id = Utilities.getUuid().slice(0, 8);
+  acrescentar_(bq_(), CAB_BQ, [id, email, seguro_(u.nome), seguro_(q.nome), seguro_(motivo), ehDono ? 'ativo' : 'pendente', agoraBR_(),
+    ehDono ? seguro_(q.nome) : '', ehDono ? agoraBR_() : '', ''], FMT_TXT(10));
+  if (ehDono) recusarPendentes_(email, 'Atendimento indisponível para esta conta.');
+  else donos_().forEach(e => notificar_(e, 'bloqueio', 'Pedido de bloqueio', q.nome + ' quer bloquear ' + u.nome + '. Motivo: ' + motivo, id, true));
+  return json_({ ok: true, status: ehDono ? 'ativo' : 'pendente' });
+}
+function adminBloqueioDecidir_(d, q) {
+  const aprovar = d.decisao === 'aprovar';
+  if (!aprovar && d.decisao !== 'negar') return erro_('Decisão inválida.');
+  const sh = bq_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]) !== String(d.id)) continue;
+    if (String(v[i][5]) !== 'pendente') return erro_('Este pedido já foi decidido.');
+    const c = sh.getRange(i + 1, 6, 1, 5); c.setNumberFormats([FMT_TXT(5)]);
+    c.setValues([[aprovar ? 'ativo' : 'negado', String(v[i][6] || ''), seguro_(q.nome), agoraBR_(), seguro_(limpo_(d.nota, 200))]]);
+    if (aprovar) recusarPendentes_(String(v[i][1]).toLowerCase(), 'Atendimento indisponível para esta conta.');
+    const alvo = emailDe_(String(v[i][3]));
+    if (alvo) notificar_(alvo, 'bloqueio', aprovar ? 'Bloqueio aprovado' : 'Bloqueio negado', String(v[i][2]) + (aprovar ? ' foi bloqueado.' : ' continua liberado.') + (d.nota ? ' Dono: ' + limpo_(d.nota, 200) : ''), '', false);
+    return json_({ ok: true });
+  }
+  return erro_('Pedido não encontrado.');
+}
+function adminBloqueioRemover_(d, q) {
+  const sh = bq_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]) !== String(d.id)) continue;
+    if (String(v[i][5]) !== 'ativo' && String(v[i][5]) !== 'pendente') return erro_('Este bloqueio já foi encerrado.');
+    const c = sh.getRange(i + 1, 6, 1, 5); c.setNumberFormats([FMT_TXT(5)]);
+    c.setValues([['removido', String(v[i][6] || ''), seguro_(q.nome), agoraBR_(), seguro_(limpo_(d.nota, 200))]]);
+    return json_({ ok: true });
+  }
+  return erro_('Bloqueio não encontrado.');
+}
+
+// ---------- Galerias: fotos de cortes por serviço (aparecem na hora de marcar) e certificados de cada barbeiro ----------
+function galeria_() {
+  return gl_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    id: String(l[0]), tipo: String(l[1]), chave: String(l[2]), fileId: String(l[3]), url: String(l[4] || ''), titulo: String(l[5] || ''), ordem: Number(l[6]) || 0
+  })).sort((a, b) => a.ordem - b.ordem);
+}
+function adminGaleriaAdd_(d) {
+  const tipo = d.tipo === 'certificado' ? 'certificado' : 'servico', chave = limpo_(d.chave, 40);
+  if (tipo === 'servico' && !servicos_().some(s => s.nome === chave)) return erro_('Serviço não encontrado. Salve o serviço antes de anexar fotos.');
+  if (tipo === 'certificado' && !equipe_().some(p => p.nome === chave)) return erro_('Profissional não encontrado. Salve o cadastro antes de anexar certificados.');
+  const todas = galeria_(), mesmas = todas.filter(g => g.tipo === tipo && g.chave === chave);
+  if (mesmas.length >= (tipo === 'servico' ? 12 : 8)) return erro_(tipo === 'servico' ? 'Máximo de 12 fotos por serviço. Apague alguma para adicionar outra.' : 'Máximo de 8 certificados por profissional.');
+  const r = novaImagem_(d, tipo === 'servico' ? 'galeria' : 'certificado');
+  if (r.erro) return erro_(r.erro);
+  const ordem = mesmas.length ? Math.max.apply(null, mesmas.map(g => g.ordem)) + 1 : 1;
+  const id = 'g' + Utilities.getUuid().slice(0, 7);
+  acrescentar_(gl_(), CAB_GL, [id, tipo, seguro_(chave), r.id, '', seguro_(limpo_(d.titulo, 60)), ordem, agoraBR_()], FMT_GL);
+  limparCache_();
+  return json_({ ok: true, id: id });
+}
+function adminGaleriaDel_(d) {
+  const sh = gl_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]) === String(d.id)) { lixeira_(v[i][3]); sh.deleteRow(i + 1); limparCache_(); return json_({ ok: true }); }
+  }
+  return erro_('Foto não encontrada.');
+}
+// Foto de perfil do profissional (envia imagem, link ou pede para remover)
+function adminEquipeFoto_(d) {
+  const sh = eq_(), v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][1]) !== String(d.nome)) continue;
+    let novo = '';
+    if (!d.remover) { const r = novaImagem_(d, 'perfil'); if (r.erro) return erro_(r.erro); novo = r.id; }
+    const c = sh.getRange(i + 1, 10); c.setNumberFormat('@'); c.setValue(novo);
+    if (v[i][9]) lixeira_(String(v[i][9]));
+    limparCache_();
+    return json_({ ok: true });
+  }
+  return erro_('Profissional não encontrado. Salve o cadastro antes de enviar a foto.');
+}
+
+// ---------- Tema de uma promoção (muda o visual do site enquanto ela vale) ----------
+const TEMAS_OK = ['custom', 'natal', 'blackfriday', 'criancas', 'pais', 'namorados', 'carnaval', 'halloween', 'pagamento', 'anonovo', 'junino', 'copa', 'neon'];
+const EFEITOS_OK = ['neve', 'confete', 'estrelas', 'brasas', 'coracoes', 'bolhas', 'nenhum'];     // 'nenhum' = sem efeito (vazio = efeito padrão do tema)
+function temaOk_(t) {
+  if (!t || typeof t !== 'object' || !t.preset) return { json: '' };
+  if (TEMAS_OK.indexOf(t.preset) === -1) return { erro: 'Tema inválido.' };
+  const cor = v => /^#[0-9a-fA-F]{6}$/.test(String(v || '')) ? String(v).toLowerCase() : '';
+  return { json: JSON.stringify({
+    preset: t.preset, nivel: inteiro_(t.nivel, 2, 1, 3), faixa: limpo_(t.faixa, 60), emoji: limpo_(t.emoji, 4),
+    efeito: EFEITOS_OK.indexOf(t.efeito) !== -1 ? t.efeito : '', cor1: cor(t.cor1), cor2: cor(t.cor2), fundo: cor(t.fundo), heroTitulo: limpo_(t.heroTitulo, 70)
+  }) };
+}
+function temaDe_(txt) { try { const o = JSON.parse(txt || ''); return o && o.preset ? o : null; } catch (e) { return null; } }
+
+// =====================================================================
 //  MENU "Barbearia" NA PLANILHA: cadastrar e-mail do dono e dos barbeiros
 // =====================================================================
 function onOpen() {
@@ -1117,9 +1549,8 @@ function cadastrarEquipe_(email, nome, papel, comissao, atende) {
   for (let i = 1; i < v.length && alvo < 0; i++) if (!String(v[i][0]).trim() && String(v[i][1]).trim().toLowerCase() === nome.toLowerCase()) alvo = i;
   if (alvo < 0 && papel === 'dono') for (let i = 1; i < v.length && alvo < 0; i++) if (!String(v[i][0]).trim() && String(v[i][2]) === 'dono') alvo = i;
   const linha = [email, seguro_(nome), papel, comissao, simnao_(atende), alvo >= 0 ? v[alvo][5] : '', alvo >= 0 ? v[alvo][6] : '', 'sim', alvo >= 0 ? String(v[alvo][8] || '') : ''];
-  const fmts = FMT_EQ;
-  if (alvo >= 0) { const r = sh.getRange(alvo + 1, 1, 1, 9); r.setNumberFormats([fmts]); r.setValues([linha]); }
-  else acrescentar_(sh, CAB_EQ, linha, fmts);
+  if (alvo >= 0) { const r = sh.getRange(alvo + 1, 1, 1, 9); r.setNumberFormats([FMT_EQ.slice(0, 9)]); r.setValues([linha]); }   // só as 9 primeiras colunas: o perfil não é apagado
+  else acrescentar_(sh, CAB_EQ, linha.concat(Array(CAB_EQ.length - 9).fill('')), FMT_EQ);
   limparCache_();
 }
 function menuDono() {
@@ -1151,10 +1582,11 @@ function doGet(e) {
   return json_({ erro: 'ação inválida' });
 }
 
-const ACOES_EQUIPE = ['admin_agenda', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard'];
-const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'admin_agenda', 'admin_dados', 'admin_relatorio', 'admin_dashboard'];   // não travam a fila (mais rápido)
+const ACOES_EQUIPE = ['admin_agenda', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
+const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
-  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del'];
+  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
+  'admin_bloqueio_decidir', 'admin_bloqueio_remover', 'admin_galeria_add', 'admin_galeria_del', 'admin_equipe_foto'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -1181,6 +1613,8 @@ function rotear_(d) {
     if (d.action === 'feedback') return enviarFeedback_(d, email);
     if (d.action === 'perfil') return perfil_(email);
     if (d.action === 'fidelidade') return fidelidade_(email);
+    if (d.action === 'notificacoes') return notificacoes_(d, email);
+    if (d.action === 'notificacoes_lidas') return notificacoesLidas_(d, email);
     if (String(d.action).indexOf('admin_') === 0) {
       const q = quem_(email);
       const ehDono = q && q.papel === 'dono';
@@ -1211,6 +1645,16 @@ function rotear_(d) {
         case 'admin_marca_foto_url': return adminMarcaFotoUrl_(d);
         case 'admin_barbeiro_cadastrar': return adminBarbeiroCadastrar_(d);
         case 'admin_dashboard': return adminDashboard_(d, q);
+        case 'admin_confirmar': return adminConfirmar_(d, q);
+        case 'admin_recusar': return adminRecusar_(d, q);
+        case 'admin_clientes': return adminClientes_(d, q);
+        case 'admin_cliente_avaliar': return adminClienteAvaliar_(d, q);
+        case 'admin_bloqueio_pedir': return adminBloqueioPedir_(d, q);
+        case 'admin_bloqueio_decidir': return adminBloqueioDecidir_(d, q);
+        case 'admin_bloqueio_remover': return adminBloqueioRemover_(d, q);
+        case 'admin_galeria_add': return adminGaleriaAdd_(d);
+        case 'admin_galeria_del': return adminGaleriaDel_(d);
+        case 'admin_equipe_foto': return adminEquipeFoto_(d);
         case 'admin_foto_fachada': return adminFotoFachada_(d);
         case 'admin_foto_fachada_del': return adminFotoFachadaDel_();
       }
