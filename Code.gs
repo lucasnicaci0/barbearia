@@ -283,7 +283,7 @@ function lixeira_(fileId) {
 // todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
 function autorizar() {
   pastaFotos_();
-  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_, nt_, ac_, bq_, gl_, ct_].forEach(f => f());
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_, nt_, ac_, bq_, gl_, ct_, sl_, xp_, it_, pm_, cp_, el_].forEach(f => f());
   semearFotos_();
   MailApp.getRemainingDailyQuota();            // pede a permissão de enviar e-mail (avisos para barbeiros e clientes)
 }
@@ -1069,6 +1069,367 @@ function adminDashboard_(d, q) {
     out.bloqPendentes = bloqueios_().filter(b => b.status === 'pendente').length;
   }
   return json_(out);
+}
+
+// ---------- Saloon: personagem, XP, missões, perfis, ranking, prêmios e cupons ----------
+const CAB_SL = ['Email', 'Apelido', 'Avatar', 'Banner', 'Moldura', 'Oculto', 'Sequência', 'Último dia', 'Melhor sequência', 'Criado em', 'Frase'];
+const CAB_XP = ['Id', 'Email', 'Data', 'Tipo', 'Chave', 'Pontos', 'Descrição'];
+const CAB_IT = ['Email', 'Item', 'Origem', 'Data'];
+const CAB_PM = ['Id', 'Período', 'Chave', 'Título', 'Tipo', 'Detalhe', 'Item', 'Vencedores', 'Validade (dias)', 'Criado em', 'Por', 'Lista'];
+const CAB_CP = ['Código', 'Email', 'Prêmio', 'Título', 'Tipo', 'Detalhe', 'Validade', 'Status', 'Criado em', 'Usado em', 'Usado por'];
+const CAB_EL = ['Data', 'De', 'Para'];
+const sl_ = () => aba_('Saloon', CAB_SL), xp_ = () => aba_('XP', CAB_XP), it_ = () => aba_('Itens', CAB_IT), pm_ = () => aba_('Premios', CAB_PM), cp_ = () => aba_('Cupons', CAB_CP), el_ = () => aba_('Elogios', CAB_EL);
+// [id, espaço, nome, nível que libera, raro (só por prêmio)]
+const ITENS_SL = [
+  ['cab_careca', 'cabelo', 'Careca', 1], ['cab_curto', 'cabelo', 'Curto', 1], ['cab_degrade', 'cabelo', 'Degradê', 1], ['cab_buzz', 'cabelo', 'Raspado', 2], ['cab_topete', 'cabelo', 'Topete', 3], ['cab_social', 'cabelo', 'Social', 5],
+  ['cab_crespo', 'cabelo', 'Cacheado', 6], ['cab_longo', 'cabelo', 'Longo', 8], ['cab_coque', 'cabelo', 'Coque', 10], ['cab_moicano', 'cabelo', 'Moicano', 12], ['cab_slick', 'cabelo', 'Penteado para trás', 14],
+  ['bar_nenhuma', 'barba', 'Sem barba', 1], ['bar_cavanhaque', 'barba', 'Cavanhaque', 1], ['bar_curta', 'barba', 'Barba curta', 2], ['bar_bigode', 'barba', 'Bigode', 4], ['bar_costeleta', 'barba', 'Costeletas', 5],
+  ['bar_guidao', 'barba', 'Bigode guidão', 7], ['bar_cheia', 'barba', 'Barba cheia', 9], ['bar_longa', 'barba', 'Barba de pistoleiro', 15],
+  ['cha_nenhum', 'chapeu', 'Sem chapéu', 1], ['cha_palha', 'chapeu', 'Chapéu de palha', 2], ['cha_vaqueiro', 'chapeu', 'Chapéu de vaqueiro', 3], ['cha_bandana', 'chapeu', 'Bandana', 4], ['cha_xerife', 'chapeu', 'Chapéu de xerife', 8],
+  ['cha_coco', 'chapeu', 'Chapéu coco', 10], ['cha_cartola', 'chapeu', 'Cartola', 12], ['cha_pistoleiro', 'chapeu', 'Chapéu de pistoleiro', 16], ['cha_coroa', 'chapeu', 'Coroa do campeão', 99, 1],
+  ['ocu_nenhum', 'oculos', 'Sem óculos', 1], ['ocu_redondo', 'oculos', 'Óculos redondo', 3], ['ocu_aviador', 'oculos', 'Aviador', 6], ['ocu_sol', 'oculos', 'Óculos escuro', 9], ['ocu_tapa', 'oculos', 'Tapa-olho', 12], ['ocu_monoculo', 'oculos', 'Monóculo', 15],
+  ['cam_camiseta', 'camisa', 'Camiseta', 1], ['cam_xadrez', 'camisa', 'Camisa xadrez', 1], ['cam_colete', 'camisa', 'Colete', 4], ['cam_jaqueta', 'camisa', 'Jaqueta de couro', 7], ['cam_poncho', 'camisa', 'Poncho', 10], ['cam_xerife', 'camisa', 'Casaco de xerife', 13], ['cam_paleto', 'camisa', 'Paletó', 18],
+  ['cal_reta', 'calca', 'Calça reta', 1], ['cal_bermuda', 'calca', 'Bermuda', 2], ['cal_chaps', 'calca', 'Perneiras de couro', 6], ['cal_listrada', 'calca', 'Calça listrada', 12],
+  ['sap_botina', 'sapato', 'Botina', 1], ['sap_cowboy', 'sapato', 'Bota texana', 2], ['sap_tenis', 'sapato', 'Tênis', 3], ['sap_esporas', 'sapato', 'Bota com esporas', 8], ['sap_social', 'sapato', 'Sapato social', 11],
+  ['mao_nada', 'mao', 'Mãos livres', 1], ['mao_pente', 'mao', 'Pente de barbeiro', 1], ['mao_navalha', 'mao', 'Navalha', 2], ['mao_tesoura', 'mao', 'Tesoura', 3], ['mao_garrafa', 'mao', 'Garrafa de uísque', 3], ['mao_revolver', 'mao', 'Revólver', 4],
+  ['mao_violao', 'mao', 'Violão', 6], ['mao_chicote', 'mao', 'Chicote', 7], ['mao_rifle', 'mao', 'Rifle', 9], ['mao_laco', 'mao', 'Laço', 11], ['mao_espingarda', 'mao', 'Espingarda', 14], ['mao_revolver_ouro', 'mao', 'Revólver de ouro', 99, 1],
+  ['ban_deserto', 'banner', 'Deserto', 1], ['ban_saloon', 'banner', 'Saloon', 1], ['ban_poente', 'banner', 'Pôr do sol', 3], ['ban_noite', 'banner', 'Noite estrelada', 5], ['ban_pradaria', 'banner', 'Pradaria', 7], ['ban_cidade', 'banner', 'Cidade fantasma', 10],
+  ['ban_trem', 'banner', 'Trem de ferro', 13], ['ban_xerife', 'banner', 'Delegacia', 16], ['ban_ouro', 'banner', 'Corrida do ouro', 20], ['ban_rodeio', 'banner', 'Rodeio', 25], ['ban_campeao_mes', 'banner', 'Campeão do mês', 99, 1], ['ban_campeao_ano', 'banner', 'Campeão do ano', 99, 1],
+  ['mol_nenhuma', 'moldura', 'Sem moldura', 1], ['mol_madeira', 'moldura', 'Madeira', 1], ['mol_latao', 'moldura', 'Latão', 4], ['mol_corda', 'moldura', 'Corda', 8], ['mol_estrela', 'moldura', 'Estrela de xerife', 12], ['mol_ferradura', 'moldura', 'Ferradura', 16],
+  ['mol_ouro', 'moldura', 'Ouro', 22], ['mol_coroa_mes', 'moldura', 'Coroa do mês', 99, 1], ['mol_coroa_ano', 'moldura', 'Coroa do ano', 99, 1]
+].map(a => ({ id: a[0], slot: a[1], nome: a[2], nivel: a[3], raro: !!a[4] }));
+const ITEM_POR_ID_ = {}; ITENS_SL.forEach(i => { ITEM_POR_ID_[i.id] = i; });
+const PAL_SL = { pele: 6, cabelo: 9, roupa: 12 }, NIVEL_MAX_SL = 50;
+const AVATAR_PADRAO_ = { pele: 1, cabelo: 'cab_curto', corCabelo: 1, barba: 'bar_nenhuma', corBarba: 1, chapeu: 'cha_nenhum', corChapeu: 0, oculos: 'ocu_nenhum', camisa: 'cam_camiseta', corCamisa: 0, calca: 'cal_reta', corCalca: 1, sapato: 'sap_botina', corSapato: 7, mao: 'mao_nada' };
+const xpDeNivel_ = L => 40 * L * (L - 1);
+function nivelDe_(xp) { let L = 1; while (L < NIVEL_MAX_SL && xp >= xpDeNivel_(L + 1)) L++; return L; }
+const MISSOES_SL = {
+  visita: { nome: 'Passar no saloon', desc: 'Abra o Saloon hoje.', xp: 5 }, visual: { nome: 'Mudar o visual', desc: 'Troque uma peça do seu personagem.', xp: 10 },
+  ranking: { nome: 'Conferir o ranking', desc: 'Veja quem lidera os cortes.', xp: 8 }, vizinho: { nome: 'Visitar um vizinho', desc: 'Abra o perfil de outro cliente.', xp: 10 },
+  chapeu: { nome: 'Tirar o chapéu', desc: 'Cumprimente o perfil de outro cliente.', xp: 10 }, agendar: { nome: 'Marcar um horário', desc: 'Agende um atendimento hoje.', xp: 25 },
+  avaliar: { nome: 'Dar sua opinião', desc: 'Deixe um comentário sobre a barbearia.', xp: 20 }
+};
+const MENSAIS_SL = [{ id: 'm2', nome: 'Cliente fiel', desc: '2 atendimentos no mês', meta: 2, xp: 80 }, { id: 'm3', nome: 'Visual em dia', desc: '3 atendimentos no mês', meta: 3, xp: 150 }];
+function missoesDoDia_(hoje) {
+  const n = Math.floor(Date.parse(hoje) / 86400000), casual = ['visual', 'ranking', 'vizinho', 'chapeu'], a = n % 4, b = (a + 1 + (Math.floor(n / 4) % 3)) % 4;
+  return ['visita', casual[a], casual[b], n % 2 ? 'agendar' : 'avaliar'];
+}
+const dm_ = iso => String(iso).slice(8, 10) + '/' + String(iso).slice(5, 7);
+const normTxt_ = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[0@]/g, 'o').replace(/[1!]/g, 'i').replace(/3/g, 'e').replace(/[4]/g, 'a').replace(/[5$]/g, 's').replace(/[^a-z]/g, '');
+const LEET_ = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/0/g, 'o').replace(/[1!]/g, 'i').replace(/3/g, 'e').replace(/4/g, 'a').replace(/[5$]/g, 's').replace(/@/g, 'a');
+const PALAVRAS_SL = ['puta', 'porra', 'merda', 'viado', 'cuzao', 'nazi', 'fdp', 'cacete', 'foder', 'fodase', 'piroca', 'punheta', 'otario'];      // valem no começo de cada palavra
+const RAIZES_SL = ['caralh', 'arrombad', 'estupr', 'buceta', 'hitler', 'vagabund', 'racista'];                                                  // valem em qualquer lugar do texto
+const RESERVADAS_SL = ['admin', 'dono', 'barbearia', 'suporte', 'barbeiro', 'moderador', 'gerente'];
+const textoProibido_ = t => { const x = LEET_(t), toks = x.split(/[^a-z]+/).filter(Boolean), junto = toks.join(''); return PALAVRAS_SL.some(p => toks.some(k => k.indexOf(p) === 0)) || RAIZES_SL.some(r => junto.indexOf(r) !== -1); };
+function slLer_() {
+  return sl_().getDataRange().getValues().slice(1).map((l, i) => {
+    let av = {}; try { av = JSON.parse(String(l[2] || '{}')) || {}; } catch (e) {}
+    return { linha: i + 2, email: String(l[0]).toLowerCase(), apelido: String(l[1] || ''), avatar: av, banner: String(l[3] || ''), moldura: String(l[4] || ''), oculto: sim_(l[5]),
+      seq: Number(l[6]) || 0, ultimo: dataTxt_(l[7] || ''), melhor: Number(l[8]) || 0, criado: String(l[9] || ''), frase: String(l[10] || '') };
+  }).filter(p => p.email);
+}
+const slLinha_ = p => [p.email, seguro_(p.apelido), JSON.stringify(p.avatar || {}), p.banner || '', p.moldura || '', p.oculto ? 'sim' : '', String(p.seq || 0), p.ultimo || '', String(p.melhor || 0), p.criado || agoraBR_(), seguro_(p.frase || '')];
+function slGravar_(p) {
+  const sh = sl_(), lin = slLinha_(p);
+  if (p.linha) { const r = sh.getRange(p.linha, 1, 1, CAB_SL.length); r.setNumberFormats([FMT_TXT(CAB_SL.length)]); r.setValues([lin]); }
+  else { acrescentar_(sh, CAB_SL, lin, FMT_TXT(CAB_SL.length)); }
+}
+// XP: um livro-razão (cada ganho tem uma chave única, então nada é contado duas vezes)
+let memoXp_ = null;
+function xpDados_() {
+  if (memoXp_) return memoXp_;
+  const m = { tot: {}, chaves: {} };
+  xp_().getDataRange().getValues().slice(1).forEach(l => { const e = String(l[1]).toLowerCase(); m.tot[e] = (m.tot[e] || 0) + (Number(l[5]) || 0); m.chaves[e + '|' + l[4]] = 1; });
+  return (memoXp_ = m);
+}
+function xpAdd_(email, tipo, chave, pontos, desc, novos) {
+  const m = xpDados_(), k = email + '|' + chave;
+  if (m.chaves[k] || !(pontos > 0)) return 0;
+  acrescentar_(xp_(), CAB_XP, [Utilities.getUuid().slice(0, 8), email, hoje_(), tipo, chave, String(pontos), seguro_(limpo_(desc, 90))], FMT_TXT(7));
+  m.chaves[k] = 1; m.tot[email] = (m.tot[email] || 0) + pontos;
+  if (novos) novos.push({ pontos: pontos, desc: desc });
+  return pontos;
+}
+const itensDe_ = email => it_().getDataRange().getValues().slice(1).filter(l => String(l[0]).toLowerCase() === email).map(l => String(l[1]));
+function vendasDe_(email) {
+  return vd_().getDataRange().getValues().slice(1).filter(l => String(l[16]).toLowerCase() === email).map(l => ({
+    data: dataTxt_(l[0]), hora: horaTxt_(l[1]), servico: String(l[3]), categoria: String(l[4]), gratis: String(l[17]) === 'sim', chave: String(l[15] || '') }));
+}
+// converte o que já aconteceu na barbearia (atendimentos, comentários, foto) em XP; só entra o que ainda não entrou
+function xpSync_(email, novos) {
+  const hoje = hoje_(), vs = vendasDe_(email), porMes = {};
+  const cont = {};
+  vs.forEach(v => {
+    const pts = v.gratis ? 40 : v.categoria === 'corte' ? 60 : v.categoria === 'barba' ? 40 : v.categoria === 'quimica' ? 50 : 30, base = v.chave || [v.data, v.hora, v.servico].join('|');
+    cont[base] = (cont[base] || 0) + 1;
+    xpAdd_(email, 'atendimento', 'v:' + base + (cont[base] > 1 ? '#' + cont[base] : ''), pts, v.servico + ' (' + dm_(v.data) + ')', novos);
+    porMes[v.data.slice(0, 7)] = (porMes[v.data.slice(0, 7)] || 0) + 1;
+  });
+  if (vs.length) xpAdd_(email, 'bonus', 'primeiro', 100, 'Primeiro atendimento no Saloon', novos);
+  Object.keys(porMes).forEach(mes => MENSAIS_SL.forEach(ms => { if (porMes[mes] >= ms.meta) xpAdd_(email, 'mensal', 'mes:' + mes + ':' + ms.id, ms.xp, 'Missão do mês: ' + ms.nome, novos); }));
+  const hojeBR = hoje.split('-').reverse().join('/');
+  let comentouHoje = false;
+  fb_().getDataRange().getValues().slice(1).forEach(l => { if (String(l[4]).toLowerCase() === email) { xpAdd_(email, 'comentario', 'f:' + l[0], 25, 'Comentário sobre a barbearia', novos); if (String(l[0]).indexOf(hojeBR) === 0) comentouHoje = true; } });
+  const u = acharUsuario_(email); if (u && u.foto) xpAdd_(email, 'bonus', 'foto', 30, 'Foto de perfil', novos);
+  const hoje2 = missoesDoDia_(hoje);
+  if (hoje2.indexOf('agendar') !== -1 && ag_().getDataRange().getValues().slice(1).some(l => String(l[7]).toLowerCase() === email && String(l[6]).indexOf(hojeBR) === 0)) missaoFeita_(email, 'agendar', novos);
+  if (hoje2.indexOf('avaliar') !== -1 && comentouHoje) missaoFeita_(email, 'avaliar', novos);
+}
+// marca uma missão do dia como cumprida (só vale se ela é uma das de hoje); no fim dá o bônus do "dia completo"
+function missaoFeita_(email, id, novos) {
+  const hoje = hoje_(), lista = missoesDoDia_(hoje), m = MISSOES_SL[id];
+  if (!m || lista.indexOf(id) === -1) return 0;
+  const g = xpAdd_(email, 'missao', 'm:' + hoje + ':' + id, m.xp, 'Missão: ' + m.nome, novos), dados = xpDados_();
+  if (g && lista.every(x => dados.chaves[email + '|m:' + hoje + ':' + x])) xpAdd_(email, 'missao', 'm:' + hoje + ':completo', 15, 'Dia completo: todas as missões', novos);
+  return g;
+}
+function cortesPorEmail_(de, ate) {
+  const m = {};
+  vd_().getDataRange().getValues().slice(1).forEach(l => {
+    const e = String(l[16]).toLowerCase(), d = dataTxt_(l[0]);
+    if (e && String(l[4]) === 'corte' && d >= de && d <= ate) m[e] = (m[e] || 0) + 1;
+  });
+  return m;
+}
+function faixaPeriodo_(periodo, chave) {
+  const hoje = hoje_();
+  if (periodo === 'ano') { const a = /^\d{4}$/.test(chave || '') ? chave : hoje.slice(0, 4); return { de: a + '-01-01', ate: a + '-12-31', chave: a, rotulo: 'Ano de ' + a }; }
+  const m = /^\d{4}-\d{2}$/.test(chave || '') ? chave : hoje.slice(0, 7), a = +m.slice(0, 4), n = +m.slice(5, 7);
+  const nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  return { de: m + '-01', ate: diaNoMes_(m, 31), chave: m, rotulo: (nomes[n - 1] || m) + ' de ' + a };
+}
+function rankingBruto_(de, ate) {            // todos que cortaram no período (inclui perfis ocultos), do 1º ao último
+  const xp = xpDados_().tot;
+  return Object.entries(cortesPorEmail_(de, ate)).map(e => ({ email: e[0], cortes: e[1], xp: xp[e[0]] || 0 })).sort((a, b) => b.cortes - a.cortes || b.xp - a.xp || (a.email < b.email ? -1 : 1));
+}
+const nomesPorEmail_ = () => { const m = {}; us_().getDataRange().getValues().slice(1).forEach(l => { m[String(l[0]).toLowerCase()] = String(l[1]); }); return m; };
+function conquistas_(est) {
+  const L = [];
+  const add = (id, nome, desc, ok) => { if (ok) L.push({ id: id, nome: nome, desc: desc }); };
+  add('primeiro', 'Primeiro corte', 'Fez o primeiro atendimento', est.total >= 1); add('c10', 'Cliente de casa', '10 cortes', est.total >= 10); add('c25', 'Freguês do saloon', '25 cortes', est.total >= 25); add('c50', 'Lenda do saloon', '50 cortes', est.total >= 50);
+  add('seq7', 'Pontual', '7 dias seguidos no Saloon', est.melhor >= 7); add('seq30', 'Inabalável', '30 dias seguidos no Saloon', est.melhor >= 30);
+  add('elogiado', 'Querido na cidade', 'Recebeu 5 chapéus tirados', est.elogios >= 5); add('premiado', 'Premiado', 'Ganhou um prêmio da barbearia', est.premios >= 1);
+  add('n10', 'Xerife', 'Chegou ao nível 10', est.nivel >= 10); add('n20', 'Lendário', 'Chegou ao nível 20', est.nivel >= 20);
+  return L;
+}
+function estatisticasDe_(email, p) {
+  const hoje = hoje_(), mes = faixaPeriodo_('mes', ''), ano = faixaPeriodo_('ano', '');
+  const vs = vendasDe_(email).filter(v => v.categoria === 'corte'), xp = xpDados_().tot[email] || 0, nivel = nivelDe_(xp);
+  const elogios = el_().getDataRange().getValues().slice(1).filter(l => String(l[2]).toLowerCase() === email).length;
+  const premios = cp_().getDataRange().getValues().slice(1).filter(l => String(l[1]).toLowerCase() === email).length;
+  const est = { total: vs.length, mes: vs.filter(v => v.data >= mes.de && v.data <= mes.ate).length, ano: vs.filter(v => v.data >= ano.de && v.data <= ano.ate).length, xp: xp, nivel: nivel,
+    xpIni: xpDeNivel_(nivel), xpProx: nivel >= NIVEL_MAX_SL ? xpDeNivel_(nivel) : xpDeNivel_(nivel + 1), melhor: p ? Math.max(p.melhor, p.seq) : 0, elogios: elogios, premios: premios };
+  est.conquistas = conquistas_(est);
+  return est;
+}
+function posicaoPublica_(lista, perfis, email) {
+  const vis = lista.filter(r => { const p = perfis[r.email]; return p && p.apelido && !p.oculto; });
+  const i = vis.findIndex(r => r.email === email);
+  return i === -1 ? null : i + 1;
+}
+const perfisMapa_ = () => { const m = {}; slLer_().forEach(p => { m[p.email] = p; }); return m; };
+const vitrine_ = (p, xp) => ({ apelido: p.apelido, avatar: p.avatar, banner: p.banner, moldura: p.moldura, nivel: nivelDe_(xp || 0), frase: p.frase });
+function cupomVivo_(c, hoje) { return c.status === 'ativo' && c.validade >= hoje; }
+function cuponsDe_(email) {
+  const hoje = hoje_();
+  return cp_().getDataRange().getValues().slice(1).filter(l => String(l[1]).toLowerCase() === email).map(l => ({ codigo: String(l[0]), titulo: String(l[3]), tipo: String(l[4]), detalhe: String(l[5]), validade: dataTxt_(l[6]), status: String(l[7]) === 'usado' ? 'usado' : dataTxt_(l[6]) < hoje ? 'vencido' : 'ativo', criado: String(l[8]) })).reverse();
+}
+const premiosDe_ = (periodo, chave) => pm_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim() && String(l[1]) === periodo && String(l[2]) === chave).map(l => ({ id: String(l[0]), titulo: String(l[3]), tipo: String(l[4]), detalhe: String(l[5]), item: String(l[6]), criado: String(l[9]), lista: String(l[11] || '').split(',').filter(Boolean) }));
+// ---- ações do cliente
+function saloonEu_(email) {
+  memoXp_ = null;
+  const novos = [], hoje = hoje_(), ontem = somarDias_(hoje, -1);
+  const antes = nivelDe_(xpDados_().tot[email] || 0);
+  const perfis = slLer_(); let p = perfis.filter(x => x.email === email)[0];
+  if (!p) p = { email: email, apelido: '', avatar: Object.assign({}, AVATAR_PADRAO_), banner: 'ban_deserto', moldura: 'mol_madeira', oculto: false, seq: 0, ultimo: '', melhor: 0, criado: agoraBR_(), frase: '' };
+  if (p.ultimo !== hoje) {                                              // primeira visita do dia: sequência de dias seguidos
+    p.seq = p.ultimo === ontem ? p.seq + 1 : 1; p.melhor = Math.max(p.melhor, p.seq); p.ultimo = hoje; slGravar_(p);
+    if (p.seq > 0 && p.seq % 7 === 0) xpAdd_(email, 'bonus', 'seq:' + hoje, 50, p.seq + ' dias seguidos no Saloon', novos);
+  }
+  missaoFeita_(email, 'visita', novos);
+  xpSync_(email, novos);
+  return saloonResposta_(email, p, novos, antes);
+}
+function saloonResposta_(email, p, novos, antes) {
+  const hoje = hoje_(), dados = xpDados_(), est = estatisticasDe_(email, p), meus = itensDe_(email), lista = missoesDoDia_(hoje);
+  const mes = faixaPeriodo_('mes', ''), ano = faixaPeriodo_('ano', ''), perfis = perfisMapa_(); perfis[email] = p;
+  const vendasMes = vendasDe_(email).filter(v => v.data >= mes.de && v.data <= mes.ate).length;
+  const posMes = posicaoPublica_(rankingBruto_(mes.de, mes.ate), perfis, email), posAno = posicaoPublica_(rankingBruto_(ano.de, ano.ate), perfis, email);
+  return json_({ ok: true, hoje: hoje, perfil: { apelido: p.apelido, frase: p.frase, avatar: Object.assign({}, AVATAR_PADRAO_, p.avatar), banner: p.banner || 'ban_deserto', moldura: p.moldura || 'mol_madeira', oculto: p.oculto, seq: p.seq, melhor: p.melhor },
+    stats: Object.assign({}, est, { cortesMes: est.mes, posMes: posMes, posAno: posAno }), nivelAntes: antes, novos: novos, catalogo: ITENS_SL, meus: meus,
+    missoes: lista.map(id => ({ id: id, nome: MISSOES_SL[id].nome, desc: MISSOES_SL[id].desc, xp: MISSOES_SL[id].xp, feita: !!dados.chaves[email + '|m:' + hoje + ':' + id] })), diaCompleto: !!dados.chaves[email + '|m:' + hoje + ':completo'],
+    mensais: MENSAIS_SL.map(m => ({ id: m.id, nome: m.nome, desc: m.desc, meta: m.meta, xp: m.xp, atual: Math.min(vendasMes, m.meta), feita: !!dados.chaves[email + '|mes:' + mes.chave + ':' + m.id] })),
+    cupons: cuponsDe_(email), paletas: PAL_SL });
+}
+function avatarOk_(av, nivel, meus) {
+  av = av && typeof av === 'object' ? av : {};
+  const out = {}, cor = (k, n) => { const v = Number(av[k]); return Number.isInteger(v) && v >= 0 && v < n ? v : AVATAR_PADRAO_[k]; };
+  out.pele = cor('pele', PAL_SL.pele); out.corCabelo = cor('corCabelo', PAL_SL.cabelo); out.corBarba = cor('corBarba', PAL_SL.cabelo);
+  ['corChapeu', 'corCamisa', 'corCalca', 'corSapato'].forEach(k => { out[k] = cor(k, PAL_SL.roupa); });
+  for (const slot of ['cabelo', 'barba', 'chapeu', 'oculos', 'camisa', 'calca', 'sapato', 'mao']) {
+    const id = String(av[slot] || ''), it = ITEM_POR_ID_[id];
+    if (!it || it.slot !== slot) { out[slot] = AVATAR_PADRAO_[slot]; continue; }
+    if (!liberado_(it, nivel, meus)) return { erro: 'A peça "' + it.nome + '" ainda não está liberada para você.' };
+    out[slot] = id;
+  }
+  return out;
+}
+const liberado_ = (it, nivel, meus) => meus.indexOf(it.id) !== -1 || (!it.raro && nivel >= it.nivel);
+function escolhaSlot_(id, slot, padrao, nivel, meus) {
+  if (!id) return { v: padrao };
+  const it = ITEM_POR_ID_[id];
+  if (!it || it.slot !== slot) return { erro: 'Peça inválida.' };
+  return liberado_(it, nivel, meus) ? { v: id } : { erro: 'A peça "' + it.nome + '" ainda não está liberada para você.' };
+}
+function apelidoOk_(a) {
+  a = String(a || '').trim().replace(/\s+/g, ' ');
+  if (!/^[A-Za-zÀ-ÿ0-9 ._-]{3,16}$/.test(a)) return { erro: 'O apelido precisa ter de 3 a 16 letras, números, espaço, ponto, hífen ou sublinhado.' };
+  if (textoProibido_(a)) return { erro: 'Esse apelido não é permitido. Escolha outro.' };
+  const toks = LEET_(a).split(/[^a-z]+/).filter(Boolean); if (RESERVADAS_SL.some(r => toks.indexOf(r) !== -1)) return { erro: 'Esse apelido é reservado. Escolha outro.' };
+  return { v: a };
+}
+function saloonSalvar_(d, email) {
+  memoXp_ = null;
+  const novos = [], perfis = slLer_(); let p = perfis.filter(x => x.email === email)[0];
+  if (!p) p = { email: email, apelido: '', avatar: Object.assign({}, AVATAR_PADRAO_), banner: 'ban_deserto', moldura: 'mol_madeira', oculto: false, seq: 0, ultimo: '', melhor: 0, criado: agoraBR_(), frase: '' };
+  const nivel = nivelDe_(xpDados_().tot[email] || 0), meus = itensDe_(email);
+  let mudouVisual = false, apelidoNovo = false, avatarNovo = false;
+  if (d.apelido !== undefined && String(d.apelido).trim() !== p.apelido) {
+    const a = apelidoOk_(d.apelido); if (a.erro) return erro_(a.erro);
+    if (perfis.some(x => x.email !== email && x.apelido.toLowerCase() === a.v.toLowerCase())) return erro_('Já existe alguém com esse apelido. Escolha outro.');
+    apelidoNovo = !p.apelido; p.apelido = a.v;
+  }
+  if (d.frase !== undefined) { const f = limpo_(d.frase, 60); if (f && textoProibido_(f)) return erro_('Essa frase não é permitida.'); p.frase = f; }
+  if (d.oculto !== undefined) p.oculto = !!d.oculto;
+  if (d.avatar !== undefined) {
+    const av = avatarOk_(d.avatar, nivel, meus); if (av.erro) return erro_(av.erro);
+    avatarNovo = !p.avatar || !p.avatar.cabelo; mudouVisual = JSON.stringify(av) !== JSON.stringify(Object.assign({}, AVATAR_PADRAO_, p.avatar)); p.avatar = av;
+  }
+  ['banner', 'moldura'].forEach(k => {
+    if (d[k] === undefined) return;
+    const r = escolhaSlot_(String(d[k]), k, k === 'banner' ? 'ban_deserto' : 'mol_madeira', nivel, meus); if (r.erro) { p._erro = r.erro; return; }
+    if (r.v !== p[k]) mudouVisual = true; p[k] = r.v;
+  });
+  if (p._erro) return erro_(p._erro);
+  slGravar_(p);
+  if (p.apelido && apelidoNovo) xpAdd_(email, 'bonus', 'apelido', 20, 'Escolheu o apelido no Saloon', novos);
+  if (mudouVisual) { xpAdd_(email, 'bonus', 'visual1', 20, 'Primeira mudança de visual', novos); missaoFeita_(email, 'visual', novos); }
+  return json_({ ok: true, novos: novos, nivel: nivelDe_(xpDados_().tot[email] || 0) });
+}
+function saloonRanking_(d, email) {
+  memoXp_ = null; const novos = [];
+  const per = d.periodo === 'ano' ? 'ano' : 'mes', f = faixaPeriodo_(per, String(d.chave || '')), perfis = perfisMapa_(), xp = xpDados_().tot;
+  const bruto = rankingBruto_(f.de, f.ate), vis = bruto.filter(r => { const p = perfis[r.email]; return p && p.apelido && !p.oculto; });
+  const lista = vis.slice(0, 30).map((r, i) => Object.assign({ pos: i + 1, cortes: r.cortes, eu: r.email === email }, vitrine_(perfis[r.email], xp[r.email])));
+  const meu = bruto.find(r => r.email === email), pos = vis.findIndex(r => r.email === email);
+  const premios = premiosDe_(per, f.chave).map(p => ({ id: p.id, titulo: p.titulo, tipo: p.tipo, detalhe: p.detalhe, item: p.item, criado: p.criado, ganhadores: p.lista.map(e => { const q = perfis[e]; return q && q.apelido && !q.oculto ? q.apelido : 'Cliente oculto'; }), voceGanhou: p.lista.indexOf(email) !== -1 }));
+  missaoFeita_(email, 'ranking', novos);
+  return json_({ ok: true, periodo: per, chave: f.chave, rotulo: f.rotulo, atual: f.chave === faixaPeriodo_(per, '').chave, lista: lista, total: vis.length, eu: { cortes: meu ? meu.cortes : 0, pos: pos === -1 ? null : pos + 1 }, premios: premios, novos: novos });
+}
+function saloonPerfil_(d, email) {
+  memoXp_ = null; const novos = [], a = String(d.apelido || '').trim().toLowerCase();
+  const perfis = slLer_(), p = perfis.filter(x => x.apelido && x.apelido.toLowerCase() === a)[0];
+  if (!p || (p.oculto && p.email !== email)) return erro_('Esse perfil não foi encontrado ou está oculto.');
+  const est = estatisticasDe_(p.email, p), hoje = hoje_(), mes = faixaPeriodo_('mes', ''), ano = faixaPeriodo_('ano', ''), pm = perfisMapa_();
+  const euElogiei = el_().getDataRange().getValues().slice(1).some(l => dataTxt_(l[0]) === hoje && String(l[1]).toLowerCase() === email && String(l[2]).toLowerCase() === p.email);
+  if (p.email !== email) missaoFeita_(email, 'vizinho', novos);
+  return json_({ ok: true, perfil: Object.assign(vitrine_(p, est.xp), { avatar: Object.assign({}, AVATAR_PADRAO_, p.avatar), banner: p.banner || 'ban_deserto', moldura: p.moldura || 'mol_madeira', desde: p.criado.slice(0, 10) }),
+    stats: { xp: est.xp, nivel: est.nivel, xpIni: est.xpIni, xpProx: est.xpProx, cortesMes: est.mes, cortesAno: est.ano, cortesTotal: est.total, elogios: est.elogios, posMes: posicaoPublica_(rankingBruto_(mes.de, mes.ate), pm, p.email), posAno: posicaoPublica_(rankingBruto_(ano.de, ano.ate), pm, p.email) },
+    conquistas: est.conquistas, souEu: p.email === email, euElogiei: euElogiei, novos: novos });
+}
+function saloonBuscar_(d, email) {
+  const q = normTxt_(d.q), perfis = slLer_().filter(p => p.apelido && !p.oculto), xp = xpDados_().tot;
+  let lista = q ? perfis.filter(p => normTxt_(p.apelido).indexOf(q) !== -1) : perfis;
+  lista = lista.map(p => Object.assign({ eu: p.email === email, xp: xp[p.email] || 0 }, vitrine_(p, xp[p.email]))).sort((a, b) => b.xp - a.xp || (a.apelido < b.apelido ? -1 : 1)).slice(0, 24);
+  return json_({ ok: true, lista: lista, total: perfis.length });
+}
+function saloonElogio_(d, email) {
+  memoXp_ = null; const novos = [], a = String(d.apelido || '').trim().toLowerCase(), hoje = hoje_();
+  const p = slLer_().filter(x => x.apelido && x.apelido.toLowerCase() === a)[0];
+  if (!p || p.oculto) return erro_('Perfil não encontrado.');
+  if (p.email === email) return erro_('Não vale tirar o chapéu para si mesmo.');
+  const jaFoi = el_().getDataRange().getValues().slice(1).some(l => dataTxt_(l[0]) === hoje && String(l[1]).toLowerCase() === email && String(l[2]).toLowerCase() === p.email);
+  if (jaFoi) return erro_('Você já tirou o chapéu para ' + p.apelido + ' hoje.');
+  acrescentar_(el_(), CAB_EL, [hoje, email, p.email], FMT_TXT(3));
+  missaoFeita_(email, 'chapeu', novos);
+  return json_({ ok: true, novos: novos });
+}
+function saloonRotear_(d, email) {
+  switch (d.action) {
+    case 'saloon_eu': return saloonEu_(email);
+    case 'saloon_salvar': return saloonSalvar_(d, email);
+    case 'saloon_ranking': return saloonRanking_(d, email);
+    case 'saloon_perfil': return saloonPerfil_(d, email);
+    case 'saloon_buscar': return saloonBuscar_(d, email);
+    case 'saloon_elogio': return saloonElogio_(d, email);
+  }
+  return erro_('Ação inválida.');
+}
+// ---- ações do dono / equipe
+function adminSaloon_(d) {
+  memoXp_ = null;
+  const per = d.periodo === 'ano' ? 'ano' : 'mes', f = faixaPeriodo_(per, String(d.chave || '')), perfis = perfisMapa_(), nomes = nomesPorEmail_(), xp = xpDados_().tot, hoje = hoje_();
+  const bruto = rankingBruto_(f.de, f.ate), cupons = cp_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim());
+  const lista = bruto.slice(0, 30).map((r, i) => { const p = perfis[r.email]; return { pos: i + 1, email: r.email, nome: nomes[r.email] || r.email, apelido: p ? p.apelido : '', oculto: !!(p && p.oculto), cortes: r.cortes, nivel: nivelDe_(r.xp) }; });
+  const premios = pm_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({ id: String(l[0]), periodo: String(l[1]), chave: String(l[2]), titulo: String(l[3]), tipo: String(l[4]), detalhe: String(l[5]), item: String(l[6]), criado: String(l[9]), por: String(l[10]),
+    ganhadores: String(l[11] || '').split(',').filter(Boolean).map(e => { const c = cupons.filter(z => String(z[2]) === String(l[0]) && String(z[1]).toLowerCase() === e)[0]; return { nome: nomes[e] || e, apelido: perfis[e] ? perfis[e].apelido : '', codigo: c ? String(c[0]) : '', status: c ? (String(c[7]) === 'usado' ? 'usado' : dataTxt_(c[6]) < hoje ? 'vencido' : 'ativo') : '' }; }) })).reverse();
+  return json_({ ok: true, periodo: per, chave: f.chave, rotulo: f.rotulo, de: f.de, ate: f.ate, hoje: hoje, lista: lista, jogadores: Object.keys(perfis).filter(e => perfis[e].apelido).length, premios: premios.slice(0, 30),
+    catalogo: ITENS_SL });
+}
+function codigoCupom_(existentes) {
+  const al = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  for (let t = 0; t < 30; t++) { let c = 'XER-'; for (let i = 0; i < 6; i++) c += al[Math.floor(Math.random() * al.length)]; if (!existentes[c]) return c; }
+  return 'XER-' + Utilities.getUuid().slice(0, 6).toUpperCase();
+}
+function adminPremioLiberar_(d, q) {
+  memoXp_ = null;
+  const per = d.periodo === 'ano' ? 'ano' : 'mes', f = faixaPeriodo_(per, String(d.chave || ''));
+  const tipo = ['corte_gratis', 'desconto', 'brinde', 'item'].indexOf(d.tipo) !== -1 ? d.tipo : '';
+  if (!tipo) return erro_('Escolha o tipo de prêmio.');
+  const titulo = limpo_(d.titulo, 60); if (titulo.length < 3) return erro_('Dê um nome ao prêmio (ex.: "Campeão de cortes de novembro").');
+  let detalhe = limpo_(d.detalhe, 120), item = '';
+  if (tipo === 'desconto') { const n = Math.round(Number(String(d.detalhe).replace(',', '.'))); if (!(n >= 1 && n <= 100)) return erro_('Informe o desconto em % (de 1 a 100).'); detalhe = String(n); }
+  if (tipo === 'brinde' && detalhe.length < 3) return erro_('Descreva o brinde (ex.: "Pomada modeladora").');
+  if (tipo === 'item') { const it = ITEM_POR_ID_[String(d.item || '')]; if (!it) return erro_('Escolha a peça rara que será entregue.'); item = it.id; }
+  const n = Math.round(Number(d.vencedores)); if (!(n >= 1 && n <= 10)) return erro_('Quantos clientes ganham? Escolha de 1 a 10.');
+  const validade = Math.max(1, Math.min(365, Math.round(Number(d.validade) || 30)));
+  if (f.chave > (per === 'ano' ? hoje_().slice(0, 4) : hoje_().slice(0, 7))) return erro_('Esse período ainda não começou.');
+  const jaTem = premiosDe_(per, f.chave).some(p => p.titulo.toLowerCase() === titulo.toLowerCase()); if (jaTem) return erro_('Já existe um prêmio com esse nome para este período.');
+  const ganh = rankingBruto_(f.de, f.ate).slice(0, n); if (!ganh.length) return erro_('Ninguém fez corte neste período, então não há vencedores.');
+  const id = Utilities.getUuid().slice(0, 8), hoje = hoje_(), nomes = nomesPorEmail_(), existentes = {};
+  cp_().getDataRange().getValues().slice(1).forEach(l => { existentes[String(l[0])] = 1; });
+  const rotTipo = { corte_gratis: 'Corte grátis', desconto: detalhe + '% de desconto', brinde: 'Brinde: ' + detalhe, item: 'Peça rara: ' + (ITEM_POR_ID_[item] || {}).nome }[tipo];
+  const res = [];
+  ganh.forEach((g, i) => {
+    let codigo = '';
+    if (tipo !== 'item') { codigo = codigoCupom_(existentes); existentes[codigo] = 1; acrescentar_(cp_(), CAB_CP, [codigo, g.email, id, seguro_(titulo), tipo, seguro_(detalhe), somarDias_(hoje, validade), 'ativo', agoraBR_(), '', ''], FMT_TXT(11)); }
+    else acrescentar_(it_(), CAB_IT, [g.email, item, 'premio:' + id, hoje], FMT_TXT(4));
+    notificar_(g.email, 'premio', 'Você ganhou: ' + titulo, (i + 1) + 'º lugar em cortes (' + f.rotulo + '). Prêmio: ' + rotTipo + (codigo ? '. Código do cupom: ' + codigo + ' (válido até ' + somarDias_(hoje, validade).split('-').reverse().join('/') + '). Mostre ao barbeiro.' : '. Já está no seu guarda-roupa do Saloon!'), codigo ? 'cupom:' + codigo : 'item:' + item, true);
+    res.push({ pos: i + 1, nome: nomes[g.email] || g.email, codigo: codigo });
+  });
+  acrescentar_(pm_(), CAB_PM, [id, per, f.chave, seguro_(titulo), tipo, seguro_(detalhe), item, String(ganh.length), String(validade), agoraBR_(), q.nome, ganh.map(g => g.email).join(',')], FMT_TXT(12));
+  return json_({ ok: true, id: id, vencedores: res });
+}
+function adminCupomValidar_(d, q) {
+  const cod = String(d.codigo || '').trim().toUpperCase(), sh = cp_(), v = sh.getDataRange().getValues(), hoje = hoje_();
+  const i = v.findIndex((l, k) => k > 0 && String(l[0]).toUpperCase() === cod);
+  if (!cod || i === -1) return erro_('Cupom não encontrado. Confira o código.');
+  const l = v[i], validade = dataTxt_(l[6]); let status = String(l[7]) === 'usado' ? 'usado' : validade < hoje ? 'vencido' : 'ativo';
+  const nomes = nomesPorEmail_(), perfis = perfisMapa_(), e = String(l[1]).toLowerCase();
+  const info = { codigo: String(l[0]), cliente: nomes[e] || e, apelido: perfis[e] ? perfis[e].apelido : '', titulo: String(l[3]), tipo: String(l[4]), detalhe: String(l[5]), validade: validade, status: status, usadoEm: String(l[9] || ''), usadoPor: String(l[10] || '') };
+  if (d.usar) {
+    if (status !== 'ativo') return erro_(status === 'usado' ? 'Este cupom já foi usado.' : 'Este cupom está vencido.');
+    const r = sh.getRange(i + 1, 8, 1, 4); r.setNumberFormats([['@', '@', '@', '@']]); r.setValues([['usado', String(l[8]), agoraBR_(), q.nome]]);
+    info.status = 'usado'; info.usadoEm = agoraBR_(); info.usadoPor = q.nome;
+  }
+  return json_({ ok: true, cupom: info });
+}
+function adminSaloonLimpar_(d) {
+  const e = String(d.email || '').trim().toLowerCase(), p = slLer_().filter(x => x.email === e)[0];
+  if (!p) return erro_('Esse cliente ainda não tem perfil no Saloon.');
+  p.apelido = ''; p.frase = ''; slGravar_(p);
+  notificar_(e, 'aviso', 'Seu apelido foi removido', 'A barbearia removeu o seu apelido do Saloon. Escolha um novo apelido na tela do Saloon.', '', false);
+  return json_({ ok: true });
 }
 
 // ---------- Financeiro: custos, contas a pagar, metas e relatório ----------
@@ -1925,10 +2286,10 @@ function doGet(e) {
   return json_({ erro: 'ação inválida' });
 }
 
-const ACOES_EQUIPE = ['admin_agenda', 'admin_agenda_relatorio', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_relatorio', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
-const LEITURAS = ['admin_custos_lista', 'admin_fin_relatorio', 'entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_agenda_relatorio', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
+const ACOES_EQUIPE = ['admin_cupom_validar', 'admin_agenda', 'admin_agenda_relatorio', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_relatorio', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
+const LEITURAS = ['admin_saloon', 'admin_custos_lista', 'admin_fin_relatorio', 'entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_agenda_relatorio', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
-  'admin_salvar_config', 'admin_custos_lista', 'admin_custo_salvar', 'admin_custo_excluir', 'admin_custo_pagar', 'admin_custos_gerar', 'admin_fin_relatorio', 'admin_fin_meta_salvar', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
+  'admin_salvar_config', 'admin_saloon', 'admin_premio_liberar', 'admin_saloon_limpar', 'admin_custos_lista', 'admin_custo_salvar', 'admin_custo_excluir', 'admin_custo_pagar', 'admin_custos_gerar', 'admin_fin_relatorio', 'admin_fin_meta_salvar', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
   'admin_bloqueio_decidir', 'admin_bloqueio_remover', 'admin_galeria_add', 'admin_galeria_del', 'admin_equipe_foto'];
 
 function doPost(e) {
@@ -1961,6 +2322,7 @@ function rotear_(d) {
     if (d.action === 'fidelidade') return fidelidade_(email);
     if (d.action === 'notificacoes') return notificacoes_(d, email);
     if (d.action === 'notificacoes_lidas') return notificacoesLidas_(d, email);
+    if (String(d.action).indexOf('saloon_') === 0) return saloonRotear_(d, email);
     if (String(d.action).indexOf('admin_') === 0) {
       const q = quem_(email);
       const ehDono = q && q.papel === 'dono';
@@ -1979,6 +2341,10 @@ function rotear_(d) {
         case 'admin_salvar_servicos': return adminSalvarServicos_(d);
         case 'admin_salvar_equipe': return adminSalvarEquipe_(d);
         case 'admin_salvar_config': return adminSalvarConfig_(d);
+        case 'admin_saloon': return adminSaloon_(d);
+        case 'admin_premio_liberar': return adminPremioLiberar_(d, q);
+        case 'admin_cupom_validar': return adminCupomValidar_(d, q);
+        case 'admin_saloon_limpar': return adminSaloonLimpar_(d);
         case 'admin_custos_lista': return custosLista_(d);
         case 'admin_custo_salvar': return custoSalvar_(d, q);
         case 'admin_custo_excluir': return custoExcluir_(d);

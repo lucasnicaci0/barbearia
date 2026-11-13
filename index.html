@@ -959,6 +959,140 @@ body.em-previa .topo{top:52px}
 .fin-insights li.bom{border-color:#4a8a30}.fin-insights li.bom .ic{background:#4a8a30}
 .fin-insights li.ruim{border-color:#c6381c;background:rgba(198,56,28,.08)}.fin-insights li.ruim .ic{background:#c6381c}
 .fin-insights li.atencao{border-color:#d9a14b}.fin-insights li.atencao .ic{background:#b07a14}
+
+/* ===== v15 · Saloon: personagem, banners, molduras, telas ===== */
+.av-svg{display:block;width:100%;height:100%;overflow:visible}
+.ban-svg{display:block;width:100%;height:100%}
+.retrato{--t:96px;position:relative;flex:none;width:var(--t);height:var(--t);border-radius:14px;padding:calc(var(--t)*.045);background:#3a2412;box-shadow:0 3px 0 rgba(0,0,0,.45),0 8px 14px rgba(0,0,0,.35)}
+.retrato.corpo{height:calc(var(--t)*1.32)}
+.retrato-fundo{position:absolute;inset:calc(var(--t)*.045);border-radius:10px;overflow:hidden}
+.retrato-av{position:absolute;inset:calc(var(--t)*.045);border-radius:10px;overflow:hidden;padding:calc(var(--t)*.03) calc(var(--t)*.02) 0}
+.retrato.corpo .retrato-av{padding:calc(var(--t)*.04) calc(var(--t)*.05) calc(var(--t)*.02)}
+.retrato-selo{position:absolute;top:calc(var(--t)*-.16);left:50%;transform:translateX(-50%);font-size:calc(var(--t)*.26);line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));z-index:2}
+.retrato-selo.ferr{width:calc(var(--t)*.3);height:calc(var(--t)*.3);font-size:0}.retrato-selo.ferr svg{width:100%;height:100%;display:block}
+.retrato-selo.est{top:auto;bottom:calc(var(--t)*-.1);color:#ffd24a;font-size:calc(var(--t)*.22);text-shadow:0 1px 0 #6a4a0a}
+.mol-madeira{background:linear-gradient(135deg,#8a5a2b,#5c3a1a 45%,#7a4d22);border:2px solid #2a1608}
+.mol-latao{background:linear-gradient(135deg,#f0d78a,#b08d4f 50%,#8a6a2a);border:2px solid #5a4210}
+.mol-corda{background:repeating-linear-gradient(45deg,#c8a96a 0 5px,#8a6a3a 5px 10px);border:2px solid #4a3414}
+.mol-estrela{background:linear-gradient(135deg,#d8dde3,#8a939c 50%,#bfc6cd);border:2px solid #4a525a;border-radius:18px}
+.mol-ferradura{background:linear-gradient(135deg,#9aa3ad,#59616a 50%,#7a838c);border:3px solid #23282d}
+.mol-ouro{background:linear-gradient(135deg,#fff0a8,#e8b81a 45%,#b8860b);border:2px solid #6a4a0a;box-shadow:0 0 0 2px #ffe27a,0 0 14px rgba(255,210,74,.65),0 8px 14px rgba(0,0,0,.35)}
+.mol-coroa{background:linear-gradient(135deg,#fff0a8,#e8b81a 45%,#b8860b);border:2px solid #6a4a0a;box-shadow:0 0 0 2px #ffe27a,0 0 18px rgba(255,210,74,.8),0 8px 14px rgba(0,0,0,.35)}
+.mol-coroa.ano{background:linear-gradient(135deg,#e8d0ff,#8a5ac8 45%,#e8b84a);box-shadow:0 0 0 2px #d8b8ff,0 0 20px rgba(180,120,255,.85),0 8px 14px rgba(0,0,0,.35)}
+.sl-vivo{position:relative;display:inline-block}
+.sl-vivo .retrato{cursor:pointer;transition:transform .2s}.sl-vivo .retrato:hover{transform:translateY(-3px)}
+.sl-vivo .retrato:focus-visible{outline:3px solid var(--sol);outline-offset:3px}
+.sl-vivo .retrato-av{animation:sl-resp 3.6s ease-in-out infinite;transform-origin:50% 100%}
+.sl-vivo .retrato.pula{animation:sl-pulo .5s}
+@keyframes sl-resp{50%{transform:scaleY(1.012) translateY(-1px)}}
+@keyframes sl-pulo{30%{transform:translateY(-14px) rotate(-2deg)}60%{transform:translateY(0) rotate(1deg)}}
+.sl-balao{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,6px);opacity:0;pointer-events:none;z-index:6;width:max-content;max-width:210px;padding:7px 11px;background:#f6ecc8;color:var(--tinta);border:2px solid var(--tinta);border-radius:10px;font:700 .86rem var(--sans);text-align:center;transition:opacity .2s,transform .2s}
+.sl-balao::after{content:"";position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--tinta)}
+.sl-balao.on{opacity:1;transform:translate(-50%,0)}
+/* tela */
+.sl-app{padding-bottom:50px}
+.sl-corpo{max-width:980px;margin:0 auto;padding:22px 0 10px}
+.sl-carga{text-align:center;color:var(--osso);padding:40px 0}
+.sl-topo{display:flex;gap:20px;align-items:center;flex-wrap:wrap;color:var(--tinta);padding:20px 22px;border:1px solid #8a6a3a;background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);box-shadow:0 10px 24px rgba(0,0,0,.5);margin-bottom:16px}
+.sl-topo .sl-vivo{margin-top:6px}
+.sl-topo-info{flex:1 1 280px;min-width:0}
+.sl-topo h2{margin:0;font-size:1.7rem;color:var(--tinta)}
+.sl-frase{margin:2px 0 6px;font-style:italic;color:var(--tinta2);font-weight:600}
+.sl-nivel{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.sl-nv{font:800 .85rem var(--sans);letter-spacing:.06em;text-transform:uppercase;background:var(--ferr);color:#fff2d8;padding:4px 11px;border-radius:2px;box-shadow:0 2px 0 var(--ferr4)}
+.sl-tag{font:700 .76rem var(--sans);background:rgba(36,26,18,.12);color:var(--tinta2);padding:3px 9px;border-radius:99px}.sl-tag.ouro{background:#e8b81a;color:#3a2a06}
+.sl-xp-trilho{height:18px;border:2px solid var(--tinta2);background:rgba(106,77,44,.22);overflow:hidden;border-radius:3px}
+.sl-xp-trilho i{display:block;height:100%;background:linear-gradient(90deg,#d9a14b,#f0c76a);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:width .6s}
+.sl-xp small{display:block;margin-top:4px;font-weight:700;color:var(--tinta2)}
+.sl-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sl-chips span{font:700 .88rem var(--sans);padding:5px 11px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.35);border-radius:99px}
+.sl-onb{color:var(--tinta);padding:20px 22px;border:2px dashed var(--ferr);background:rgba(255,248,225,.92);margin-bottom:16px}
+.sl-onb h3{margin:0 0 6px}
+.sl-form{max-width:520px}.sl-form input[type=text]{margin-top:5px}
+.sl-oculto{display:flex;gap:10px;align-items:flex-start;margin:6px 0 10px;cursor:pointer}
+.sl-oculto input{width:auto;margin:4px 0 0}.sl-oculto small{display:block;color:var(--tinta2);font-weight:600}
+.sl-abas{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-bottom:0}
+.sl-abas button{position:relative;white-space:nowrap;border:1px solid #140a05;border-bottom:0;background:linear-gradient(180deg,#5d3a20,#3f2616);color:var(--osso);padding:11px 16px;font:700 1rem var(--sans);cursor:pointer;border-radius:3px 3px 0 0}
+.sl-abas button[aria-selected=true]{background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);color:var(--tinta)}
+.sl-bolinha{display:inline-block;margin-left:7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#c6381c;color:#fff;font:800 .72rem/20px var(--sans);text-align:center}
+.sl-painel{color:var(--tinta);padding:20px 22px;border:1px solid #8a6a3a;background:var(--papel),linear-gradient(180deg,#f1e3bd,#dcc592);box-shadow:0 10px 24px rgba(0,0,0,.5);min-height:260px}
+.sl-painel h3,.sl-painel h4{color:var(--tinta);margin:0 0 6px}
+.sl-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.sl-prog{font:800 .9rem var(--sans);color:var(--tinta2)}
+/* personagem */
+.sl-perso{display:grid;grid-template-columns:minmax(250px,300px) 1fr;gap:22px;align-items:start}
+.sl-palco{position:sticky;top:78px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 10px;background:rgba(36,26,18,.08);border:1.5px dashed var(--tinta2)}
+.sl-palco-bt{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sl-slots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sl-slot{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.35);color:var(--tinta);padding:7px 11px;border-radius:99px;font:700 .9rem var(--sans);cursor:pointer}
+.sl-slot[aria-selected=true]{background:var(--ferr);border-color:var(--ferr4);color:#fff2d8}
+.sl-cores{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:12px}.sl-cores:empty{display:none}
+.sl-cores-t{font:800 .78rem var(--sans);text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2);margin-right:4px}
+.sl-cor{width:30px;height:30px;border-radius:50%;border:2px solid rgba(36,26,18,.5);cursor:pointer;padding:0}
+.sl-cor[aria-pressed=true]{outline:3px solid var(--ferr);outline-offset:2px}
+.sl-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.sl-tile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border:2px solid var(--tinta2);background:rgba(255,255,255,.4);color:var(--tinta);cursor:pointer;font:inherit;text-align:center;transition:transform .15s}
+.sl-tile:hover{transform:translateY(-3px)}
+.sl-tile.sel{border-color:var(--ferr);background:rgba(143,59,34,.14);box-shadow:0 0 0 2px var(--ferr)}
+.sl-tile.trava{opacity:.62;filter:grayscale(.7)}
+.sl-tile b{font-size:.84rem;line-height:1.15}.sl-tile small{font-weight:700;color:var(--tinta2);font-size:.74rem;min-height:1em}
+.sl-mini{width:78px;height:78px;background:linear-gradient(180deg,#f6e3b4,#dcc592);border-radius:8px;overflow:hidden}
+.sl-ban{width:100%;height:60px;border-radius:6px;overflow:hidden}
+.sl-det{margin-top:16px;border:1.5px solid var(--tinta2);padding:10px 14px;background:rgba(255,255,255,.28)}
+.sl-det summary{cursor:pointer;font-weight:800;color:var(--tinta)}.sl-det[open] summary{margin-bottom:10px}
+/* missões */
+.sl-miss{list-style:none;margin:8px 0;padding:0;display:grid;gap:8px}
+.sl-miss li{display:grid;grid-template-columns:30px 1fr auto auto;gap:6px 12px;align-items:center;padding:10px 12px;border:1.5px solid var(--tinta2);border-left:6px solid var(--latao);background:rgba(255,255,255,.3)}
+.sl-miss li.feita{border-left-color:#4a8a30;background:rgba(74,138,48,.12)}
+.sl-ck{width:26px;height:26px;border:2px solid var(--tinta2);border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff}.sl-miss li.feita .sl-ck{background:#4a8a30;border-color:#2f5d17}
+.sl-miss .tx b{display:block}.sl-miss .tx small{color:var(--tinta2);font-weight:600}.sl-miss .xp{font:800 .9rem var(--sans);color:var(--ferr);white-space:nowrap}
+.sl-mini-barra{display:block;height:8px;margin-top:5px;background:rgba(106,77,44,.22);border:1px solid var(--tinta2)}.sl-mini-barra i{display:block;height:100%;background:#4a8a30}
+.sl-completo{margin-top:8px;padding:10px 14px;border:2px dashed var(--tinta2);font-weight:800;text-align:center}.sl-completo.feita{border-color:#4a8a30;background:rgba(74,138,48,.12);color:#2f5d17}
+.sl-prox{margin-top:16px;padding:12px 14px;border:1.5px solid var(--latao);background:rgba(217,161,75,.18)}.sl-prox h3{margin:0}.sl-prox p{margin:4px 0;font-weight:700}
+.sl-ideias{list-style:none;margin:0;padding:0;display:grid;gap:8px}.sl-ideias li{display:flex;gap:10px}.sl-ideias li>span:first-child{font-size:1.3rem}.sl-ideias small{display:block;color:var(--tinta2);font-weight:600}
+@media(max-width:640px){.sl-miss li{grid-template-columns:28px 1fr}.sl-miss .xp{grid-column:2}.sl-miss li .bt{grid-column:1/-1}}
+/* ranking e comunidade */
+.sl-per{margin-bottom:10px}
+.sl-rk-tit{margin:12px 0 8px!important}
+.sl-meupos{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:2px solid var(--ferr);background:rgba(143,59,34,.1);margin-bottom:10px}.sl-meupos.fora{border-color:var(--tinta2);background:rgba(255,255,255,.3)}
+.sl-meupos span{font-weight:600;color:var(--tinta2)}
+.sl-premio{display:flex;gap:10px;align-items:center;padding:10px 14px;margin-bottom:8px;border:1.5px solid #b8860b;background:rgba(232,184,26,.16)}.sl-premio.meu{border-width:3px;background:rgba(232,184,26,.34)}
+.sl-premio>span:first-child{font-size:1.6rem}.sl-premio>div{flex:1}.sl-premio small{display:block;font-weight:600;color:var(--tinta2)}
+.sl-lider{display:flex;align-items:center;gap:16px;width:100%;padding:12px 16px;margin:6px 0 12px;border:2px solid #b8860b;background:linear-gradient(135deg,rgba(255,226,122,.5),rgba(255,255,255,.3));cursor:pointer;font:inherit;color:var(--tinta);text-align:left}
+.sl-lider .tx{display:flex;flex-direction:column;gap:2px}.sl-lider .tx b{font:400 1.7rem var(--serif)}.sl-lider small{font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#7a5a0a}
+.sl-lista{display:grid;gap:8px}
+.sl-lin{display:grid;grid-template-columns:44px 52px 1fr auto;gap:10px;align-items:center;width:100%;padding:8px 12px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.3);cursor:pointer;font:inherit;color:var(--tinta);text-align:left}
+.sl-lin.eu{border-color:var(--ferr);background:rgba(143,59,34,.12)}.sl-lin:hover{background:rgba(255,255,255,.55)}
+.sl-lin .pos{font:800 1.1rem var(--sans);text-align:center}.sl-lin .nome b{display:block}.sl-lin small{color:var(--tinta2);font-weight:600}
+.sl-lin .retrato{--t:48px}.sl-lin .cortes{text-align:right}.sl-lin .cortes b{font:400 1.5rem var(--serif);display:block;line-height:1}
+.sl-com{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:8px}
+.sl-card{display:flex;flex-direction:column;align-items:center;gap:3px;padding:14px 8px 10px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.3);cursor:pointer;font:inherit;color:var(--tinta);text-align:center}
+.sl-card.eu{border-color:var(--ferr)}.sl-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.55)}.sl-card em{font-size:.8rem;color:var(--tinta2);font-weight:600}
+.sl-card small{font-weight:800;color:var(--ferr)}
+/* perfil público */
+.ad-modal>.sl-perfil{padding:0;width:min(560px,100%);overflow:visible}
+.sl-perfil-cab{position:relative;height:150px}
+.sl-perfil-ban{position:absolute;inset:0;overflow:hidden}
+.sl-fechar{position:absolute;top:10px;right:10px;z-index:3}
+.sl-perfil-ret{position:absolute;left:50%;bottom:-70px;transform:translateX(-50%);z-index:4}
+.sl-perfil-corpo{padding:82px 22px 22px;text-align:center}
+.sl-perfil-corpo h3{margin:0;font-size:1.6rem;color:var(--tinta)}.sl-perfil-corpo h4{color:var(--tinta);margin:10px 0 8px}.ad-modal .sl-nivelup h3,.ad-modal h3{color:var(--tinta)}
+.sl-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.sl-stat{border:1.5px solid var(--tinta2);padding:8px 4px;background:rgba(255,255,255,.3)}.sl-stat b{display:block;font:400 1.5rem var(--serif)}.sl-stat small{font-weight:700;color:var(--tinta2);font-size:.76rem}
+.sl-conq{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sl-badge{display:flex;flex-direction:column;align-items:center;gap:2px;width:84px;padding:8px 4px;border:1.5px solid var(--tinta2);opacity:.5;text-align:center}.sl-badge.ok{opacity:1;background:rgba(232,184,26,.22);border-color:#b8860b}
+.sl-badge i{font-style:normal;font-size:1.6rem}.sl-badge small,.sl-badge b{font-size:.74rem;line-height:1.15}
+.sl-conq.grande{justify-content:flex-start}.sl-conq.grande .sl-badge{width:150px;padding:10px 6px}.sl-conq.grande small{color:var(--tinta2);font-weight:600}
+/* prêmios e cupons */
+.sl-cupom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin-bottom:8px;border:2px dashed #b8860b;background:rgba(232,184,26,.2)}
+.sl-cupom.usado,.sl-cupom.vencido{border-color:var(--tinta2);background:rgba(255,255,255,.25);opacity:.7}
+.sl-cupom .tx b,.sl-cupom .tx span,.sl-cupom .tx small{display:block}.sl-cupom .tx small{color:var(--tinta2);font-weight:600}
+.sl-cupom .cod{display:flex;gap:8px;align-items:center}.sl-cupom code{font:800 1.25rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;background:#fff8e1;border:1.5px solid var(--tinta);padding:6px 10px}
+.sl-nivelup{text-align:center}.sl-nv-brilho{font-size:3.4rem;color:#e8b81a;text-shadow:0 0 18px rgba(255,210,74,.9);animation:sl-giro 1.6s ease-out}
+@keyframes sl-giro{from{transform:scale(.2) rotate(-200deg);opacity:0}to{transform:none;opacity:1}}
+.sl-nv-lista{list-style:none;margin:8px auto;padding:0;display:grid;gap:6px;max-width:320px}.sl-nv-lista li{padding:8px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.35)}.sl-nv-lista small{display:block;color:var(--tinta2);font-weight:600}
+.cv{margin-top:22px;padding-top:14px;border-top:2px dashed var(--tinta2)}.cv-res{margin-top:10px}
+.sl-liberar{margin:18px 0}.sl-prev{font-weight:700;color:var(--tinta)}
+@media(max-width:760px){.sl-perso{grid-template-columns:1fr}.sl-palco{position:static}.sl-topo{justify-content:center;text-align:center}.sl-nivel,.sl-chips{justify-content:center}.sl-lin{grid-template-columns:36px 48px 1fr auto}.sl-stats{grid-template-columns:repeat(2,1fr)}.sl-painel,.sl-topo{padding:16px 14px}}
 </style>
 </head>
 <body>
@@ -1030,6 +1164,7 @@ body.em-previa .topo{top:52px}
       <a class="ic" id="lk-insta" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#f4c56e" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#f4c56e"/></svg></a>
       <button type="button" class="sino" id="sino" aria-label="Avisos" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17v-6a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg><b hidden>0</b></button>
       <button type="button" class="ava-bt" id="meu-perfil" aria-label="Meu perfil e foto" title="Meu perfil e foto" hidden></button>
+      <button type="button" class="btn sec mini" id="ir-saloon">Saloon</button>
       <button type="button" class="btn sec mini" id="ir-meus">Meus horários</button>
       <button type="button" class="btn sec mini" id="sair">Sair</button>
     </div>
@@ -1220,6 +1355,25 @@ body.em-previa .topo{top:52px}
   </main>
 </div>
 
+<!-- SALOON -->
+<div class="app sl-app" id="t-saloon" hidden>
+  <header class="topo">
+    <h1 class="marca" data-nome>Barbearia</h1>
+    <span class="selo">Saloon</span>
+    <span class="espaco-flex"></span>
+    <div class="acoes">
+      <button type="button" class="sino" id="sino3" aria-label="Avisos" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17v-6a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg><b hidden>0</b></button>
+      <button type="button" class="ava-bt" id="meu-perfil3" aria-label="Meu perfil e foto" title="Meu perfil e foto" hidden></button>
+      <button type="button" class="btn sec mini" id="sl-voltar">Voltar ao site</button>
+      <button type="button" class="btn sec mini" id="sl-sair">Sair</button>
+    </div>
+  </header>
+  <main class="sl-corpo" id="sl-corpo-wrap">
+    <div id="sl-corpo" aria-live="polite"></div>
+    <div class="msg" id="msg-sl" role="alert"></div>
+  </main>
+</div>
+
 <!-- MEUS HORÁRIOS -->
 <div class="meus-wrap" id="t-meus" hidden>
   <section class="perg">
@@ -1341,8 +1495,8 @@ aplicarSite();
 $('ano').textContent = new Date().getFullYear();
 
 // leituras do painel ficam guardadas por 25 s (trocar de aba não refaz a consulta); qualquer gravação limpa tudo
-const LEIT_CACHE = { admin_dados: 1, admin_dashboard: 1, admin_clientes: 1, admin_relatorio: 1, admin_agenda: 1, admin_agenda_relatorio: 1, admin_custos_lista: 1, admin_fin_relatorio: 1 };
-const SEM_EFEITO = { perfil: 1, notificacoes: 1, meus: 1, fidelidade: 1, config: 1, slots: 1 };
+const LEIT_CACHE = { admin_dados: 1, admin_dashboard: 1, admin_clientes: 1, admin_relatorio: 1, admin_agenda: 1, admin_agenda_relatorio: 1, admin_custos_lista: 1, admin_fin_relatorio: 1, admin_saloon: 1 };
+const SEM_EFEITO = { perfil: 1, notificacoes: 1, meus: 1, fidelidade: 1, config: 1, slots: 1, saloon_eu: 1, saloon_ranking: 1, saloon_perfil: 1, saloon_buscar: 1 };
 let cacheLeit = {};
 const clonar = o => typeof structuredClone === 'function' ? structuredClone(o) : JSON.parse(JSON.stringify(o));
 function post(corpo) {
@@ -1352,7 +1506,7 @@ function post(corpo) {
 }
 function aviso(id, tipo, texto) { const m = $(id); m.className = 'msg ' + tipo; m.textContent = texto; }
 function limpar(id) { const m = $(id); m.className = 'msg'; m.textContent = ''; }
-function sair() { previaTema = null; const pb = $('previa-barra'); if (pb) pb.remove(); document.body.classList.remove('em-previa'); sessao = null; fid = null; cacheLeit = {}; try { localStorage.removeItem('sessao'); } catch (e) {} pararCarrossel(); mostrar('login'); }
+function sair() { previaTema = null; const pb = $('previa-barra'); if (pb) pb.remove(); document.body.classList.remove('em-previa'); sessao = null; fid = null; cacheLeit = {}; try { slReset(); } catch (e) {} try { localStorage.removeItem('sessao'); } catch (e) {} pararCarrossel(); mostrar('login'); }
 function checar(r, msgId) {
   if (r.expirada) { sair(); aviso('msg-login', 'erro', r.erro); return false; }
   if (!r.ok) { aviso(msgId, 'erro', r.erro || 'Algo deu errado.'); return false; }
@@ -1363,12 +1517,14 @@ function mostrar(tela, recemEntrou) {
   $('t-home').hidden = tela !== 'home';
   $('t-meus').hidden = tela !== 'meus';
   $('t-admin').hidden = tela !== 'admin';
+  $('t-saloon').hidden = tela !== 'saloon';
   document.querySelector('.login-fundo').hidden = tela !== 'login';      // o céu de fundo só existe na tela de login
   window.scrollTo(0, 0);
   if (tela === 'login') pararAvisos(); else iniciarAvisos();
   if (tela === 'home') abrirHome(recemEntrou);
   if (tela === 'meus') carregarMeus();
   if (tela === 'admin') abrirAdmin();
+  if (tela === 'saloon') abrirSaloon();
 }
 
 // ---- login / cadastro ----
@@ -2117,6 +2273,7 @@ function desenharPainel() {
 async function abrirAviso(x) {
   if (!x.lida) { x.lida = true; av.n = Math.max(0, av.n - 1); pintarSino(); post({ action: 'notificacoes_lidas', token: sessao.token, ids: [x.id] }).catch(() => {}); }
   $('sino-painel').hidden = true;
+  if (x.tipo === 'premio') { SL.aba = 'premios'; mostrar('saloon'); return; }
   if (x.tipo === 'municao') { mostrar('home'); setTimeout(() => { const f = $('fidelidade'); if (!f.hidden) f.scrollIntoView({ behavior: 'smooth' }); }, 700); return; }
   const doBarbeiro = x.tipo === 'agendamento' || x.tipo === 'bloqueio' || x.titulo === 'Cliente cancelou';
   if (doBarbeiro && ehEquipe()) { adAba = x.tipo === 'bloqueio' ? 'dash' : 'agenda'; mostrar('admin'); }
@@ -2485,8 +2642,8 @@ const R$ = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', curr
 const PCT = v => Number(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
 const ICONES_SRV = [['tesoura', 'Tesoura'], ['navalha', 'Navalha'], ['gota', 'Gota'], ['estrela', 'Estrela'], ['crianca', 'Criança'], ['pincel', 'Pincel']];
 const CATS_SRV = [['corte', 'Corte (entra na soma de cortes)'], ['barba', 'Barba'], ['quimica', 'Química (hidratação, pigmentação…)'], ['outro', 'Outro']];
-const ABAS_DONO = [['dash', 'Dashboard'], ['agenda', 'Agenda'], ['clientes', 'Clientes'], ['vendas', 'Vendas e lucro'], ['equipe', 'Barbeiros'], ['servicos', 'Serviços e preços'], ['vitrine', 'Vitrine do site'], ['visual', 'Aparência']];
-const ABAS_BARB = [['dash', 'Meu desempenho'], ['agenda', 'Minha agenda'], ['clientes', 'Clientes']];
+const ABAS_DONO = [['dash', 'Dashboard'], ['agenda', 'Agenda'], ['clientes', 'Clientes'], ['vendas', 'Vendas e lucro'], ['equipe', 'Barbeiros'], ['servicos', 'Serviços e preços'], ['vitrine', 'Vitrine do site'], ['comunidade', 'Comunidade'], ['visual', 'Aparência']];
+const ABAS_BARB = [['dash', 'Meu desempenho'], ['agenda', 'Minha agenda'], ['clientes', 'Clientes'], ['cupons', 'Cupons']];
 let adAba = 'dash', adSeq = 0;
 const ehDono = () => !!sessao && sessao.papel === 'dono';
 const ehEquipe = () => !!sessao && (sessao.papel === 'dono' || sessao.papel === 'barbeiro');
@@ -2662,8 +2819,8 @@ function desenharAbas(abas) {
 function abrirAba(id) {
   const my = ++adSeq; limpar('msg-ad'); aplicarSite(); aplicarPromoTema();    // desfaz pré-visualizações não salvas
   const box = $('ad-painel'); box.textContent = '';
-  const f = { dash: abDash, agenda: abAgenda, clientes: abClientes, vendas: abVendas, servicos: abServicos, vitrine: abVitrine, equipe: abEquipe, visual: abVisual }[id];
-  if (f && (id === 'agenda' || id === 'dash' || id === 'clientes' || ehDono())) f(box, () => my === adSeq);
+  const f = { dash: abDash, agenda: abAgenda, clientes: abClientes, vendas: abVendas, servicos: abServicos, vitrine: abVitrine, equipe: abEquipe, visual: abVisual, comunidade: abComunidade, cupons: abCupons }[id];
+  if (f && (id === 'agenda' || id === 'dash' || id === 'clientes' || id === 'cupons' || ehDono())) f(box, () => my === adSeq);
 }
 $('ir-admin').onclick = async () => {
   limpar('msg-priv');
@@ -2677,6 +2834,609 @@ $('ir-admin').onclick = async () => {
 };
 $('ad-voltar').onclick = () => mostrar('home');
 $('ad-sair').onclick = sair;
+
+// =====================================================================
+//  v15 · SALOON — personagem de Velho Oeste desenhado em SVG (original), banners e molduras
+// =====================================================================
+const PAL_PELE = ['#f6d7b8', '#e8b98d', '#d49a6a', '#b57a4c', '#8a5a35', '#5c3b22'];
+const PAL_CAB = ['#1b1410', '#3b2417', '#6b4226', '#a0652d', '#c9a24a', '#e8d28a', '#b8b8b8', '#f2f2f2', '#9c2f1f'];
+const PAL_ROUPA = ['#8f3b22', '#2f4a6b', '#4a6a2f', '#d9a14b', '#241a12', '#e8dcc0', '#7a2d5a', '#5c4a36', '#b8b8b8', '#c6381c', '#3d7a7a', '#f2f2f2'];
+const NOME_COR = { pele: ['Clara', 'Média clara', 'Morena', 'Parda', 'Escura', 'Muito escura'], cabelo: ['Preto', 'Castanho escuro', 'Castanho', 'Ruivo-castanho', 'Loiro escuro', 'Loiro', 'Grisalho', 'Branco', 'Ruivo'], roupa: ['Ferrugem', 'Azul jeans', 'Verde', 'Mostarda', 'Preto', 'Creme', 'Vinho', 'Marrom', 'Cinza', 'Vermelho', 'Turquesa', 'Branco'] };
+function sombra(hex, f) { const n = parseInt(hex.slice(1), 16), c = k => Math.max(0, Math.min(255, Math.round(((n >> k) & 255) * f))); return '#' + [16, 8, 0].map(k => c(k).toString(16).padStart(2, '0')).join(''); }
+let avSeq = 0;
+const E = (tag, a, ...k) => svgEl(tag, a, ...k);
+const Pt = (d, fill, ex) => E('path', Object.assign({ d: d, fill: fill }, ex || {}));
+const estrela = (cx, cy, r, fill) => { const p = []; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.42 : r; p.push((cx + Math.cos(a) * rr).toFixed(1) + ',' + (cy + Math.sin(a) * rr).toFixed(1)); } return E('polygon', { points: p.join(' '), fill: fill, stroke: '#8a6a1a', 'stroke-width': 0.8 }); };
+// ---------- cabelo ----------
+function cabeloTras(id, c) {
+  if (id === 'cab_longo') return [Pt('M44,58 C38,92 40,122 48,134 L66,130 L62,72 Z', c), Pt('M116,58 C122,92 120,122 112,134 L94,130 L98,72 Z', c)];
+  return [];
+}
+function cabeloFrente(id, c) {
+  const topo = 'M46,70 C42,40 60,28 80,28 C100,28 118,40 114,70 C110,56 100,50 80,50 C60,50 50,56 46,70 Z';
+  switch (id) {
+    case 'cab_curto': return [Pt(topo, c)];
+    case 'cab_degrade': return [Pt(topo, c), Pt('M46,70 C44,60 46,54 50,52 L52,72 Z', '#000', { opacity: .3 }), Pt('M114,70 C116,60 114,54 110,52 L108,72 Z', '#000', { opacity: .3 })];
+    case 'cab_buzz': return [Pt('M48,64 C48,40 62,32 80,32 C98,32 112,40 112,64 C106,52 96,48 80,48 C64,48 54,52 48,64 Z', c, { opacity: .6 })];
+    case 'cab_topete': return [Pt(topo, c), Pt('M60,38 C56,14 96,6 108,32 C96,26 78,30 60,38 Z', c)];
+    case 'cab_social': return [Pt('M46,70 C42,40 60,28 80,28 C100,28 118,40 114,70 C112,56 104,46 90,44 C74,46 56,50 46,70 Z', c), E('path', { d: 'M70,30 Q64,42 54,50', stroke: sombra(c, .6), 'stroke-width': 2, fill: 'none' })];
+    case 'cab_crespo': return [[50, 58], [56, 44], [68, 34], [82, 31], [96, 34], [107, 44], [112, 58], [60, 50], [100, 50], [80, 42]].map(p => E('circle', { cx: p[0], cy: p[1], r: 12, fill: c }));
+    case 'cab_longo': return [Pt('M44,72 C40,40 60,26 80,26 C100,26 120,40 116,72 C112,58 104,46 90,44 C74,46 54,52 44,72 Z', c)];
+    case 'cab_coque': return [Pt(topo, c), E('circle', { cx: 80, cy: 24, r: 11, fill: c }), E('rect', { x: 70, y: 32, width: 20, height: 4, rx: 2, fill: sombra(c, .55) })];
+    case 'cab_moicano': return [Pt('M48,64 C48,44 62,38 80,38 C98,38 112,44 112,64 C106,54 96,50 80,50 C64,50 54,54 48,64 Z', c, { opacity: .45 }), Pt('M70,50 L66,18 L75,30 L80,8 L86,30 L95,18 L90,50 Z', c)];
+    case 'cab_slick': return [Pt('M46,70 C42,40 60,26 82,26 C104,26 118,40 114,70 C110,54 100,46 82,44 C64,44 52,52 46,70 Z', c), E('path', { d: 'M58,38 Q80,28 104,40 M54,46 Q80,34 108,48', stroke: '#fff', 'stroke-width': 1.6, fill: 'none', opacity: .35 })];
+  }
+  return [];
+}
+// ---------- barba ----------
+function barbaJaw(id, c) {
+  switch (id) {
+    case 'bar_cavanhaque': return [E('ellipse', { cx: 80, cy: 106, rx: 8, ry: 9, fill: c })];
+    case 'bar_curta': return [Pt('M47,78 C49,108 62,112 80,112 C98,112 111,108 113,78 C108,92 100,98 80,98 C60,98 52,92 47,78 Z', c, { opacity: .95 })];
+    case 'bar_costeleta': return [Pt('M46,64 L53,64 L55,92 L48,90 Z', c), Pt('M114,64 L107,64 L105,92 L112,90 Z', c)];
+    case 'bar_cheia': return [Pt('M46,74 C46,112 62,124 80,124 C98,124 114,112 114,74 C108,94 100,100 80,100 C60,100 52,94 46,74 Z', c)];
+    case 'bar_longa': return [Pt('M46,74 C44,120 66,150 80,160 C94,150 116,120 114,74 C108,96 100,102 80,102 C60,102 52,96 46,74 Z', c)];
+  }
+  return [];
+}
+function barbaBigode(id, c) {
+  if (id === 'bar_bigode' || id === 'bar_cheia' || id === 'bar_longa') return [Pt('M66,89 Q80,80 94,89 Q86,93 80,91 Q74,93 66,89 Z', c)];
+  if (id === 'bar_guidao') return [Pt('M64,90 Q80,80 96,90 Q86,94 80,92 Q74,94 64,90 Z', c), E('path', { d: 'M64,90 q-9,1 -10,-9 M96,90 q9,1 10,-9', stroke: c, 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' })];
+  return [];
+}
+// ---------- chapéu ----------
+function chapeu(id, c) {
+  switch (id) {
+    case 'cha_palha': return [Pt('M24,48 C34,58 54,52 80,52 C106,52 126,58 136,48 C128,40 108,42 80,42 C52,42 32,40 24,48 Z', '#e0c27a'), Pt('M52,44 C50,20 66,14 80,14 C94,14 110,20 108,44 Z', '#ecd596'), E('rect', { x: 52, y: 34, width: 56, height: 8, fill: c })];
+    case 'cha_vaqueiro': case 'cha_xerife': {
+      const o = [Pt('M20,48 C30,60 52,53 80,53 C108,53 130,60 140,48 C132,38 110,42 80,42 C50,42 28,38 20,48 Z', sombra(c, .85)), Pt('M50,44 C46,18 62,10 80,16 C98,10 114,18 110,44 Z', c), Pt('M52,44 L108,44 L108,36 L52,36 Z', sombra(c, .6)), E('path', { d: 'M62,22 Q80,30 98,22', stroke: sombra(c, .7), 'stroke-width': 2, fill: 'none' })];
+      if (id === 'cha_xerife') o.push(estrela(80, 30, 8, '#e8c14a'));
+      return o;
+    }
+    case 'cha_bandana': return [Pt('M45,54 C50,34 110,34 115,54 C108,46 52,46 45,54 Z', c), Pt('M112,50 l16,6 l-5,11 l-9,-9 Z', c), E('circle', { cx: 112, cy: 52, r: 4, fill: sombra(c, .75) })].concat([[62, 44], [76, 41], [90, 41], [104, 44]].map(p => E('circle', { cx: p[0], cy: p[1], r: 1.6, fill: '#fff', opacity: .8 })));
+    case 'cha_coco': return [Pt('M50,48 C50,16 110,16 110,48 Z', c), E('ellipse', { cx: 80, cy: 48, rx: 38, ry: 6, fill: sombra(c, .75) }), E('rect', { x: 52, y: 38, width: 56, height: 6, fill: sombra(c, .55) })];
+    case 'cha_cartola': return [E('rect', { x: 56, y: 2, width: 48, height: 44, rx: 3, fill: c }), E('ellipse', { cx: 80, cy: 47, rx: 42, ry: 7, fill: sombra(c, .8) }), E('rect', { x: 56, y: 34, width: 48, height: 9, fill: '#c6381c' })];
+    case 'cha_pistoleiro': return [Pt('M16,54 C28,40 54,46 80,44 C106,46 132,40 144,54 C132,58 110,52 80,52 C50,52 28,58 16,54 Z', sombra(c, .8)), Pt('M50,46 C46,22 70,12 80,22 C90,12 114,22 110,46 Z', c), E('rect', { x: 52, y: 38, width: 56, height: 6, fill: '#c9a24a' })];
+    case 'cha_coroa': return [Pt('M52,46 L56,16 L68,32 L80,8 L92,32 L104,16 L108,46 Z', '#e8c14a', { stroke: '#8a6a1a', 'stroke-width': 1.4 }), E('circle', { cx: 80, cy: 38, r: 4, fill: '#c6381c' }), E('circle', { cx: 64, cy: 40, r: 2.8, fill: '#3d7ac6' }), E('circle', { cx: 96, cy: 40, r: 2.8, fill: '#3d7ac6' })];
+  }
+  return [];
+}
+function oculos(id) {
+  const k = '#2b1a10';
+  switch (id) {
+    case 'ocu_redondo': return [E('circle', { cx: 68, cy: 74, r: 10, fill: 'rgba(255,255,255,.18)', stroke: k, 'stroke-width': 2.4 }), E('circle', { cx: 92, cy: 74, r: 10, fill: 'rgba(255,255,255,.18)', stroke: k, 'stroke-width': 2.4 }), E('path', { d: 'M78,73 Q80,70 82,73', stroke: k, 'stroke-width': 2, fill: 'none' })];
+    case 'ocu_aviador': return [Pt('M56,67 h23 q0,17 -11.500,19 q-11.500,-2 -11.500,-19 Z', 'rgba(50,70,50,.5)', { stroke: '#c9a24a', 'stroke-width': 2 }), Pt('M104,67 h-23 q0,17 11.500,19 q11.500,-2 11.500,-19 Z', 'rgba(50,70,50,.5)', { stroke: '#c9a24a', 'stroke-width': 2 }), E('path', { d: 'M79,69 L81,69', stroke: '#c9a24a', 'stroke-width': 2 })];
+    case 'ocu_sol': return [E('rect', { x: 55, y: 67, width: 24, height: 14, rx: 4, fill: '#1a1410' }), E('rect', { x: 81, y: 67, width: 24, height: 14, rx: 4, fill: '#1a1410' }), E('rect', { x: 78, y: 70, width: 4, height: 3, fill: '#1a1410' }), E('path', { d: 'M59,70 l6,0 M85,70 l6,0', stroke: '#fff', opacity: .45, 'stroke-width': 1.6 })];
+    case 'ocu_tapa': return [E('path', { d: 'M46,58 L113,88', stroke: '#1a1410', 'stroke-width': 2.2 }), E('ellipse', { cx: 92, cy: 75, rx: 11, ry: 9.500, fill: '#1a1410' })];
+    case 'ocu_monoculo': return [E('circle', { cx: 92, cy: 74, r: 11, fill: 'rgba(255,255,255,.2)', stroke: '#c9a24a', 'stroke-width': 2.4 }), E('path', { d: 'M103,78 Q112,100 104,124', stroke: '#c9a24a', 'stroke-width': 1.4, fill: 'none', 'stroke-dasharray': '2 2' })];
+  }
+  return [];
+}
+// ---------- corpo: camisa, calça, sapato, mão ----------
+function bracoLonga(c, skin, curta) {
+  const a = [E('rect', { x: 34, y: 116, width: 17, height: 50, rx: 8, fill: curta ? skin : c }), E('rect', { x: 109, y: 116, width: 17, height: 50, rx: 8, fill: curta ? skin : c })];
+  if (curta) a.push(E('rect', { x: 33, y: 114, width: 19, height: 26, rx: 8, fill: c }), E('rect', { x: 108, y: 114, width: 19, height: 26, rx: 8, fill: c }));
+  return a;
+}
+const TORSO = 'M50,116 Q50,112 58,112 L102,112 Q110,112 110,116 L108,170 Q108,174 104,174 L56,174 Q52,174 52,170 Z';
+function camisa(id, c, skin, defs) {
+  const claro = sombra(c, 1.25), esc = sombra(c, .7), o = [];
+  switch (id) {
+    case 'cam_camiseta': return { bracos: bracoLonga(c, skin, true), torso: [Pt(TORSO, c), Pt('M70,112 Q80,124 90,112 Z', skin)] };
+    case 'cam_xadrez': {
+      const pid = 'xz' + (++avSeq);
+      defs.append(E('pattern', { id: pid, width: 10, height: 10, patternUnits: 'userSpaceOnUse' }, E('rect', { width: 10, height: 10, fill: c }), E('rect', { width: 5, height: 10, fill: '#000', opacity: .22 }), E('rect', { width: 10, height: 5, fill: '#fff', opacity: .2 })));
+      return { bracos: [E('rect', { x: 34, y: 116, width: 17, height: 50, rx: 8, fill: 'url(#' + pid + ')' }), E('rect', { x: 109, y: 116, width: 17, height: 50, rx: 8, fill: 'url(#' + pid + ')' })], torso: [Pt(TORSO, 'url(#' + pid + ')'), Pt('M68,112 L80,130 L92,112 Z', '#f2ead6'), E('line', { x1: 80, y1: 130, x2: 80, y2: 174, stroke: esc, 'stroke-width': 1.2 })].concat([140, 154, 166].map(y => E('circle', { cx: 80, cy: y, r: 1.8, fill: '#f2ead6' }))) };
+    }
+    case 'cam_colete': return { bracos: bracoLonga('#efe3c6', skin, false), torso: [Pt(TORSO, '#efe3c6'), Pt('M52,114 L74,114 L72,174 L54,174 Z', c), Pt('M108,114 L86,114 L88,174 L106,174 Z', c), Pt('M70,112 L80,128 L90,112 Z', '#efe3c6')].concat([138, 152, 166].map(y => E('circle', { cx: 80, cy: y, r: 2, fill: '#e8c14a' }))) };
+    case 'cam_jaqueta': return { bracos: bracoLonga(c, skin, false).concat([E('rect', { x: 34, y: 150, width: 17, height: 6, fill: esc }), E('rect', { x: 109, y: 150, width: 17, height: 6, fill: esc })]), torso: [Pt(TORSO, c), Pt('M56,112 L72,112 L80,134 L66,140 Z', claro), Pt('M104,112 L88,112 L80,134 L94,140 Z', claro), E('line', { x1: 80, y1: 134, x2: 80, y2: 174, stroke: '#c9a24a', 'stroke-width': 1.6, 'stroke-dasharray': '2 1.5' })] };
+    case 'cam_poncho': {
+      const pid = 'pc' + (++avSeq);
+      defs.append(E('pattern', { id: pid, width: 16, height: 16, patternUnits: 'userSpaceOnUse' }, E('rect', { width: 16, height: 16, fill: c }), E('rect', { y: 5, width: 16, height: 3, fill: '#e8c14a' }), E('rect', { y: 11, width: 16, height: 2, fill: '#fff', opacity: .55 })));
+      return { bracos: [E('rect', { x: 34, y: 130, width: 17, height: 36, rx: 8, fill: skin }), E('rect', { x: 109, y: 130, width: 17, height: 36, rx: 8, fill: skin })], torso: [], sobre: [Pt('M28,120 Q80,102 132,120 L142,176 Q80,190 18,176 Z', 'url(#' + pid + ')'), Pt('M68,110 Q80,124 92,110 Q80,104 68,110 Z', skin)] };
+    }
+    case 'cam_xerife': return { bracos: bracoLonga(esc, skin, false), torso: [Pt('M50,116 Q50,112 58,112 L102,112 Q110,112 110,116 L112,188 L48,188 Z', esc), Pt('M58,112 L74,112 L80,130 L70,176 L56,176 Z', c), Pt('M102,112 L86,112 L80,130 L90,176 L104,176 Z', c), estrela(94, 136, 7, '#e8c14a')].concat([150, 164, 178].map(y => E('circle', { cx: 80, cy: y, r: 2, fill: '#e8c14a' }))) };
+    case 'cam_paleto': return { bracos: bracoLonga(c, skin, false), torso: [Pt('M50,116 Q50,112 58,112 L102,112 Q110,112 110,116 L110,184 L50,184 Z', c), Pt('M70,112 L80,150 L90,112 Z', '#f2f2f2'), Pt('M76,116 L84,116 L86,164 L80,172 L74,164 Z', '#9c2f1f'), Pt('M60,112 L74,112 L80,150 L66,150 Z', sombra(c, .8)), Pt('M100,112 L86,112 L80,150 L94,150 Z', sombra(c, .8))] };
+  }
+  return { bracos: bracoLonga(c, skin, true), torso: [Pt(TORSO, c)] };
+}
+function calca(id, c) {
+  const pernas = (alt) => [Pt('M54,170 L78,170 L78,' + alt + ' L56,' + alt + ' Z', c), Pt('M82,170 L106,170 L104,' + alt + ' L82,' + alt + ' Z', c)];
+  const cinto = [E('rect', { x: 52, y: 168, width: 56, height: 8, fill: '#3a2616' }), E('rect', { x: 76, y: 167, width: 8, height: 10, fill: '#e8c14a' })];
+  switch (id) {
+    case 'cal_bermuda': return { pernas: pernas(192).concat(cinto), curta: true };
+    case 'cal_chaps': return { pernas: pernas(216).concat([Pt('M52,176 L66,176 L64,216 L52,216 Z', '#8a5a2b'), Pt('M108,176 L94,176 L96,216 L108,216 Z', '#8a5a2b')], [186, 198, 210].flatMap(y => [E('line', { x1: 52, y1: y, x2: 47, y2: y + 6, stroke: '#8a5a2b', 'stroke-width': 1.6 }), E('line', { x1: 108, y1: y, x2: 113, y2: y + 6, stroke: '#8a5a2b', 'stroke-width': 1.6 })]), cinto) };
+    case 'cal_listrada': return { pernas: pernas(216).concat([E('line', { x1: 60, y1: 176, x2: 60, y2: 214, stroke: '#fff', opacity: .55, 'stroke-width': 2 }), E('line', { x1: 72, y1: 176, x2: 72, y2: 214, stroke: '#fff', opacity: .55, 'stroke-width': 2 }), E('line', { x1: 88, y1: 176, x2: 88, y2: 214, stroke: '#fff', opacity: .55, 'stroke-width': 2 }), E('line', { x1: 100, y1: 176, x2: 100, y2: 214, stroke: '#fff', opacity: .55, 'stroke-width': 2 })], cinto) };
+  }
+  return { pernas: pernas(216).concat(cinto, [E('line', { x1: 80, y1: 176, x2: 80, y2: 216, stroke: sombra(c, .7), 'stroke-width': 1.2 })]) };
+}
+function sapato(id, c, curta) {
+  const bota = (alt) => [Pt('M55,' + alt + ' L77,' + alt + ' L77,228 L48,228 Q46,222 54,220 Z', c), Pt('M83,' + alt + ' L105,' + alt + ' L112,228 L83,228 Z', c), E('rect', { x: 49, y: 226, width: 30, height: 4, fill: '#2a1a10' }), E('rect', { x: 81, y: 226, width: 31, height: 4, fill: '#2a1a10' })];
+  switch (id) {
+    case 'sap_cowboy': return bota(206).concat([E('path', { d: 'M58,212 l16,0 M86,212 l16,0', stroke: '#e8c14a', 'stroke-width': 1.4, opacity: .8 })]);
+    case 'sap_esporas': return bota(206).concat([E('circle', { cx: 105, cy: 222, r: 4, fill: 'none', stroke: '#e8c14a', 'stroke-width': 1.8 }), E('circle', { cx: 55, cy: 222, r: 4, fill: 'none', stroke: '#e8c14a', 'stroke-width': 1.8 })]);
+    case 'sap_tenis': return [Pt('M54,216 L77,216 L77,228 L48,228 Q46,220 54,216 Z', c), Pt('M83,216 L106,216 L112,228 L83,228 Z', c), E('rect', { x: 48, y: 226, width: 30, height: 4, rx: 2, fill: '#f2f2f2' }), E('rect', { x: 82, y: 226, width: 31, height: 4, rx: 2, fill: '#f2f2f2' })];
+    case 'sap_social': return [Pt('M55,218 L77,218 L77,228 L50,228 Q48,222 55,218 Z', c), Pt('M83,218 L105,218 L110,228 L83,228 Z', c), E('rect', { x: 50, y: 226, width: 28, height: 3, fill: '#000', opacity: .5 }), E('rect', { x: 82, y: 226, width: 29, height: 3, fill: '#000', opacity: .5 })];
+  }
+  return [Pt('M55,212 L77,212 L77,228 L48,228 Q46,220 54,216 Z', c), Pt('M83,212 L105,212 L112,228 L83,228 Z', c), E('rect', { x: 48, y: 226, width: 30, height: 4, fill: '#2a1a10' }), E('rect', { x: 82, y: 226, width: 31, height: 4, fill: '#2a1a10' })];
+}
+function itemMao(id) {
+  const M = (ch, rot) => [E('g', { transform: rot ? 'rotate(' + rot + ' 120 170)' : '' }, ...ch)];
+  const aco = '#9aa3ad', latao = '#c9a24a', mad = '#6b4226';
+  switch (id) {
+    case 'mao_pente': return M([E('rect', { x: 114, y: 150, width: 8, height: 26, rx: 2, fill: '#2a1a10' })].concat([0, 1, 2, 3, 4, 5].map(i => E('rect', { x: 123, y: 151 + i * 4, width: 7, height: 2, fill: '#2a1a10' }))), 0);
+    case 'mao_navalha': return M([Pt('M118,172 L132,134 L137,136 L125,174 Z', '#d8dde3', { stroke: '#8a939c', 'stroke-width': 1 }), Pt('M116,172 L126,178 L130,172 L122,166 Z', '#2a1a10')], 10);
+    case 'mao_tesoura': return M([E('path', { d: 'M120,170 L136,132 M120,170 L106,134', stroke: '#c9d0d8', 'stroke-width': 3.4, 'stroke-linecap': 'round' }), E('circle', { cx: 112, cy: 178, r: 5, fill: 'none', stroke: '#c6381c', 'stroke-width': 2.6 }), E('circle', { cx: 128, cy: 178, r: 5, fill: 'none', stroke: '#c6381c', 'stroke-width': 2.6 })], 8);
+    case 'mao_garrafa': return M([Pt('M112,176 L112,150 Q112,144 118,142 L118,132 L124,132 L124,142 Q130,144 130,150 L130,176 Z', '#a8641c', { stroke: '#5a3410', 'stroke-width': 1 }), E('rect', { x: 112, y: 154, width: 18, height: 12, fill: '#f2ead6' }), E('rect', { x: 118, y: 128, width: 6, height: 6, fill: '#6b4226' })], 0);
+    case 'mao_revolver': case 'mao_revolver_ouro': {
+      const c = id === 'mao_revolver' ? aco : '#e8c14a', c2 = id === 'mao_revolver' ? '#6e7780' : '#b8860b';
+      return M([E('rect', { x: 118, y: 150, width: 38, height: 7, rx: 2, fill: c, stroke: c2, 'stroke-width': 1 }), Pt('M112,150 L128,150 L128,168 L112,170 Z', c, { stroke: c2, 'stroke-width': 1 }), E('circle', { cx: 120, cy: 156, r: 6, fill: c2 }), Pt('M110,166 L120,166 L116,186 L106,184 Z', '#6b4226'), E('path', { d: 'M122,166 q4,6 10,0', stroke: c2, 'stroke-width': 1.6, fill: 'none' })].concat(id === 'mao_revolver_ouro' ? [E('circle', { cx: 150, cy: 144, r: 2.4, fill: '#fff' }), E('circle', { cx: 134, cy: 140, r: 1.6, fill: '#fff' })] : []), -22);
+    }
+    case 'mao_violao': return M([E('ellipse', { cx: 126, cy: 160, rx: 14, ry: 12, fill: '#a8641c', stroke: '#5a3410', 'stroke-width': 1.4 }), E('ellipse', { cx: 126, cy: 148, rx: 10, ry: 9, fill: '#a8641c', stroke: '#5a3410', 'stroke-width': 1.4 }), E('circle', { cx: 126, cy: 153, r: 4, fill: '#2a1a10' }), E('rect', { x: 124, y: 108, width: 5, height: 36, fill: '#3a2616' }), E('rect', { x: 122, y: 104, width: 9, height: 8, fill: '#3a2616' })], 14);
+    case 'mao_chicote': return M([E('path', { d: 'M118,172 C130,150 112,140 126,126 C138,112 150,128 140,138', stroke: '#6b4226', 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' }), E('rect', { x: 114, y: 168, width: 8, height: 14, rx: 2, fill: '#2a1a10' })], 0);
+    case 'mao_rifle': return M([E('rect', { x: 112, y: 160, width: 12, height: 14, rx: 3, fill: mad }), E('rect', { x: 122, y: 160, width: 44, height: 5, fill: aco, stroke: '#6e7780', 'stroke-width': 0.8 }), Pt('M102,168 L124,160 L124,172 L108,180 Z', mad)], -38);
+    case 'mao_espingarda': return M([E('rect', { x: 122, y: 158, width: 46, height: 4, fill: aco }), E('rect', { x: 122, y: 164, width: 46, height: 4, fill: aco }), Pt('M100,170 L124,158 L124,176 L104,184 Z', mad)], -34);
+    case 'mao_laco': return M([E('ellipse', { cx: 132, cy: 138, rx: 17, ry: 22, fill: 'none', stroke: '#d8b868', 'stroke-width': 3.2, transform: 'rotate(18 132 138)' }), E('path', { d: 'M120,170 C122,158 126,152 128,158', stroke: '#d8b868', 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' })], 0);
+  }
+  return [];
+}
+// ---------- monta o personagem ----------
+// modo: 'corpo' (inteiro) | 'busto' (cabeça e ombros). opc.fundo: cor de fundo opcional
+function avatarSvg(av, opc) {
+  opc = opc || {}; av = Object.assign({ pele: 1, cabelo: 'cab_curto', corCabelo: 1, barba: 'bar_nenhuma', corBarba: 1, chapeu: 'cha_nenhum', corChapeu: 0, oculos: 'ocu_nenhum', camisa: 'cam_camiseta', corCamisa: 0, calca: 'cal_reta', corCalca: 0, sapato: 'sap_botina', corSapato: 0, mao: 'mao_nada' }, av || {});
+  const pele = PAL_PELE[av.pele] || PAL_PELE[1], hc = PAL_CAB[av.corCabelo] || PAL_CAB[1], bc = PAL_CAB[av.corBarba] || hc, ro = i => PAL_ROUPA[i] || PAL_ROUPA[0];
+  const vb = opc.vb || (opc.modo === 'busto' ? '24 6 112 124' : '0 0 160 236');
+  const add = (...a) => a.flat(Infinity).forEach(c => { if (c != null && c !== false) svg.append(c); });
+  const svg = E('svg', { viewBox: vb, class: 'av-svg', role: 'img', 'aria-label': opc.rotulo || 'Personagem', preserveAspectRatio: 'xMidYMid meet' });
+  const defs = E('defs'); svg.append(defs);
+  const cam = camisa(av.camisa, ro(av.corCamisa), pele, defs), cal = calca(av.calca, ro(av.corCalca)), sombraPele = sombra(pele, .85);
+  const corpo = opc.modo !== 'busto';
+  if (corpo) add(E('ellipse', { cx: 80, cy: 230, rx: 50, ry: 5, fill: '#000', opacity: .18 }));
+  add(cabeloTras(av.cabelo, hc));
+  if (corpo) {
+    add(E('g', { class: 'mao-esq' }), cal.pernas);
+    if (cal.curta) add(E('rect', { x: 56, y: 192, width: 22, height: 22, fill: pele }), E('rect', { x: 82, y: 192, width: 22, height: 22, fill: pele }));
+    add(sapato(av.sapato, ro(av.corSapato)));
+    add(cam.bracos, E('circle', { cx: 42.5, cy: 170, r: 8.5, fill: pele }), E('circle', { cx: 117.5, cy: 170, r: 8.5, fill: pele }));
+  } else add(cam.bracos);
+  add(cam.torso, E('rect', { x: 72, y: 100, width: 16, height: 16, fill: sombraPele }));
+  if (cam.sobre) add(cam.sobre);
+  // cabeça
+  add(E('circle', { cx: 47, cy: 77, r: 7, fill: pele }), E('circle', { cx: 113, cy: 77, r: 7, fill: pele }), E('ellipse', { cx: 80, cy: 70, rx: 33, ry: 37, fill: pele }), E('ellipse', { cx: 80, cy: 98, rx: 20, ry: 6, fill: sombraPele, opacity: .35 }));
+  add(barbaJaw(av.barba, bc));
+  add(E('ellipse', { cx: 68, cy: 74, rx: 3.6, ry: 4.4, fill: '#2b1a10' }), E('ellipse', { cx: 92, cy: 74, rx: 3.6, ry: 4.4, fill: '#2b1a10' }), E('circle', { cx: 69.2, cy: 72.5, r: 1.2, fill: '#fff' }), E('circle', { cx: 93.2, cy: 72.5, r: 1.2, fill: '#fff' }));
+  const ceb = av.cabelo === 'cab_careca' ? sombra(pele, .45) : sombra(hc, .9);
+  add(E('path', { d: 'M61,66 q7,-4.500 14,-1 M85,65 q7,-3.500 14,1', stroke: ceb, 'stroke-width': 2.8, fill: 'none', 'stroke-linecap': 'round' }), E('path', { d: 'M80,78 q-4,9 0,11', stroke: sombra(pele, .7), 'stroke-width': 2, fill: 'none', 'stroke-linecap': 'round' }),
+    E('circle', { cx: 58, cy: 88, r: 5, fill: '#e85a5a', opacity: .16 }), E('circle', { cx: 102, cy: 88, r: 5, fill: '#e85a5a', opacity: .16 }),
+    E('path', { d: 'M72,96 q8,6 16,0', stroke: '#7a2d1a', 'stroke-width': 2.4, fill: 'none', 'stroke-linecap': 'round' }));
+  add(barbaBigode(av.barba, bc), cabeloFrente(av.cabelo, hc), oculos(av.oculos), chapeu(av.chapeu, ro(av.corChapeu)));
+  if (corpo && av.mao !== 'mao_nada') add(E('g', { class: 'mao-dir' }, itemMao(av.mao)));
+  if (corpo) add(E('circle', { cx: 117.5, cy: 170, r: 8.5, fill: pele }));       // a mão fica por cima do item (segurando)
+  return svg;
+}
+// ---------- banners (fundo do perfil) e molduras ----------
+const BANNERS = {
+  ban_deserto: { ceu: ['#f6c97a', '#e2813b'], astro: 'sol', sil: 'mesas', chao: '#b4693a', silc: '#8a4a2a' }, ban_saloon: { ceu: ['#4a2e1a', '#8a5a30'], astro: null, sil: 'saloon', chao: '#2a1a10', silc: '#1a0f08' },
+  ban_poente: { ceu: ['#ff9a5a', '#7a2d5a'], astro: 'solbaixo', sil: 'montes', chao: '#3a1a30', silc: '#2a1024' }, ban_noite: { ceu: ['#0d1a2e', '#2a3a5c'], astro: 'lua', sil: 'cactos', chao: '#14203a', silc: '#0a1424' },
+  ban_pradaria: { ceu: ['#9fd4f0', '#e8f4d0'], astro: 'sol', sil: 'campo', chao: '#6a9a3a', silc: '#4a7a2a' }, ban_cidade: { ceu: ['#d9c2a2', '#a89070'], astro: 'solpalido', sil: 'cidade', chao: '#6a5a46', silc: '#4a3c2c' },
+  ban_trem: { ceu: ['#f0b070', '#a05a34'], astro: 'sol', sil: 'trem', chao: '#5a3a22', silc: '#2a1a10' }, ban_xerife: { ceu: ['#22304e', '#5a7aa0'], astro: 'estrelas', sil: 'delegacia', chao: '#1a2236', silc: '#0c1220' },
+  ban_ouro: { ceu: ['#ffd36a', '#c8841a'], astro: 'sol', sil: 'mina', chao: '#6a4410', silc: '#3a2406' }, ban_rodeio: { ceu: ['#e8c080', '#a8602a'], astro: 'sol', sil: 'arena', chao: '#8a5a2a', silc: '#4a2e14' },
+  ban_campeao_mes: { ceu: ['#ffe27a', '#d4961a'], astro: 'brilho', sil: 'montes', chao: '#8a5a10', silc: '#6a420a' }, ban_campeao_ano: { ceu: ['#6a3a9a', '#e8b84a'], astro: 'brilho', sil: 'montes', chao: '#3a1a5a', silc: '#2a1040' }
+};
+function bannerSvg(id) {
+  const b = BANNERS[id] || BANNERS.ban_deserto, gid = 'bg' + (++avSeq), svg = E('svg', { viewBox: '0 0 400 120', preserveAspectRatio: 'xMidYMid slice', class: 'ban-svg', 'aria-hidden': 'true' }), add = (...a) => a.flat(Infinity).forEach(c => { if (c != null && c !== false) svg.append(c); });
+  add(E('defs', {}, E('linearGradient', { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 }, E('stop', { offset: 0, 'stop-color': b.ceu[0] }), E('stop', { offset: 1, 'stop-color': b.ceu[1] }))), E('rect', { width: 400, height: 120, fill: 'url(#' + gid + ')' }));
+  const A = b.astro;
+  if (A === 'sol' || A === 'solbaixo' || A === 'solpalido') add(E('circle', { cx: 310, cy: A === 'solbaixo' ? 84 : 36, r: 22, fill: A === 'solpalido' ? '#f4ead2' : '#fff3c4', opacity: A === 'solpalido' ? .85 : .95 }));
+  if (A === 'lua') add(E('circle', { cx: 320, cy: 32, r: 16, fill: '#f4f0dc' }), E('circle', { cx: 326, cy: 28, r: 14, fill: b.ceu[0] }));
+  if (A === 'lua' || A === 'estrelas') [[40, 20], [90, 40], [140, 16], [200, 30], [250, 14], [370, 50], [60, 70], [180, 56]].forEach(p => add(E('circle', { cx: p[0], cy: p[1], r: 1.6, fill: '#fff', opacity: .9 })));
+  if (A === 'brilho') [[50, 30], [120, 18], [210, 40], [300, 22], [360, 50], [90, 60]].forEach(p => add(estrela(p[0], p[1], 7, '#fff7c8')));
+  const sc = b.silc, ch = b.chao;
+  const S = (d, f) => add(Pt(d, f));
+  switch (b.sil) {
+    case 'mesas': S('M0,120 L0,86 L40,86 L46,68 L92,68 L98,86 L150,86 L170,98 L232,98 L238,62 L292,62 L298,90 L340,90 L360,78 L400,78 L400,120Z', sc); break;
+    case 'montes': S('M0,120 L0,92 L60,50 L110,88 L170,44 L240,92 L300,60 L360,94 L400,72 L400,120Z', sc); break;
+    case 'campo': S('M0,120 L0,86 Q60,64 120,86 T240,86 T360,82 L400,88 L400,120Z', ch); S('M0,120 L0,100 Q80,86 160,100 T320,98 L400,102 L400,120Z', sc); break;
+    case 'cactos': S('M0,120 L0,98 L400,98 L400,120Z', sc); [60, 160, 290, 360].forEach((x, i) => { const h = 34 + (i % 2) * 14; add(E('rect', { x: x, y: 98 - h, width: 7, height: h, rx: 3, fill: sc }), E('rect', { x: x - 9, y: 98 - h * .65, width: 5, height: 14, rx: 2, fill: sc }), E('rect', { x: x - 9, y: 98 - h * .65 + 10, width: 11, height: 5, fill: sc }), E('rect', { x: x + 11, y: 98 - h * .8, width: 5, height: 14, rx: 2, fill: sc }), E('rect', { x: x + 5, y: 98 - h * .8 + 10, width: 11, height: 5, fill: sc })); }); break;
+    case 'cidade': S('M0,120 L0,100 L400,100 L400,120Z', ch); [20, 90, 170, 250, 330].forEach((x, i) => { const h = 30 + (i * 13) % 26; add(E('rect', { x: x, y: 100 - h, width: 56, height: h, fill: sc }), Pt('M' + (x - 3) + ',' + (100 - h) + ' L' + (x + 28) + ',' + (100 - h - 14) + ' L' + (x + 59) + ',' + (100 - h) + 'Z', sombra(sc, .8)), E('rect', { x: x + 8, y: 100 - h + 8, width: 9, height: 10, fill: '#e8c14a', opacity: .7 }), E('rect', { x: x + 34, y: 100 - h + 8, width: 9, height: 10, fill: '#e8c14a', opacity: .7 })); }); break;
+    case 'trem': S('M0,120 L0,96 L400,96 L400,120Z', ch); add(E('rect', { x: 0, y: 94, width: 400, height: 3, fill: '#8a8a8a' }), E('rect', { x: 150, y: 62, width: 70, height: 32, rx: 3, fill: sc }), E('rect', { x: 196, y: 48, width: 24, height: 20, fill: sc }), E('rect', { x: 160, y: 46, width: 10, height: 18, fill: sc }), E('circle', { cx: 166, cy: 38, r: 9, fill: '#f2f2f2', opacity: .75 }), E('circle', { cx: 180, cy: 28, r: 12, fill: '#f2f2f2', opacity: .55 }), E('rect', { x: 226, y: 70, width: 60, height: 24, rx: 2, fill: sombra(sc, 1.4) }), E('rect', { x: 292, y: 70, width: 60, height: 24, rx: 2, fill: sombra(sc, 1.4) })); [162, 184, 206, 240, 270, 306, 336].forEach(x => add(E('circle', { cx: x, cy: 94, r: 6, fill: '#1a1410' }))); break;
+    case 'saloon': S('M0,120 L0,100 L400,100 L400,120Z', ch); add(E('rect', { x: 120, y: 40, width: 160, height: 60, fill: sc }), E('rect', { x: 110, y: 30, width: 180, height: 14, fill: sombra(sc, 1.5) }), E('rect', { x: 170, y: 52, width: 60, height: 14, rx: 2, fill: '#c9a24a' }), E('rect', { x: 186, y: 74, width: 28, height: 26, fill: '#6b4226' }), E('rect', { x: 134, y: 56, width: 22, height: 24, fill: '#e8c14a', opacity: .75 }), E('rect', { x: 244, y: 56, width: 22, height: 24, fill: '#e8c14a', opacity: .75 })); break;
+    case 'delegacia': S('M0,120 L0,100 L400,100 L400,120Z', ch); add(E('rect', { x: 130, y: 44, width: 140, height: 56, fill: sc }), Pt('M124,44 L200,22 L276,44Z', sombra(sc, 1.6)), estrela(200, 54, 10, '#e8c14a'), E('rect', { x: 188, y: 72, width: 24, height: 28, fill: '#3a2616' }), E('rect', { x: 142, y: 62, width: 20, height: 20, fill: '#e8c14a', opacity: .55 }), E('rect', { x: 238, y: 62, width: 20, height: 20, fill: '#e8c14a', opacity: .55 })); break;
+    case 'mina': S('M0,120 L0,92 L70,60 L140,90 L260,50 L340,90 L400,76 L400,120Z', sc); add(Pt('M150,100 L150,74 Q200,40 250,74 L250,100Z', '#1a1008'), E('rect', { x: 144, y: 72, width: 8, height: 30, fill: '#6b4226' }), E('rect', { x: 248, y: 72, width: 8, height: 30, fill: '#6b4226' })); [[60, 104], [90, 108], [320, 106], [350, 102]].forEach(p => add(E('circle', { cx: p[0], cy: p[1], r: 4, fill: '#ffd24a' }))); break;
+    case 'arena': S('M0,120 L0,96 L400,96 L400,120Z', ch); for (let x = 10; x < 400; x += 38) add(E('rect', { x: x, y: 62, width: 6, height: 40, fill: sc })); add(E('rect', { x: 0, y: 70, width: 400, height: 5, fill: sc }), E('rect', { x: 0, y: 86, width: 400, height: 5, fill: sc })); break;
+  }
+  return svg;
+}
+const MOLDURAS = { mol_nenhuma: '', mol_madeira: 'mol-madeira', mol_latao: 'mol-latao', mol_corda: 'mol-corda', mol_estrela: 'mol-estrela', mol_ferradura: 'mol-ferradura', mol_ouro: 'mol-ouro', mol_coroa_mes: 'mol-coroa', mol_coroa_ano: 'mol-coroa ano' };
+// retrato: fundo do banner + personagem + moldura
+function retratoEl(perfil, tam, opc) {
+  opc = opc || {};
+  const w = h('div', { class: 'retrato ' + (MOLDURAS[perfil.moldura] || ''), style: '--t:' + (tam || 96) + 'px' });
+  w.append(h('div', { class: 'retrato-fundo' }, bannerSvg(perfil.banner)), h('div', { class: 'retrato-av' }, avatarSvg(perfil.avatar, { modo: opc.corpo ? 'corpo' : 'busto', rotulo: 'Personagem de ' + (perfil.apelido || 'cliente') })));
+  if (/coroa/.test(perfil.moldura || '')) w.append(h('span', { class: 'retrato-selo', text: '👑', 'aria-hidden': 'true' }));
+  if (perfil.moldura === 'mol_estrela') w.append(h('span', { class: 'retrato-selo est', text: '★', 'aria-hidden': 'true' }));
+  if (perfil.moldura === 'mol_ferradura') w.append(h('span', { class: 'retrato-selo ferr', 'aria-hidden': 'true' }, E('svg', { viewBox: '0 0 24 24' }, E('path', { d: 'M4 21V11a8 8 0 0116 0v10h-5v-9a3 3 0 00-6 0v9z', fill: '#b9c1c9', stroke: '#3a4148', 'stroke-width': 1.4, 'stroke-linejoin': 'round' }), E('circle', { cx: 6.5, cy: 17, r: 1, fill: '#3a4148' }), E('circle', { cx: 17.5, cy: 17, r: 1, fill: '#3a4148' }), E('circle', { cx: 6.8, cy: 12, r: 1, fill: '#3a4148' }), E('circle', { cx: 17.2, cy: 12, r: 1, fill: '#3a4148' }))));
+  return w;
+}
+
+
+// =====================================================================
+//  v15 · SALOON (cliente): personagem, missões, ranking, comunidade e prêmios
+// =====================================================================
+const SL = { d: null, email: '', aba: 'perso', slot: 'cabelo', rasc: null, seq: 0, rk: { per: 'mes', ch: '' }, busca: '' };
+function slReset() { SL.d = null; SL.email = ''; SL.rasc = null; SL.aba = 'perso'; SL.slot = 'cabelo'; SL.busca = ''; SL.rk = { per: 'mes', ch: '' }; if ($('ir-saloon')) $('ir-saloon').textContent = 'Saloon'; }
+const SL_SLOTS = [
+  { id: 'pele', nome: 'Pele', cor: 'pele', pal: 'pele', ic: '🖐' }, { id: 'cabelo', nome: 'Cabelo', cor: 'corCabelo', pal: 'cabelo', ic: '💈' }, { id: 'barba', nome: 'Barba', cor: 'corBarba', pal: 'cabelo', ic: '🧔' },
+  { id: 'chapeu', nome: 'Chapéu', cor: 'corChapeu', pal: 'roupa', ic: '🤠' }, { id: 'oculos', nome: 'Óculos', ic: '🕶' }, { id: 'camisa', nome: 'Roupa', cor: 'corCamisa', pal: 'roupa', ic: '👕' },
+  { id: 'calca', nome: 'Calça', cor: 'corCalca', pal: 'roupa', ic: '👖' }, { id: 'sapato', nome: 'Calçado', cor: 'corSapato', pal: 'roupa', ic: '🥾' }, { id: 'mao', nome: 'Na mão', ic: '🔫' },
+  { id: 'banner', nome: 'Banner', ic: '🏜' }, { id: 'moldura', nome: 'Moldura', ic: '🖼' }
+];
+const SL_PAL = { pele: PAL_PELE, cabelo: PAL_CAB, roupa: PAL_ROUPA };
+const SL_CROP = { cabelo: '20 0 120 112', barba: '20 40 120 100', chapeu: '12 0 136 72', oculos: '30 44 100 60', camisa: '14 92 132 100', calca: '26 160 108 76', sapato: '30 190 100 46', mao: '58 96 104 108' };
+const SL_BUSTO = { cabelo: 1, barba: 1, chapeu: 1, oculos: 1 };
+const SL_FALAS = ['Howdy, parceiro!', 'Esse visual tá de xerife!', 'Nada como uma navalha afiada.', 'O sol do Oeste tá forte hoje.', 'Ouvi dizer que o ranking tá pegando fogo…', 'Vai um corte na régua?', 'Cidade pequena, fama grande!', 'Quem tem barba bem feita, manda na cidade.'];
+const CONQ_TODAS = [['primeiro', 'Primeiro corte', 'Fez o primeiro atendimento', '✂️'], ['c10', 'Cliente de casa', '10 cortes', '🔟'], ['c25', 'Freguês do saloon', '25 cortes', '⭐'], ['c50', 'Lenda do saloon', '50 cortes', '🏅'],
+  ['seq7', 'Pontual', '7 dias seguidos no Saloon', '🔥'], ['seq30', 'Inabalável', '30 dias seguidos no Saloon', '🌋'], ['elogiado', 'Querido na cidade', 'Recebeu 5 chapéus tirados', '🎩'], ['premiado', 'Premiado', 'Ganhou um prêmio da barbearia', '🏆'],
+  ['n10', 'Xerife', 'Chegou ao nível 10', '🤠'], ['n20', 'Lendário', 'Chegou ao nível 20', '👑']];
+const TIPO_PREMIO = { corte_gratis: 'Corte grátis', desconto: 'Desconto', brinde: 'Brinde', item: 'Peça rara' };
+const premioTxt = (tipo, det) => tipo === 'corte_gratis' ? 'Corte grátis' : tipo === 'desconto' ? det + '% de desconto' : tipo === 'brinde' ? 'Brinde: ' + det : 'Peça rara';
+const MESES_LONGOS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+// os quatro períodos mais usados (usado no ranking do cliente e na aba do dono)
+function chavesPeriodo(hoje) {
+  const y = +hoje.slice(0, 4), m = +hoje.slice(5, 7), pm = m === 1 ? [y - 1, 12] : [y, m - 1], f = (a, b) => a + '-' + String(b).padStart(2, '0');
+  return [['mes', 'Este mês', f(y, m)], ['mes', 'Mês passado', f(pm[0], pm[1])], ['ano', 'Este ano', String(y)], ['ano', 'Ano passado', String(y - 1)]];
+}
+const clonarAv = o => JSON.parse(JSON.stringify(o));
+async function slPost(acao, extra) {
+  try {
+    const r = await post(Object.assign({ action: acao, token: sessao.token }, extra || {}));
+    if (!checar(r, 'msg-sl')) return null;
+    limpar('msg-sl'); return r;
+  } catch (e) { aviso('msg-sl', 'erro', 'Não foi possível conectar. Tente de novo.'); return null; }
+}
+const slNivel = () => (SL.d ? SL.d.stats.nivel : 1);
+const slItens = slot => (SL.d ? SL.d.catalogo : []).filter(i => i.slot === slot);
+const slLiberado = it => !!SL.d && (SL.d.meus.indexOf(it.id) !== -1 || (!it.raro && slNivel() >= it.nivel));
+const slRascDe = d => ({ avatar: clonarAv(d.perfil.avatar), banner: d.perfil.banner, moldura: d.perfil.moldura });
+const slSujo = () => !!SL.d && !!SL.rasc && JSON.stringify(SL.rasc) !== JSON.stringify(slRascDe(SL.d));
+function slAnunciar(novos) {
+  if (!novos || !novos.length) return;
+  const tot = novos.reduce((s, n) => s + n.pontos, 0);
+  toast('+' + tot + ' XP · ' + novos.map(n => n.desc).join(' · '));
+}
+function slNivelUp(de, para) {
+  const novas = (SL.d ? SL.d.catalogo : []).filter(i => !i.raro && i.nivel > de && i.nivel <= para);
+  abrirModal(h('div', { class: 'sl-nivelup' },
+    h('div', { class: 'sl-nv-brilho', 'aria-hidden': 'true', text: '★' }), h('h3', { text: 'Subiu para o nível ' + para + '!' }),
+    novas.length ? h('p', { text: 'Peças novas no seu guarda-roupa:' }) : h('p', { text: 'Continue assim, parceiro: cada corte e cada missão rendem XP.' }),
+    novas.length ? h('ul', { class: 'sl-nv-lista' }, novas.map(i => h('li', {}, h('b', { text: i.nome }), h('small', { text: (SL_SLOTS.filter(s => s.id === i.slot)[0] || {}).nome || '' })))) : null,
+    h('div', { class: 'ad-acoes', style: 'justify-content:center;margin-top:12px' },
+      h('button', { type: 'button', class: 'bt forte', text: 'Experimentar agora', onclick: () => { fecharModal(); SL.aba = 'perso'; if (novas[0]) SL.slot = novas[0].slot; slDesenhar(); } }),
+      h('button', { type: 'button', class: 'bt', text: 'Fechar', onclick: fecharModal }))));
+}
+function slBotao() { const b = $('ir-saloon'); if (b) b.textContent = SL.d ? 'Saloon · Nv ' + SL.d.stats.nivel : 'Saloon'; }
+// busca o estado do jogador (também sincroniza o XP dos atendimentos e a sequência de dias)
+async function slCarregar() {
+  const r = await slPost('saloon_eu'); if (!r) return false;
+  const prev = SL.d && SL.email === sessao.email ? SL.d.stats.nivel : r.nivelAntes, mudou = !SL.rasc || !slSujo();
+  SL.d = r; SL.email = sessao.email; if (mudou) SL.rasc = slRascDe(r);
+  slAnunciar(r.novos); if (r.stats.nivel > prev) slNivelUp(prev, r.stats.nivel);
+  slBotao(); return true;
+}
+// depois de uma ação que pode render XP: atualiza só o topo e os contadores
+async function slDepois(novos) {
+  slAnunciar(novos);
+  if (novos && novos.length) { const ok = await slCarregar(); if (ok && !$('t-saloon').hidden) { slRetopo(); slRetabs(); } }
+}
+async function abrirSaloon() {
+  if (!sessao) { mostrar('login'); return; }
+  if (SL.email && SL.email !== sessao.email) slReset();
+  atualizarAvatarTopoSl();
+  const c = $('sl-corpo'); limpar('msg-sl');
+  if (!SL.d) { c.textContent = ''; c.append(h('p', { class: 'aviso sl-carga', text: 'Abrindo as portas do Saloon…' })); }
+  const ok = await slCarregar();
+  if (!ok) { c.textContent = ''; c.append(h('p', { class: 'aviso', text: 'Não consegui abrir o Saloon agora.' }), h('button', { type: 'button', class: 'btn sec mini', text: 'Tentar de novo', onclick: abrirSaloon })); return; }
+  slDesenhar();
+}
+function atualizarAvatarTopoSl() { const b = $('meu-perfil3'); if (b) { b.hidden = !sessao; b.textContent = ''; if (sessao) b.append(avatarEl(sessao, 34)); } }
+// ---------- estrutura ----------
+function slDesenhar() {
+  const c = $('sl-corpo'); c.textContent = '';
+  c.append(h('div', { id: 'sl-topo-box' }, slTopo()));
+  if (!SL.d.perfil.apelido) c.append(slOnboarding());
+  c.append(h('div', { class: 'sl-abas', id: 'sl-abas', role: 'tablist', 'aria-label': 'Seções do Saloon' }), h('div', { class: 'sl-painel', id: 'sl-painel' }));
+  slRetabs(); slAba();
+}
+function slRetopo() { const b = $('sl-topo-box'); if (b) { b.textContent = ''; b.append(slTopo()); } }
+function slAbasDef() {
+  const d = SL.d, pend = d.missoes.filter(m => !m.feita).length + d.mensais.filter(m => !m.feita && m.atual < m.meta).length * 0, ativos = d.cupons.filter(x => x.status === 'ativo').length;
+  return [['perso', 'Meu personagem', 0], ['miss', 'Missões', pend], ['rank', 'Ranking', 0], ['com', 'Comunidade', 0], ['premios', 'Prêmios', ativos]];
+}
+function slRetabs() {
+  const box = $('sl-abas'); if (!box || !SL.d) return; box.textContent = '';
+  slAbasDef().forEach(a => box.append(h('button', { type: 'button', role: 'tab', 'aria-selected': String(SL.aba === a[0]), onclick: () => { SL.aba = a[0]; slRetabs(); slAba(); } }, a[1], a[2] ? h('b', { class: 'sl-bolinha', text: String(a[2]) }) : null)));
+}
+function slAba() {
+  const box = $('sl-painel'); if (!box) return; box.textContent = ''; const my = ++SL.seq;
+  ({ perso: slAbaPerso, miss: slAbaMiss, rank: slAbaRank, com: slAbaCom, premios: slAbaPremios })[SL.aba](box, () => my === SL.seq);
+}
+const barraXp = s => {
+  const maxN = s.nivel >= 50, pct = maxN ? 100 : Math.max(0, Math.min(100, Math.round((s.xp - s.xpIni) / Math.max(1, s.xpProx - s.xpIni) * 100)));
+  return h('div', { class: 'sl-xp' }, h('div', { class: 'sl-xp-trilho', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(pct), 'aria-label': 'Progresso para o próximo nível' }, h('i', { style: 'width:' + pct + '%' })),
+    h('small', { text: maxN ? 'Nível máximo! ' + s.xp + ' XP' : s.xp + ' XP · faltam ' + (s.xpProx - s.xp) + ' para o nível ' + (s.nivel + 1) }));
+};
+// personagem que reage ao toque (balão de fala + pulinho)
+function personagemVivo(perfil, tam, corpo) {
+  const bal = h('div', { class: 'sl-balao', role: 'status', 'aria-live': 'polite' }), r = retratoEl(perfil, tam, { corpo: corpo }), w = h('div', { class: 'sl-vivo' }, bal, r);
+  let t = null, i = Math.floor(Math.random() * SL_FALAS.length);
+  r.tabIndex = 0; r.setAttribute('role', 'button'); r.setAttribute('aria-label', 'Cumprimentar o personagem');
+  const falar = () => { i = (i + 1) % SL_FALAS.length; bal.textContent = SL_FALAS[i]; bal.classList.add('on'); r.classList.remove('pula'); void r.offsetWidth; r.classList.add('pula'); clearTimeout(t); t = setTimeout(() => bal.classList.remove('on'), 2600); };
+  r.addEventListener('click', falar); r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); falar(); } });
+  return w;
+}
+function slTopo() {
+  const d = SL.d, p = d.perfil, s = d.stats;
+  return h('section', { class: 'sl-topo' },
+    personagemVivo(p, 120, false),
+    h('div', { class: 'sl-topo-info' },
+      h('h2', { text: p.apelido || 'Sem apelido ainda' }), p.frase ? h('p', { class: 'sl-frase', text: '“' + p.frase + '”' }) : null,
+      h('div', { class: 'sl-nivel' }, h('span', { class: 'sl-nv', text: 'Nível ' + s.nivel }), p.oculto ? h('span', { class: 'sl-tag', text: '🙈 perfil oculto' }) : null),
+      barraXp(s),
+      h('div', { class: 'sl-chips' }, h('span', { title: 'Dias seguidos abrindo o Saloon', text: '🔥 ' + p.seq + (p.seq === 1 ? ' dia' : ' dias') }), h('span', { text: '✂️ ' + s.cortesMes + (s.cortesMes === 1 ? ' corte no mês' : ' cortes no mês') }),
+        h('span', { text: '🏆 ' + (s.posMes ? s.posMes + 'º no mês' : 'fora do ranking do mês') }), s.posAno ? h('span', { text: '📅 ' + s.posAno + 'º no ano' }) : null))
+  );
+}
+// ---------- apelido, frase e privacidade ----------
+function slFormPerfil(inicio) {
+  const d = SL.d, p = d.perfil, msg = h('div', { class: 'msg', role: 'alert' });
+  const ap = h('input', { type: 'text', maxlength: '16', value: p.apelido, placeholder: 'ex.: Xerife Lucas', autocomplete: 'off', 'aria-label': 'Apelido' });
+  const fr = h('input', { type: 'text', maxlength: '60', value: p.frase, placeholder: 'ex.: Corte na régua e barba alinhada', autocomplete: 'off', 'aria-label': 'Frase do perfil' });
+  const oc = h('input', { type: 'checkbox', checked: !!p.oculto });
+  const bt = h('button', { type: 'button', class: 'bt forte', text: inicio ? 'Criar meu apelido (+20 XP)' : 'Salvar perfil', onclick: async () => {
+    bt.disabled = true; const r = await fpost(msg, 'saloon_salvar', { apelido: ap.value, frase: fr.value, oculto: oc.checked }, 'Perfil salvo.'); bt.disabled = false;
+    if (!r) return;
+    const antes = slNivel(); await slCarregar(); if (r.nivel > antes && SL.d.stats.nivel <= antes) slNivelUp(antes, r.nivel); slAnunciar(r.novos);
+    if (inicio) slDesenhar(); else { slRetopo(); slRetabs(); }
+  } });
+  return h('div', { class: 'sl-form' },
+    campo('Apelido (3 a 16 caracteres)', ap), campo('Frase do perfil (opcional)', fr),
+    h('label', { class: 'sl-oculto' }, oc, h('span', {}, h('b', { text: 'Ocultar meu perfil' }), h('small', { text: 'Você some do ranking e da busca. Continua concorrendo ao prêmio do dono, só não aparece para os outros clientes.' }))),
+    h('p', { class: 'ad-nota', text: 'Seu nome real, e-mail e telefone nunca aparecem para outros clientes: só apelido, personagem e nível.' }), bt, msg);
+}
+function slOnboarding() {
+  return h('section', { class: 'sl-onb' }, h('h3', { text: 'Bem-vindo ao Saloon, parceiro!' }),
+    h('p', { text: 'Aqui seu personagem de Velho Oeste ganha roupas, chapéus e armas conforme você usa o site e corta o cabelo. Para começar, escolha um apelido.' }), slFormPerfil(true));
+}
+// ---------- aba: meu personagem ----------
+function slAbaPerso(box) {
+  const d = SL.d, palco = h('div', { class: 'sl-palco' }), lado = h('div', { class: 'sl-lado' }), chips = h('div', { class: 'sl-slots', role: 'tablist', 'aria-label': 'Partes do personagem' }), cores = h('div', { class: 'sl-cores' }), grade = h('div', { class: 'sl-grade' });
+  const pintarPalco = () => {
+    palco.textContent = '';
+    palco.append(personagemVivo({ avatar: SL.rasc.avatar, banner: SL.rasc.banner, moldura: SL.rasc.moldura, apelido: d.perfil.apelido }, 230, true),
+      h('div', { class: 'sl-palco-bt' },
+        h('button', { type: 'button', class: 'bt forte', text: slSujo() ? 'Salvar visual' : 'Visual salvo ✓', disabled: !slSujo(), onclick: async e => {
+          e.target.disabled = true; const antes = slNivel(), r = await slPost('saloon_salvar', { avatar: SL.rasc.avatar, banner: SL.rasc.banner, moldura: SL.rasc.moldura });
+          if (!r) { pintarPalco(); return; }
+          await slCarregar(); if (r.nivel > antes && SL.d.stats.nivel <= antes) slNivelUp(antes, r.nivel); if (r.novos.length) slAnunciar(r.novos); else toast('Visual salvo!');
+          slRetopo(); slRetabs(); SL.rasc = slRascDe(SL.d); slAba();
+        } }),
+        h('button', { type: 'button', class: 'bt', text: 'Desfazer', disabled: !slSujo(), onclick: () => { SL.rasc = slRascDe(d); pintarTudo(); } }),
+        h('button', { type: 'button', class: 'bt', text: '🎲 Sortear', title: 'Monta um visual aleatório só com peças liberadas', onclick: sortear })));
+  };
+  const sortear = () => {
+    const av = SL.rasc.avatar, pick = a => a[Math.floor(Math.random() * a.length)], livres = s => slItens(s).filter(slLiberado);
+    ['cabelo', 'barba', 'chapeu', 'oculos', 'camisa', 'calca', 'sapato', 'mao'].forEach(s => { const l = livres(s); if (l.length) av[s] = pick(l).id; });
+    av.pele = Math.floor(Math.random() * PAL_PELE.length); ['corCabelo', 'corBarba'].forEach(k => { av[k] = Math.floor(Math.random() * PAL_CAB.length); }); ['corChapeu', 'corCamisa', 'corCalca', 'corSapato'].forEach(k => { av[k] = Math.floor(Math.random() * PAL_ROUPA.length); });
+    const b = livres('banner'), m = livres('moldura'); if (b.length) SL.rasc.banner = pick(b).id; if (m.length) SL.rasc.moldura = pick(m).id;
+    pintarTudo();
+  };
+  const slotDef = () => SL_SLOTS.filter(s => s.id === SL.slot)[0];
+  const pintarChips = () => { chips.textContent = ''; SL_SLOTS.forEach(s => chips.append(h('button', { type: 'button', role: 'tab', class: 'sl-slot', 'aria-selected': String(SL.slot === s.id), onclick: () => { SL.slot = s.id; pintarChips(); pintarSlot(); } }, h('span', { 'aria-hidden': 'true', text: s.ic }), h('b', { text: s.nome })))); };
+  const escolher = (s, id) => { if (s.id === 'banner') SL.rasc.banner = id; else if (s.id === 'moldura') SL.rasc.moldura = id; else SL.rasc.avatar[s.id] = id; pintarPalco(); pintarSlot(); };
+  const pintarSlot = () => {
+    const s = slotDef(); cores.textContent = ''; grade.textContent = '';
+    if (s.cor) {
+      const pal = SL_PAL[s.pal], atual = SL.rasc.avatar[s.cor];
+      cores.append(h('span', { class: 'sl-cores-t', text: 'Cor' }), ...pal.map((hex, i) => h('button', { type: 'button', class: 'sl-cor', style: 'background:' + hex, 'aria-label': NOME_COR[s.pal][i], title: NOME_COR[s.pal][i], 'aria-pressed': String(atual === i), onclick: () => { SL.rasc.avatar[s.cor] = i; pintarPalco(); pintarSlot(); } })));
+    }
+    if (s.id === 'pele') { grade.append(h('p', { class: 'ad-nota', text: 'Escolha o tom de pele do seu personagem.' })); return; }
+    const atualId = s.id === 'banner' ? SL.rasc.banner : s.id === 'moldura' ? SL.rasc.moldura : SL.rasc.avatar[s.id];
+    slItens(s.id).forEach(it => {
+      const livre = slLiberado(it), sel = atualId === it.id, av = Object.assign({}, SL.rasc.avatar);
+      let vis;
+      if (s.id === 'banner') vis = h('div', { class: 'sl-ban' }, bannerSvg(it.id));
+      else if (s.id === 'moldura') vis = retratoEl({ avatar: av, banner: SL.rasc.banner, moldura: it.id }, 62);
+      else { av[s.id] = it.id; if (s.id === 'cabelo') av.chapeu = 'cha_nenhum'; vis = h('div', { class: 'sl-mini' }, avatarSvg(av, { modo: SL_BUSTO[s.id] ? 'busto' : 'corpo', vb: SL_CROP[s.id], rotulo: it.nome })); }
+      grade.append(h('button', { type: 'button', class: 'sl-tile' + (sel ? ' sel' : '') + (livre ? '' : ' trava'), 'aria-pressed': String(sel), title: it.nome + (livre ? '' : it.raro ? ' (prêmio raro)' : ' (nível ' + it.nivel + ')'), onclick: () => { if (!livre) { toast(it.raro ? '“' + it.nome + '” é um prêmio raro: só quem vence o ranking leva.' : '“' + it.nome + '” libera no nível ' + it.nivel + '. Você está no nível ' + slNivel() + '.'); return; } escolher(s, it.id); } },
+        vis, h('b', { text: it.nome }), h('small', { text: livre ? (it.raro ? '✨ raro' : sel ? 'em uso' : '') : '🔒 ' + (it.raro ? 'prêmio raro' : 'nível ' + it.nivel) })));
+    });
+  };
+  const pintarTudo = () => { pintarPalco(); pintarChips(); pintarSlot(); };
+  pintarTudo();
+  lado.append(chips, cores, grade);
+  box.append(h('div', { class: 'sl-perso' }, palco, lado));
+  box.append(h('details', { class: 'sl-det' }, h('summary', { text: 'Meu perfil público: apelido, frase e privacidade' }), slFormPerfil(false)));
+}
+// ---------- aba: missões ----------
+function slIrPara(id) {
+  if (id === 'visual') { SL.aba = 'perso'; slRetabs(); slAba(); }
+  else if (id === 'ranking') { SL.aba = 'rank'; slRetabs(); slAba(); }
+  else if (id === 'vizinho' || id === 'chapeu') { SL.aba = 'com'; slRetabs(); slAba(); }
+  else if (id === 'agendar' || id === 'avaliar') { mostrar('home'); setTimeout(() => { const e = document.getElementById(id === 'agendar' ? 'agendar' : 'feedback'); if (e) e.scrollIntoView({ behavior: 'smooth' }); }, 700); }
+}
+const IR_TXT = { visual: 'Ir ao guarda-roupa', ranking: 'Ver ranking', vizinho: 'Visitar perfis', chapeu: 'Cumprimentar', agendar: 'Agendar agora', avaliar: 'Deixar opinião' };
+function slAbaMiss(box) {
+  const d = SL.d, feitas = d.missoes.filter(m => m.feita).length;
+  box.append(h('div', { class: 'sl-cab' }, h('h3', { text: 'Missões de hoje' }), h('span', { class: 'sl-prog', text: feitas + ' de ' + d.missoes.length })),
+    h('p', { class: 'ad-nota', text: 'Muda todo dia. Cumpra as 4 e ganhe +15 XP de bônus (“dia completo”).' }),
+    h('ul', { class: 'sl-miss' }, d.missoes.map(m => h('li', { class: m.feita ? 'feita' : '' }, h('span', { class: 'sl-ck', 'aria-hidden': 'true', text: m.feita ? '✓' : '' }), h('span', { class: 'tx' }, h('b', { text: m.nome }), h('small', { text: m.desc })), h('span', { class: 'xp', text: '+' + m.xp + ' XP' }),
+      m.feita || m.id === 'visita' ? null : h('button', { type: 'button', class: 'bt', text: IR_TXT[m.id] || 'Ir', onclick: () => slIrPara(m.id) })))),
+    h('div', { class: 'sl-completo' + (d.diaCompleto ? ' feita' : '') }, h('span', { text: d.diaCompleto ? '🎉 Dia completo! +15 XP ganhos' : '🎯 Bônus do dia completo: +15 XP' })),
+    h('div', { class: 'sl-cab', style: 'margin-top:20px' }, h('h3', { text: 'Missões do mês' })),
+    h('ul', { class: 'sl-miss' }, d.mensais.map(m => h('li', { class: m.feita ? 'feita' : '' }, h('span', { class: 'sl-ck', 'aria-hidden': 'true', text: m.feita ? '✓' : '' }),
+      h('span', { class: 'tx' }, h('b', { text: m.nome }), h('small', { text: m.desc + ' · ' + m.atual + ' de ' + m.meta }), h('span', { class: 'sl-mini-barra' }, h('i', { style: 'width:' + Math.round(m.atual / m.meta * 100) + '%' }))), h('span', { class: 'xp', text: '+' + m.xp + ' XP' })))),
+    slProximas(), slIdeias());
+}
+function slProximas() {
+  const nv = slNivel(), alvo = SL.d.catalogo.filter(i => !i.raro && i.nivel > nv).sort((a, b) => a.nivel - b.nivel), prox = alvo.length ? alvo[0].nivel : 0;
+  if (!prox) return h('div');
+  const lista = alvo.filter(i => i.nivel === prox);
+  return h('div', { class: 'sl-prox' }, h('h3', { text: 'Próxima liberação: nível ' + prox }), h('p', { text: lista.map(i => i.nome).join(' · ') }), h('small', { text: 'Faltam ' + (SL.d.stats.xpProx - SL.d.stats.xp) + ' XP para o nível ' + (nv + 1) + '.' }));
+}
+function slIdeias() {
+  const L = [['✂️', 'Cortar o cabelo', 'Corte +60 XP · barba +40 · química +50 · outros serviços +30'], ['🥇', 'Primeiro atendimento', '+100 XP uma única vez'], ['📅', 'Missão mensal “Cliente fiel”', '2 atendimentos no mês: +80 XP'], ['💈', 'Missão mensal “Visual em dia”', '3 atendimentos no mês: +150 XP'],
+    ['💬', 'Opinar sobre a barbearia', 'Comentário no feedback: +25 XP'], ['📷', 'Foto de perfil', 'Colocar sua foto: +30 XP'], ['🏷', 'Escolher o apelido', '+20 XP'], ['🔥', 'Sequência de 7 dias no Saloon', '+50 XP a cada 7 dias seguidos'], ['🎯', 'Missões diárias', 'De +5 a +25 XP cada e +15 no dia completo']];
+  return h('details', { class: 'sl-det' }, h('summary', { text: 'Como ganhar mais XP' }), h('ul', { class: 'sl-ideias' }, L.map(x => h('li', {}, h('span', { 'aria-hidden': 'true', text: x[0] }), h('span', {}, h('b', { text: x[1] }), h('small', { text: x[2] }))))));
+}
+// ---------- aba: ranking ----------
+function slAbaRank(box, vivo) {
+  const per = chavesPeriodo(SL.d.hoje); if (!SL.rk.ch) { SL.rk = { per: 'mes', ch: per[0][2] }; }
+  const lista = h('div', { class: 'sl-rk' }), chips = h('div', { class: 'ad-acoes sl-per' });
+  const carregar = async () => {
+    chips.textContent = ''; per.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(SL.rk.per === p[0] && SL.rk.ch === p[2]), text: p[1], onclick: () => { SL.rk = { per: p[0], ch: p[2] }; carregar(); } })));
+    lista.textContent = ''; lista.append(h('p', { class: 'aviso', text: 'Carregando o ranking…' }));
+    const r = await slPost('saloon_ranking', { periodo: SL.rk.per, chave: SL.rk.ch }); if (!vivo()) return; lista.textContent = ''; if (!r) return;
+    const ap = SL.d.perfil.apelido, oc = SL.d.perfil.oculto;
+    lista.append(h('h3', { class: 'sl-rk-tit', text: 'Mais cortes · ' + r.rotulo }));
+    lista.append(r.eu.pos ? h('div', { class: 'sl-meupos' }, h('b', { text: 'Você está em ' + r.eu.pos + 'º lugar' }), h('span', { text: r.eu.cortes + (r.eu.cortes === 1 ? ' corte' : ' cortes') + ' neste período' }))
+      : h('div', { class: 'sl-meupos fora' }, h('b', { text: r.eu.cortes ? 'Você tem ' + r.eu.cortes + (r.eu.cortes === 1 ? ' corte' : ' cortes') + ', mas não aparece na lista' : 'Você ainda não tem cortes neste período' }),
+        h('span', { text: !ap ? 'Escolha um apelido para aparecer no ranking.' : oc ? 'Seu perfil está oculto.' : 'Corte o cabelo para entrar na disputa.' })));
+    r.premios.forEach(p => lista.append(h('div', { class: 'sl-premio' + (p.voceGanhou ? ' meu' : '') }, h('span', { 'aria-hidden': 'true', text: '🏆' }), h('div', {}, h('b', { text: p.titulo + ' · ' + (p.tipo === 'item' ? 'Peça rara' : premioTxt(p.tipo, p.detalhe)) }), h('small', { text: 'Vencedores: ' + p.ganhadores.join(', ') })), p.voceGanhou ? h('span', { class: 'sl-tag ouro', text: 'Você ganhou!' }) : null)));
+    if (!r.lista.length) { lista.append(h('p', { class: 'aviso', text: 'Ninguém no ranking deste período ainda. Que tal ser o primeiro?' })); }
+    else {
+      const l1 = r.lista[0];
+      lista.append(h('button', { type: 'button', class: 'sl-lider', onclick: () => slAbrirPerfil(l1.apelido) }, personagemVivoEstatico(l1, 120), h('span', { class: 'tx' }, h('small', { text: '👑 Líder · ' + r.rotulo }), h('b', { text: l1.apelido }), h('span', { text: 'Nível ' + l1.nivel + ' · ' + l1.cortes + (l1.cortes === 1 ? ' corte' : ' cortes') }))));
+      lista.append(h('div', { class: 'sl-lista' }, r.lista.map(x => h('button', { type: 'button', class: 'sl-lin' + (x.eu ? ' eu' : ''), onclick: () => slAbrirPerfil(x.apelido) },
+        h('span', { class: 'pos', text: x.pos <= 3 ? ['🥇', '🥈', '🥉'][x.pos - 1] : x.pos + 'º' }), retratoEl(x, 48), h('span', { class: 'nome' }, h('b', { text: x.apelido + (x.eu ? ' (você)' : '') }), h('small', { text: 'Nível ' + x.nivel + (x.frase ? ' · ' + x.frase : '') })),
+        h('span', { class: 'cortes' }, h('b', { text: String(x.cortes) }), h('small', { text: x.cortes === 1 ? 'corte' : 'cortes' }))))));
+      if (r.total > r.lista.length) lista.append(h('p', { class: 'ad-nota', text: 'Mostrando os ' + r.lista.length + ' primeiros de ' + r.total + '.' }));
+    }
+    slDepois(r.novos);
+  };
+  box.append(chips, lista, h('p', { class: 'ad-nota', style: 'margin-top:14px', text: 'O ranking conta os atendimentos de corte realizados. No fim do mês ou do ano o dono pode liberar um prêmio para os melhores.' }));
+  carregar();
+}
+const personagemVivoEstatico = (p, t) => retratoEl(p, t, { corpo: false });
+// ---------- aba: comunidade ----------
+function slAbaCom(box, vivo) {
+  const lista = h('div', { class: 'sl-com' }), tit = h('h3', { class: 'sl-rk-tit' });
+  const busca = h('input', { type: 'search', placeholder: 'Buscar apelido…', value: SL.busca, autocomplete: 'off', 'aria-label': 'Buscar apelido' });
+  const carregar = async () => {
+    lista.textContent = ''; lista.append(h('p', { class: 'aviso', text: 'Procurando…' }));
+    const r = await slPost('saloon_buscar', { q: SL.busca }); if (!vivo()) return; lista.textContent = ''; if (!r) return;
+    tit.textContent = SL.busca ? 'Resultados para “' + SL.busca + '”' : 'Destaques da cidade · ' + r.total + (r.total === 1 ? ' morador' : ' moradores');
+    if (!r.lista.length) { lista.append(h('p', { class: 'aviso', text: SL.busca ? 'Ninguém com esse apelido (perfis ocultos não aparecem).' : 'Ainda não tem ninguém na cidade. Escolha seu apelido e seja o primeiro!' })); return; }
+    r.lista.forEach(x => lista.append(h('button', { type: 'button', class: 'sl-card' + (x.eu ? ' eu' : ''), onclick: () => slAbrirPerfil(x.apelido) }, retratoEl(x, 84), h('b', { text: x.apelido + (x.eu ? ' (você)' : '') }), h('small', { text: 'Nível ' + x.nivel }), x.frase ? h('em', { text: x.frase }) : null)));
+  };
+  let tm = null; busca.addEventListener('input', () => { SL.busca = busca.value.trim(); clearTimeout(tm); tm = setTimeout(carregar, 300); });
+  box.append(h('p', { class: 'ad-nota', text: 'Visite o perfil de outros clientes e tire o chapéu para eles: vale XP para você (missões do dia) e para eles (conquista “Querido na cidade”).' }), busca, tit, lista);
+  carregar();
+}
+// ---------- perfil público ----------
+async function slAbrirPerfil(apelido) {
+  const msg = h('div', { class: 'msg', role: 'alert' });
+  abrirModal(h('div', { class: 'sl-perfil' }, h('p', { class: 'aviso', text: 'Abrindo o perfil…' })));
+  const r = await fpost(msg, 'saloon_perfil', { apelido: apelido }); if (!r) { abrirModal(h('div', {}, msg, h('button', { type: 'button', class: 'bt', text: 'Fechar', onclick: fecharModal }))); return; }
+  const p = r.perfil, s = r.stats, tem = {}; r.conquistas.forEach(c => { tem[c.id] = 1; });
+  const elog = h('button', { type: 'button', class: 'bt forte', text: r.souEu ? 'Este é você' : r.euElogiei ? '🎩 Chapéu já tirado hoje' : '🎩 Tirar o chapéu', disabled: r.souEu || r.euElogiei, onclick: async e => {
+    e.target.disabled = true; const x = await fpost(msg, 'saloon_elogio', { apelido: p.apelido }, 'Você tirou o chapéu para ' + p.apelido + '!');
+    if (!x) { e.target.disabled = false; return; }
+    e.target.textContent = '🎩 Chapéu já tirado hoje'; if (!SL.d) return; slDepois(x.novos);
+  } });
+  const caixa = (n, t) => h('div', { class: 'sl-stat' }, h('b', { text: String(n) }), h('small', { text: t }));
+  abrirModal(h('div', { class: 'sl-perfil' },
+    h('div', { class: 'sl-perfil-cab' }, h('div', { class: 'sl-perfil-ban' }, bannerSvg(p.banner)), h('button', { type: 'button', class: 'bt sl-fechar', text: 'Fechar ✕', onclick: fecharModal }), h('div', { class: 'sl-perfil-ret' }, personagemVivo(p, 150, true))),
+    h('div', { class: 'sl-perfil-corpo' }, h('h3', { text: p.apelido }), p.frase ? h('p', { class: 'sl-frase', text: '“' + p.frase + '”' }) : null,
+      h('div', { class: 'sl-nivel', style: 'justify-content:center' }, h('span', { class: 'sl-nv', text: 'Nível ' + s.nivel }), h('span', { class: 'sl-tag', text: 'no Saloon desde ' + br(p.desde) })), barraXp(s),
+      h('div', { class: 'sl-stats' }, caixa(s.cortesMes, 'cortes no mês'), caixa(s.cortesAno, 'cortes no ano'), caixa(s.cortesTotal, 'cortes no total'), caixa(s.elogios, 'chapéus recebidos'), caixa(s.posMes ? s.posMes + 'º' : '—', 'ranking do mês'), caixa(s.posAno ? s.posAno + 'º' : '—', 'ranking do ano')),
+      h('h4', { text: 'Conquistas' }), h('div', { class: 'sl-conq' }, CONQ_TODAS.map(c => h('span', { class: 'sl-badge' + (tem[c[0]] ? ' ok' : ''), title: c[1] + ': ' + c[2] }, h('i', { 'aria-hidden': 'true', text: tem[c[0]] ? c[3] : '🔒' }), h('small', { text: c[1] })))),
+      h('div', { class: 'ad-acoes', style: 'justify-content:center;margin-top:14px' }, elog), msg)));
+  slDepois(r.novos);
+}
+// ---------- aba: prêmios e conquistas ----------
+function slAbaPremios(box) {
+  const d = SL.d, raros = d.meus.map(id => d.catalogo.filter(i => i.id === id)[0]).filter(i => i && i.raro), tem = {}; d.stats.conquistas.forEach(c => { tem[c.id] = 1; });
+  box.append(h('div', { class: 'sl-cab' }, h('h3', { text: 'Meus prêmios' })));
+  if (!d.cupons.length && !raros.length) box.append(h('p', { class: 'aviso', text: 'Você ainda não ganhou prêmios. Fique de olho no ranking: o dono pode premiar os melhores do mês e do ano.' }));
+  d.cupons.forEach(c => box.append(h('div', { class: 'sl-cupom ' + c.status },
+    h('div', { class: 'tx' }, h('b', { text: c.titulo }), h('span', { text: premioTxt(c.tipo, c.detalhe) }), h('small', { text: c.status === 'ativo' ? 'Vale até ' + br(c.validade) : c.status === 'usado' ? 'Já usado' : 'Venceu em ' + br(c.validade) })),
+    h('div', { class: 'cod' }, h('code', { text: c.codigo }), h('button', { type: 'button', class: 'bt', text: 'Copiar', onclick: async () => { try { await navigator.clipboard.writeText(c.codigo); toast('Código copiado: ' + c.codigo); } catch (e) { toast('Código: ' + c.codigo); } } })))));
+  if (d.cupons.some(c => c.status === 'ativo')) box.append(h('p', { class: 'ad-nota', text: 'Mostre o código ao barbeiro na hora do atendimento. Ele dá baixa no cupom.' }));
+  if (raros.length) box.append(h('p', { class: 'ad-nota', text: 'Peças raras ganhas: ' + raros.map(i => i.nome).join(', ') + '. Já estão no seu guarda-roupa.' }));
+  box.append(h('div', { class: 'sl-cab', style: 'margin-top:20px' }, h('h3', { text: 'Conquistas' }), h('span', { class: 'sl-prog', text: d.stats.conquistas.length + ' de ' + CONQ_TODAS.length })),
+    h('div', { class: 'sl-conq grande' }, CONQ_TODAS.map(c => h('div', { class: 'sl-badge' + (tem[c[0]] ? ' ok' : '') }, h('i', { 'aria-hidden': 'true', text: tem[c[0]] ? c[3] : '🔒' }), h('b', { text: c[1] }), h('small', { text: c[2] })))));
+}
+$('ir-saloon').onclick = () => mostrar('saloon');
+$('sl-voltar').onclick = () => mostrar('home');
+$('sl-sair').onclick = sair;
+$('meu-perfil3').onclick = abrirPerfil;
+
+// =====================================================================
+//  v15 · SALOON (dono e barbeiro): comunidade, prêmios, cupons
+// =====================================================================
+let adCom = { per: 'mes', ch: '' };
+function cupomValidador(box) {
+  const msg = h('div', { class: 'msg', role: 'alert' }), res = h('div', { class: 'cv-res' });
+  const cod = h('input', { type: 'text', maxlength: '12', placeholder: 'XER-XXXXXX', autocomplete: 'off', 'aria-label': 'Código do cupom', style: 'text-transform:uppercase' });
+  const mostrarInfo = c => {
+    res.textContent = '';
+    res.append(h('div', { class: 'sl-cupom ' + c.status }, h('div', { class: 'tx' }, h('b', { text: c.titulo }), h('span', { text: premioTxt(c.tipo, c.detalhe) }), h('small', { text: 'Cliente: ' + c.cliente + (c.apelido ? ' (' + c.apelido + ')' : '') }),
+      h('small', { text: c.status === 'ativo' ? 'Válido até ' + br(c.validade) : c.status === 'usado' ? 'Já usado em ' + c.usadoEm + (c.usadoPor ? ' por ' + c.usadoPor : '') : 'Vencido em ' + br(c.validade) })),
+      h('div', { class: 'cod' }, h('code', { text: c.codigo }), c.status === 'ativo' ? h('button', { type: 'button', class: 'bt ok', text: 'Dar baixa (usar)', onclick: async e => { e.target.disabled = true; const r = await fpost(msg, 'admin_cupom_validar', { codigo: c.codigo, usar: true }, 'Cupom usado.'); if (r) mostrarInfo(r.cupom); else e.target.disabled = false; } }) : h('span', { class: 'sl-tag', text: c.status === 'usado' ? 'usado' : 'vencido' }))));
+  };
+  const conferir = async () => { res.textContent = ''; if (!cod.value.trim()) { msg.className = 'msg erro'; msg.textContent = 'Digite o código do cupom.'; return; } const r = await fpost(msg, 'admin_cupom_validar', { codigo: cod.value.trim(), usar: false }); if (r) mostrarInfo(r.cupom); };
+  cod.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); conferir(); } });
+  box.append(h('div', { class: 'cv' }, h('h3', { text: 'Conferir cupom de cliente' }), h('p', { class: 'ad-nota', text: 'O cliente mostra o código (ex.: XER-AB12CD). Confira e dê baixa quando fizer o atendimento.' }),
+    h('div', { class: 'ad-acoes' }, h('label', { class: 'campo', style: 'flex:1 1 200px;margin:0' }, 'Código', cod), h('button', { type: 'button', class: 'bt forte', text: 'Conferir', onclick: conferir })), msg, res));
+}
+function abCupons(box, vivo) { cupomValidador(box); }
+async function abComunidade(box, vivo) {
+  const chaves = chavesPeriodo(hojeServidor()); if (!adCom.ch) adCom = { per: 'mes', ch: chaves[0][2] };
+  box.append(h('p', { class: 'ad-nota', text: 'Carregando a comunidade…' }));
+  const r = await apost('admin_saloon', { periodo: adCom.per, chave: adCom.ch }); if (!vivo() || !r) return; box.textContent = '';
+  const recarregar = () => { box.textContent = ''; abComunidade(box, vivo); };
+  box.append(h('div', { class: 'ad-sub' }, h('h3', { text: 'Comunidade do Saloon' }), h('p', { class: 'ad-nota', text: r.jogadores + (r.jogadores === 1 ? ' cliente já escolheu apelido' : ' clientes já escolheram apelido') + '. Aqui você vê o nome real de cada um; os clientes só veem apelido e personagem.' })));
+  box.append(h('div', { class: 'ad-acoes fin-rapido' }, h('small', { text: 'Período:' }), chaves.map(p => h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adCom.per === p[0] && adCom.ch === p[2]), text: p[1], onclick: () => { adCom = { per: p[0], ch: p[2] }; recarregar(); } }))));
+  box.append(h('h4', { text: 'Ranking de cortes · ' + r.rotulo }));
+  if (!r.lista.length) box.append(h('p', { class: 'ad-nota', text: 'Nenhum corte realizado neste período.' }));
+  else box.append(tabela(['#', 'Cliente', 'Apelido', 'Nível', 'Cortes', ''], r.lista.map(x => [x.pos + 'º', x.nome, x.apelido ? x.apelido + (x.oculto ? ' (oculto)' : '') : '—', 'Nv ' + x.nivel, String(x.cortes),
+    x.apelido ? h('button', { type: 'button', class: 'bt perigo', text: 'Remover apelido', title: 'Use se o apelido for ofensivo. O cliente é avisado e escolhe outro.', onclick: () => confirmarRemover(x, recarregar) }) : ''] ), [4]));
+  // ---- liberar prêmio
+  const tipoSel = h('select', { 'aria-label': 'Tipo de prêmio' }, opcoes([['corte_gratis', 'Corte grátis'], ['desconto', 'Desconto em %'], ['brinde', 'Brinde'], ['item', 'Peça rara para o personagem']], 'corte_gratis'));
+  const titulo = h('input', { type: 'text', maxlength: '60', value: 'Campeão de cortes · ' + r.rotulo, 'aria-label': 'Nome do prêmio' }), detalhe = h('input', { type: 'text', maxlength: '120', 'aria-label': 'Detalhe do prêmio' });
+  const raros = r.catalogo.filter(i => i.raro), itemSel = h('select', { 'aria-label': 'Peça rara' }, opcoes(raros.map(i => [i.id, i.nome]), raros[0] ? raros[0].id : ''));
+  const qtd = h('input', { type: 'number', min: '1', max: '10', value: '1', inputmode: 'numeric' }), val = h('input', { type: 'number', min: '1', max: '365', value: '30', inputmode: 'numeric' });
+  const campoDet = campo('Desconto (%)', detalhe), campoItem = campo('Qual peça rara?', itemSel), campoVal = campo('Cupom vale por quantos dias?', val), prev = h('p', { class: 'ad-nota sl-prev' }), msg = h('div', { class: 'msg', role: 'alert' });
+  const ajustar = () => {
+    const t = tipoSel.value; campoDet.hidden = !(t === 'desconto' || t === 'brinde'); campoItem.hidden = t !== 'item'; campoVal.hidden = t === 'item';
+    campoDet.firstChild.textContent = t === 'brinde' ? 'Qual brinde?' : 'Desconto (%)'; detalhe.placeholder = t === 'brinde' ? 'ex.: Pomada modeladora' : 'ex.: 50'; detalhe.inputMode = t === 'desconto' ? 'numeric' : 'text';
+    const n = Math.max(1, Math.min(10, Math.round(Number(qtd.value) || 1))), top = r.lista.slice(0, n);
+    prev.textContent = top.length ? 'Vão ganhar: ' + top.map(x => x.pos + 'º ' + x.nome).join(', ') + (r.lista.length < n ? ' (só ' + r.lista.length + ' cliente' + (r.lista.length === 1 ? '' : 's') + ' fez corte)' : '') + '.' : 'Ninguém fez corte neste período.';
+  };
+  [tipoSel, qtd].forEach(e => e.addEventListener('input', ajustar));
+  const lib = h('button', { type: 'button', class: 'bt forte', text: 'Liberar prêmio', onclick: () => {
+    const corpo = { periodo: adCom.per, chave: adCom.ch, titulo: titulo.value, tipo: tipoSel.value, detalhe: detalhe.value, item: itemSel.value, vencedores: qtd.value, validade: val.value }, m2 = h('div', { class: 'msg', role: 'alert' });
+    abrirModal(h('div', {}, h('h3', { text: 'Confirmar prêmio' }), h('p', { text: '“' + titulo.value + '”: ' + (tipoSel.value === 'item' ? 'peça rara' : premioTxt(tipoSel.value, detalhe.value)) + '.' }), h('p', { text: prev.textContent }), h('p', { class: 'ad-nota', text: 'Cada vencedor recebe um aviso no site e por e-mail com o código do cupom. Isso não pode ser desfeito.' }),
+      h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt forte', text: 'Confirmar e avisar vencedores', onclick: async e => {
+        e.target.disabled = true; const x = await fpost(m2, 'admin_premio_liberar', corpo); if (!x) { e.target.disabled = false; return; }
+        abrirModal(h('div', {}, h('h3', { text: 'Prêmio liberado!' }), h('ul', { class: 'fin-maiores' }, x.vencedores.map(v => h('li', {}, h('span', { text: v.pos + 'º' }), h('span', { text: v.nome }), h('b', { text: v.codigo || 'peça entregue' })))), h('p', { class: 'ad-nota', text: 'Os vencedores já foram avisados.' }), h('button', { type: 'button', class: 'bt', text: 'Fechar', onclick: () => { fecharModal(); recarregar(); } })));
+      } }), h('button', { type: 'button', class: 'bt', text: 'Cancelar', onclick: fecharModal })), m2));
+  } });
+  box.append(h('div', { class: 'fin-form sl-liberar' }, h('h3', { text: 'Liberar prêmio para os melhores' }), h('p', { class: 'ad-nota', text: 'Você decide o prêmio e quantos ganham. Os vencedores são os primeiros do ranking do período escolhido acima.' }),
+    campo('Nome do prêmio', titulo), campo('Tipo de prêmio', tipoSel), campoDet, campoItem, campo('Quantos clientes ganham? (1 a 10)', qtd), campoVal, prev, lib, msg));
+  ajustar();
+  // ---- histórico
+  box.append(h('h4', { text: 'Prêmios já liberados' }));
+  if (!r.premios.length) box.append(h('p', { class: 'ad-nota', text: 'Nenhum prêmio liberado ainda.' }));
+  else box.append(tabela(['Quando', 'Prêmio', 'Vencedores e cupons'], r.premios.map(p => [p.criado.slice(0, 10).split('-').reverse().join('/'), p.titulo + ' · ' + (p.tipo === 'item' ? 'peça rara' : premioTxt(p.tipo, p.detalhe)),
+    h('ul', { class: 'fin-maiores' }, p.ganhadores.map(g => h('li', {}, h('span', { text: g.status || 'ok' }), h('span', { text: g.nome + (g.apelido ? ' (' + g.apelido + ')' : '') }), h('b', { text: g.codigo || 'peça' }))))])));
+  cupomValidador(box);
+}
+function confirmarRemover(x, depois) {
+  const m = h('div', { class: 'msg', role: 'alert' });
+  abrirModal(h('div', {}, h('h3', { text: 'Remover apelido?' }), h('p', { text: 'O apelido “' + x.apelido + '” de ' + x.nome + ' será apagado e o cliente receberá um aviso para escolher outro.' }),
+    h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt perigo', text: 'Remover apelido', onclick: async e => { e.target.disabled = true; const r = await fpost(m, 'admin_saloon_limpar', { email: x.email }); if (r) { fecharModal(); depois(); } else e.target.disabled = false; } }), h('button', { type: 'button', class: 'bt', text: 'Cancelar', onclick: fecharModal })), m));
+}
 
 // =====================================================================
 //  v14 · FINANCEIRO (dono): custos e contas a pagar, relatório interativo, metas e exportação para Excel
