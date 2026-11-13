@@ -49,7 +49,7 @@ const CEUS = ['entardecer', 'noite', 'dia', 'madrugada'];
 const CAB_AG = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Nome', 'Telefone', 'Criado em', 'Email', 'Status', 'Finalizado em', 'Antecipado (min)', 'Confirmação', 'Motivo da recusa'];
 const SITE_URL = 'https://lucasnicaci0.github.io/barbearia/';
 const NOMES_DIA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-const CAB_US = ['Email', 'Nome', 'Telefone', 'Salt', 'SenhaHash', 'Criado em'];
+const CAB_US = ['Email', 'Nome', 'Telefone', 'Salt', 'SenhaHash', 'Criado em', 'Foto'];
 const CAB_FB = ['Data', 'Nome', 'Nota', 'Comentário', 'Email'];
 const CAB_SV = ['Nome', 'Preço', 'Ícone', 'Descrição', 'Destaque', 'Categoria', 'Ativo'];
 const CAB_EQ = ['Email', 'Nome', 'Papel', 'Comissão %', 'Atende', 'Cursos', 'Observação', 'Ativo', 'Telefone',
@@ -82,22 +82,43 @@ const FMT_VD = ['@', '@', '@', '@', '@', '@', '@', '0.00', '0.##', '0.00', '0.00
 const FMT_TXT = n => Array(n).fill('@');
 
 const memoAbas_ = {};
+// Velocidade: cada chamada à planilha custa ~0,1 a 0,3 s no Google. Por isso (1) o cabeçalho de cada aba só é conferido
+// uma vez a cada 6 h e (2) nas consultas (que não gravam nada) cada aba é lida UMA vez por requisição, mesmo que várias funções peçam os dados.
+let memoLeitura_ = false, memoVals_ = {};
+const somaCab_ = cab => { const j = cab.join('|'); let x = 7; for (let i = 0; i < j.length; i++) x = (x * 31 + j.charCodeAt(i)) | 0; return x; };
+const ESCRITAS_ = { appendRow: 1, deleteRow: 1, deleteRows: 1, insertRowAfter: 1, insertRowBefore: 1, clear: 1, clearContents: 1 };
+function envolver_(sh, nome) {
+  return new Proxy(sh, { get(alvo, p) {
+    if (p === 'getDataRange') return () => memoLeitura_
+      ? { getValues: () => (memoVals_[nome] = memoVals_[nome] || alvo.getDataRange().getValues()) }
+      : alvo.getDataRange();
+    const v = alvo[p];
+    if (typeof v !== 'function') return v;
+    return ESCRITAS_[p] ? (...a) => { memoVals_ = {}; return v.apply(alvo, a); } : v.bind(alvo);
+  } });
+}
 function aba_(nome, cab, semente) {
   if (memoAbas_[nome]) return memoAbas_[nome];
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(nome);
+  let sh = ss.getSheetByName(nome), novo = false;
   if (!sh) {
     sh = ss.insertSheet(nome);
     sh.appendRow(cab);
     sh.setFrozenRows(1);
     if (semente) semente(sh);
+    novo = true;
   }
-  const atual = sh.getRange(1, 1, 1, cab.length).getValues()[0];       // completa cabeçalhos que faltam (planilhas antigas)
-  cab.forEach((c, i) => { if (!atual[i]) sh.getRange(1, i + 1).setValue(c); });
-  memoAbas_[nome] = sh;
-  return sh;
+  const cache = CacheService.getScriptCache(), chave = 'cab_' + nome + '_' + somaCab_(cab);
+  if (novo || !cache.get(chave)) {
+    const atual = sh.getRange(1, 1, 1, cab.length).getValues()[0];       // completa cabeçalhos que faltam (planilhas antigas)
+    cab.forEach((c, i) => { if (!atual[i]) sh.getRange(1, i + 1).setValue(c); });
+    try { cache.put(chave, '1', 21600); } catch (e) {}
+  }
+  memoAbas_[nome] = envolver_(sh, nome);
+  return memoAbas_[nome];
 }
 function reescrever_(sh, cab, linhas, fmts) {
+  memoVals_ = {};
   const ult = sh.getLastRow();
   if (ult > 1) sh.getRange(2, 1, ult - 1, cab.length).clearContent();
   if (!linhas.length) return;
@@ -106,6 +127,7 @@ function reescrever_(sh, cab, linhas, fmts) {
   r.setValues(linhas);
 }
 function acrescentar_(sh, cab, linha, fmts) {
+  memoVals_ = {};
   const r = sh.getRange(sh.getLastRow() + 1, 1, 1, cab.length);
   r.setNumberFormats([fmts]);
   r.setValues([linha]);
@@ -382,8 +404,8 @@ function acharUsuario_(email) {
   const emails = sh.getRange(2, 1, n - 1, 1).getValues();          // lê só a coluna de e-mails (mais rápido)
   for (let i = 0; i < emails.length; i++) {
     if (String(emails[i][0]).toLowerCase() === email) {
-      const l = sh.getRange(i + 2, 1, 1, 6).getValues()[0];
-      const u = { nome: String(l[1]), telefone: String(l[2]), salt: String(l[3]), hash: String(l[4]) };
+      const l = sh.getRange(i + 2, 1, 1, 7).getValues()[0];
+      const u = { nome: String(l[1]), telefone: String(l[2]), salt: String(l[3]), hash: String(l[4]), foto: String(l[6] || '') };
       try { cache.put(chave, JSON.stringify(u), 21600); } catch (e) {}
       return u;
     }
@@ -409,7 +431,7 @@ function trocarHash_(email, senha) {
 }
 function sessao_(email, u) {
   const q = quem_(email);
-  return json_({ ok: true, token: criarToken_(email), email: email, nome: u.nome, telefone: u.telefone, papel: q ? q.papel : 'cliente' });
+  return json_({ ok: true, token: criarToken_(email), email: email, nome: u.nome, telefone: u.telefone, foto: u.foto || '', papel: q ? q.papel : 'cliente' });
 }
 function registrar_(d) {
   const email = String(d.email || '').trim().toLowerCase();
@@ -421,7 +443,7 @@ function registrar_(d) {
   if (senha.length < 6) return erro_('A senha precisa ter pelo menos 6 caracteres.');
   if (acharUsuario_(email)) return erro_('Já existe uma conta com esse e-mail.');
   const salt = Utilities.getUuid();
-  acrescentar_(us_(), CAB_US, [email, seguro_(nome), seguro_(tel), salt, hashV2_(senha, salt), agoraBR_()], FMT_TXT(6));
+  acrescentar_(us_(), CAB_US, [email, seguro_(nome), seguro_(tel), salt, hashV2_(senha, salt), agoraBR_(), ''], FMT_TXT(7));
   return sessao_(email, { nome: nome, telefone: tel });
 }
 function entrar_(d) {
@@ -447,7 +469,27 @@ function entrar_(d) {
 function perfil_(email) {
   const u = acharUsuario_(email), q = quem_(email);
   if (!u) return erro_('Conta não encontrada.', { expirada: true });
-  return json_({ ok: true, nome: u.nome, papel: q ? q.papel : 'cliente' });
+  return json_({ ok: true, nome: u.nome, papel: q ? q.papel : 'cliente', foto: u.foto || '' });
+}
+// O cliente troca ou remove a própria foto de perfil: {imagem (data URL) | remover}
+function fotoPerfil_(d, email) {
+  const sh = us_(), n = sh.getLastRow();
+  if (n < 2) return erro_('Conta não encontrada.');
+  const emails = sh.getRange(2, 1, n - 1, 1).getValues();
+  for (let i = 0; i < emails.length; i++) {
+    if (String(emails[i][0]).toLowerCase() !== email) continue;
+    const c = sh.getRange(i + 2, 7), antiga = String(c.getValue() || '');
+    let novo = '';
+    if (!d.remover) {
+      if (!d.imagem) return erro_('Escolha uma foto.');
+      const r = salvarImagem_(d.imagem, 'cli-' + Date.now()); if (r.erro) return erro_(r.erro); novo = r.id;
+    }
+    c.setNumberFormat('@'); c.setValue(novo);
+    if (antiga) lixeira_(antiga);
+    CacheService.getScriptCache().remove('u_' + email);
+    return json_({ ok: true, foto: novo });
+  }
+  return erro_('Conta não encontrada.');
 }
 
 // ---------- Agendamentos (cliente) ----------
@@ -580,6 +622,82 @@ function adminAgenda_(d, q) {
   return json_({ ok: true, de: de, ate: ate, hoje: hoje, lista: lista, pendentes: lista.filter(x => !x.status && x.conf === 'pendente').length });
 }
 
+// Relatório detalhado da Agenda (dono: todos ou um barbeiro; barbeiro: só o dele). Não grava nada.
+function adminAgendaRelatorio_(d, q) {
+  const hoje = hoje_(), ehDono = q.papel === 'dono';
+  let de = isoOk_(d.de) ? d.de : somarDias_(hoje, -29), ate = isoOk_(d.ate) ? d.ate : hoje;
+  if (ate < de) ate = de;
+  if (diasEntre_(de, ate) > 366) de = somarDias_(ate, -366);
+  const filtroB = ehDono ? String(d.barbeiro || '') : q.nome;
+  const preco = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; });
+  const promos = promos_(), real = {}, fid = mapaFid_();
+  let avulsas = { qtd: 0, valor: 0 };
+  vd_().getDataRange().getValues().slice(1).forEach(l => {
+    const dt = dataTxt_(l[0]); if (dt < de || dt > ate) return;
+    if (filtroB && String(l[2]) !== filtroB) return;
+    if (String(l[12]) === 'avulsa') { avulsas.qtd++; avulsas.valor += Number(l[7]) || 0; }
+    else real[String(l[15])] = { valor: Number(l[7]) || 0, gratis: String(l[17]) === 'sim' };
+  });
+  const tot = { marcados: 0, concluidos: 0, faltas: 0, abertos: 0, aConfirmar: 0, confirmados: 0, semBaixa: 0, recusados: 0, antecipados: 0 };
+  const rec = { prevista: 0, realizada: 0, perdida: 0, gratis: 0 };
+  const porB = {}, porS = {}, porD = {}, porC = {}, motivos = {}, semana = [0, 0, 0, 0, 0, 0, 0], semanaF = [0, 0, 0, 0, 0, 0, 0], horas = {}, linhas = [];
+  let antecSoma = 0, antecN = 0;
+  ag_().getDataRange().getValues().slice(1).forEach(l => {
+    const dt = dataTxt_(l[0]); if (!dt || dt < de || dt > ate) return;
+    const barb = String(l[2]); if (filtroB && barb !== filtroB) return;
+    const st = String(l[8] || '').trim(), conf = String(l[11] || '') || 'confirmado', hora = horaTxt_(l[1]), srv = String(l[3]), em = String(l[7] || '').toLowerCase();
+    const tab = precoPromo_(preco[srv] || 0, promoPara_(promos, srv, dt));
+    const rv = real[dt + '|' + hora + '|' + barb];
+    const valorReal = st === 'concluido' ? (rv ? rv.valor : tab) : 0;
+    let estado = st === 'concluido' ? 'concluido' : st === 'faltou' ? 'faltou' : st === 'recusado' ? 'recusado' : (dt < hoje ? 'sem baixa' : 'aberto');
+    if (st === 'recusado') {
+      tot.recusados++; const m = limpo_(l[12], 80) || 'Sem motivo informado'; motivos[m] = (motivos[m] || 0) + 1;
+    } else {
+      tot.marcados++;
+      const b = porB[barb] = porB[barb] || { nome: barb, marcados: 0, concluidos: 0, faltas: 0, abertos: 0, receita: 0, perdida: 0 };
+      const s = porS[srv] = porS[srv] || { nome: srv, marcados: 0, concluidos: 0, faltas: 0, receita: 0 };
+      const x = porD[dt] = porD[dt] || { data: dt, marcados: 0, concluidos: 0, faltas: 0 };
+      b.marcados++; s.marcados++; x.marcados++;
+      const w = diaSemana_(dt); semana[w]++;
+      const hh = hora.slice(0, 2); if (/^\d\d$/.test(hh)) horas[hh] = (horas[hh] || 0) + 1;
+      if (st === 'concluido') {
+        tot.concluidos++; b.concluidos++; s.concluidos++; x.concluidos++; b.receita += valorReal; s.receita += valorReal; rec.realizada += valorReal;
+        if (rv && rv.gratis) rec.gratis++;
+        if (Number(l[10]) > 0) tot.antecipados++;
+      } else if (st === 'faltou') { tot.faltas++; b.faltas++; s.faltas++; x.faltas++; semanaF[w]++; rec.perdida += tab; b.perdida += tab; }
+      else {
+        if (dt < hoje) tot.semBaixa++; else { tot.abertos++; b.abertos++; rec.prevista += tab; if (conf === 'pendente') tot.aConfirmar++; else tot.confirmados++; }
+      }
+      if (em) { const c = porC[em] = porC[em] || { email: em, cliente: String(l[4]), marcacoes: 0, concluidos: 0, faltas: 0, gasto: 0 }; c.marcacoes++; if (st === 'concluido') { c.concluidos++; c.gasto += valorReal; } if (st === 'faltou') c.faltas++; }
+      const cr = String(l[6] || '').match(/^(\d\d)\/(\d\d)\/(\d{4})/);
+      if (cr) { const dif = diasEntre_(cr[3] + '-' + cr[2] + '-' + cr[1], dt); if (dif >= 0 && dif < 400) { antecSoma += dif; antecN++; } }
+    }
+    if (linhas.length < 1500) linhas.push({ data: dt, hora: hora, barbeiro: barb, servico: srv, cliente: String(l[4]), telefone: String(l[5]), email: em, estado: estado, conf: st === 'recusado' ? 'recusado' : conf, valor: tab, valorReal: r2_(valorReal), antecipado: Number(l[10]) || 0, motivo: String(l[12] || '') });
+  });
+  const taxa = (a, b) => b ? r2_(a / b * 100) : 0;
+  tot.comparecimento = taxa(tot.concluidos, tot.concluidos + tot.faltas);
+  tot.taxaFaltas = taxa(tot.faltas, tot.concluidos + tot.faltas);
+  tot.ticket = tot.concluidos ? r2_(rec.realizada / tot.concluidos) : 0;
+  Object.keys(rec).forEach(k => { rec[k] = r2_(rec[k]); });
+  const arr = o => Object.keys(o).map(k => o[k]);
+  const fixo = o => { Object.keys(o).forEach(k => { if (typeof o[k] === 'number') o[k] = r2_(o[k]); }); return o; };
+  const clientes = arr(porC).map(fixo);
+  const meta = metaCortes_();
+  return json_({
+    ok: true, de: de, ate: ate, hoje: hoje, barbeiro: filtroB, totais: tot, receita: rec, avulsas: { qtd: avulsas.qtd, valor: r2_(avulsas.valor) },
+    porBarbeiro: arr(porB).map(b => { b.comparecimento = taxa(b.concluidos, b.concluidos + b.faltas); return fixo(b); }).sort((a, b) => b.marcados - a.marcados),
+    porServico: arr(porS).map(fixo).sort((a, b) => b.marcados - a.marcados),
+    porDia: arr(porD).sort((a, b) => a.data.localeCompare(b.data)),
+    semana: semana, semanaFaltas: semanaF, horas: Object.keys(horas).sort().map(h => ({ h: h, n: horas[h] })),
+    clientes: { unicos: clientes.length, recorrentes: clientes.filter(c => c.marcacoes >= 2).length,
+      top: clientes.sort((a, b) => b.marcacoes - a.marcacoes || b.gasto - a.gasto).slice(0, 8),
+      faltosos: clientes.filter(c => c.faltas > 0).sort((a, b) => b.faltas - a.faltas).slice(0, 5) },
+    motivosRecusa: Object.keys(motivos).map(m => ({ motivo: m, n: motivos[m] })).sort((a, b) => b.n - a.n).slice(0, 6),
+    antecedenciaMedia: antecN ? Math.round(antecSoma / antecN * 10) / 10 : 0,
+    linhas: linhas.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora)), truncado: linhas.length >= 1500
+  });
+}
+
 function registrarVenda_(o) {
   const com = comissaoDe_(o.barbeiro), valor = r2_(o.valor), base = o.resgate ? r2_(o.base) : valor;   // corte grátis: a casa paga a comissão sobre o preço de tabela
   const vCom = r2_(base * com / 100), lucro = r2_(valor - vCom);
@@ -704,15 +822,16 @@ function adminCancelar_(d, q) {
 }
 
 // Relatório de vendas (só dono)
-function adminRelatorio_(d) {
-  const hoje = hoje_();
+function adminRelatorio_(d, q) {
+  const hoje = hoje_(), ehDono = !q || q.papel === 'dono';   // barbeiro só enxerga as próprias vendas, sem o lucro da casa
   let de = isoOk_(d.de) ? d.de : hoje.slice(0, 8) + '01', ate = isoOk_(d.ate) ? d.ate : hoje;
   if (ate < de) ate = de;
   const rows = vd_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), categoria: String(l[4]), cliente: String(l[5]),
     valor: Number(l[7]) || 0, comissaoPct: Number(l[8]) || 0, comissao: Number(l[9]) || 0, lucro: Number(l[10]) || 0,
     margem: Number(l[11]) || 0, origem: String(l[12]), chave: String(l[15]), gratis: String(l[17]) === 'sim'
-  })).filter(r => r.data >= de && r.data <= ate);
+  })).filter(r => r.data >= de && r.data <= ate && (ehDono || r.barbeiro === q.nome));
+  if (!ehDono) rows.forEach(r => { r.lucro = 0; r.margem = 0; });
   const tot = { qtd: rows.length, bruto: 0, comissao: 0, lucro: 0, cortes: 0, gratis: 0 };
   const porSrv = {}, porBar = {}, porDia = {};
   rows.forEach(r => {
@@ -734,7 +853,7 @@ function adminRelatorio_(d) {
     porServico: arr(porSrv).map(fix).sort((a, b) => b.qtd - a.qtd),
     porBarbeiro: arr(porBar).map(fix).sort((a, b) => b.valor - a.valor),
     porDia: arr(porDia).map(fix).sort((a, b) => a.data.localeCompare(b.data)),
-    historico: rows.sort((a, b) => (b.data + b.hora).localeCompare(a.data + a.hora)).slice(0, 300)
+    historico: rows.sort((a, b) => (b.data + b.hora).localeCompare(a.data + a.hora)).slice(0, Math.min(2000, Math.max(50, Number(d.limite) || 300))), total: rows.length
   });
 }
 function adminExcluirVenda_(d) {
@@ -874,10 +993,12 @@ function adminDashboard_(d, q) {
     default: de = mesIni; ate = hoje; rotulo = 'Este mês';
   }
   const dias = diasEntre_(de, ate) + 1, deAnt = somarDias_(de, -dias), ateAnt = somarDias_(de, -1);
-  const todas = vd_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+  const bruto = vd_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
     data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), categoria: String(l[4]), cliente: String(l[5]),
     valor: Number(l[7]) || 0, comissao: Number(l[9]) || 0, lucro: Number(l[10]) || 0, email: String(l[16] || '').toLowerCase(), gratis: String(l[17]) === 'sim'
-  })).filter(r => r.data >= deAnt && r.data <= ate && (ehDono || r.barbeiro === q.nome));
+  })).filter(r => ehDono || r.barbeiro === q.nome);
+  const todas = bruto.filter(r => r.data >= deAnt && r.data <= ate);
+  const vHoje = bruto.filter(r => r.data === hoje), resumoHoje = { qtd: vHoje.length, bruto: r2_(vHoje.reduce((a, r) => a + r.valor, 0)), lucro: r2_(vHoje.reduce((a, r) => a + r.lucro, 0)) };
   const atual = todas.filter(r => r.data >= de), ant = todas.filter(r => r.data <= ateAnt);
   const soma = rows => {
     const t = { qtd: rows.length, bruto: 0, comissao: 0, lucro: 0, cortes: 0, gratis: 0, clientes: 0 }, cli = {};
@@ -920,10 +1041,10 @@ function adminDashboard_(d, q) {
   // agenda
   const nomeOk = x => ehDono || String(x[2]) === q.nome;
   const ag = ag_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim() && nomeOk(l) && String(l[8] || '').trim() !== 'recusado');
-  const fim7 = somarDias_(hoje, 7), agenda = { hoje: 0, hojeFeitos: 0, proximos7: 0, faltas: 0, semBaixa: 0, pendentes: 0 };
+  const fim7 = somarDias_(hoje, 7), agenda = { hoje: 0, hojeFeitos: 0, hojeFaltas: 0, hojeAbertos: 0, proximos7: 0, faltas: 0, semBaixa: 0, pendentes: 0 };
   ag.forEach(l => {
     const dt = dataTxt_(l[0]), st = String(l[8] || '').trim();
-    if (dt === hoje) { agenda.hoje++; if (st === 'concluido') agenda.hojeFeitos++; }
+    if (dt === hoje) { agenda.hoje++; if (st === 'concluido') agenda.hojeFeitos++; else if (st === 'faltou') agenda.hojeFaltas++; else agenda.hojeAbertos++; }
     if (dt > hoje && dt <= fim7 && !st) agenda.proximos7++;
     if (!st && dt >= hoje && String(l[11] || '') === 'pendente') agenda.pendentes++;
     if (dt >= de && dt <= ate && st === 'faltou') agenda.faltas++;
@@ -934,7 +1055,7 @@ function adminDashboard_(d, q) {
     totais: soma(atual), anterior: soma(ant), mensal: mensal, serie: serie, porBarbeiro: porBarbeiro,
     porServico: arr(porSrv).sort((a, b) => b.qtd - a.qtd).slice(0, 8),
     semana: semana, semanaValor: semanaV.map(r2_),
-    horas: Object.keys(hora).sort().map(h => ({ h: h, qtd: hora[h] })), agenda: agenda
+    horas: Object.keys(hora).sort().map(h => ({ h: h, qtd: hora[h] })), agenda: agenda, hojeVendas: resumoHoje
   };
   if (ehDono) {
     const meta = metaCortes_(), f = { ativo: !!meta, meta: meta, clientesComCredito: 0, creditosAbertos: 0, quaseLa: 0, custoGratis: 0 };
@@ -945,6 +1066,7 @@ function adminDashboard_(d, q) {
     }
     out.fid = f;
     out.equipe = { ativos: equipe_().filter(x => x.ativo && x.papel === 'barbeiro').length };
+    out.bloqPendentes = bloqueios_().filter(b => b.status === 'pendente').length;
   }
   return json_(out);
 }
@@ -1407,13 +1529,13 @@ function adminClientes_(d, q) {
     const f = fidDe_(fid, e, meta), o = st[e] || { marc: 0, faltas: 0, prox: '' }, a = av[e], b = bloq[e], x = fid[e] || { cortes: 0, resg: 0, ult: '' };
     const total = x.cortes + x.resg, minha = a ? a.lista.filter(z => z.barbeiro === q.nome)[0] : null;
     lista.push({
-      email: e, nome: String(l[1]), telefone: String(l[2]), desde: String(l[5] || '').slice(0, 10),
+      email: e, nome: String(l[1]), telefone: String(l[2]), desde: String(l[5] || '').slice(0, 10), foto: String(l[6] || ''),
       cortes: total, pagos: x.cortes, gratisUsados: x.resg, balas: f.progresso, faltam: f.faltam, creditos: f.creditos,
       ultimo: x.ult || '', marcacoes: o.marc, faltas: o.faltas, proxima: o.prox,
       aval: cliResumo_(total, a, o.faltas, !!b && b.status === 'ativo'),
       tags: a ? Object.keys(a.tags).sort((p, r) => a.tags[r] - a.tags[p]).slice(0, 4) : [],
       minha: minha ? { nota: minha.nota, tags: minha.tags, comentario: minha.comentario } : null,
-      avaliacoes: a ? a.lista.slice(-5).reverse() : [],
+      avaliacoes: a ? a.lista.slice(-30).reverse() : [],
       bloqueio: b ? { id: b.id, status: b.status, motivo: b.motivo, por: b.por } : null
     });
   });
@@ -1535,7 +1657,16 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Barbearia')
     .addItem('Cadastrar e-mail do DONO', 'menuDono')
     .addItem('Cadastrar BARBEIRO', 'menuBarbeiro')
+    .addItem('Manter o site rápido (ligar/desligar aquecimento)', 'menuAquecimento')
     .addToUi();
+}
+// O Google "adormece" o script quando ninguém usa por alguns minutos, e a primeira visita demora. Uma tarefa a cada 5 min mantém tudo acordado.
+function aquecer() { try { cfg_(); publico_(); } catch (e) {} }
+function menuAquecimento() {
+  const ui = SpreadsheetApp.getUi(), ts = ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'aquecer');
+  if (ts.length) { ts.forEach(t => ScriptApp.deleteTrigger(t)); ui.alert('Aquecimento DESLIGADO.\n\nO site volta a ficar lento só na primeira visita depois de um tempo parado.'); return; }
+  ScriptApp.newTrigger('aquecer').timeBased().everyMinutes(5).create();
+  ui.alert('Aquecimento LIGADO.\n\nA cada 5 minutos o script acorda sozinho. Isso reduz bastante a demora da primeira visita. Rode este menu de novo para desligar.');
 }
 function perguntar_(ui, titulo, texto) {
   const r = ui.prompt(titulo, texto, ui.ButtonSet.OK_CANCEL);
@@ -1576,14 +1707,15 @@ function menuBarbeiro() {
 // ---------- Entradas da API ----------
 function doGet(e) {
   const p = (e && e.parameter) || {};
+  memoVals_ = {}; memoLeitura_ = true;
   if (p.action === 'config') return json_(publico_());
   if (p.action === 'slots') return json_({ livres: slots_(p.data, p.barbeiro) });
   if (p.action === 'feedbacks') return listarFeedbacks_();
   return json_({ erro: 'ação inválida' });
 }
 
-const ACOES_EQUIPE = ['admin_agenda', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
-const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
+const ACOES_EQUIPE = ['admin_agenda', 'admin_agenda_relatorio', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_relatorio', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
+const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_agenda_relatorio', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
   'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
   'admin_bloqueio_decidir', 'admin_bloqueio_remover', 'admin_galeria_add', 'admin_galeria_del', 'admin_equipe_foto'];
@@ -1593,7 +1725,9 @@ function doPost(e) {
   let travou = false;
   try {
     const d = JSON.parse(e.postData.contents);
-    if (LEITURAS.indexOf(d.action) === -1) { lock.waitLock(25000); travou = true; }   // só escritas entram na fila
+    memoVals_ = {};
+    if (LEITURAS.indexOf(d.action) === -1) { memoLeitura_ = false; lock.waitLock(25000); travou = true; }   // só escritas entram na fila
+    else memoLeitura_ = true;
     return rotear_(d);
   } catch (err) {
     return erro_('Erro no servidor. Tente novamente.');
@@ -1612,6 +1746,7 @@ function rotear_(d) {
     if (d.action === 'cancelar') return cancelar_(d, email);
     if (d.action === 'feedback') return enviarFeedback_(d, email);
     if (d.action === 'perfil') return perfil_(email);
+    if (d.action === 'foto_perfil') return fotoPerfil_(d, email);
     if (d.action === 'fidelidade') return fidelidade_(email);
     if (d.action === 'notificacoes') return notificacoes_(d, email);
     if (d.action === 'notificacoes_lidas') return notificacoesLidas_(d, email);
@@ -1623,11 +1758,12 @@ function rotear_(d) {
       }
       switch (d.action) {
         case 'admin_agenda': return adminAgenda_(d, q);
+        case 'admin_agenda_relatorio': return adminAgendaRelatorio_(d, q);
         case 'admin_concluir': return adminConcluir_(d, q);
         case 'admin_venda_avulsa': return adminVendaAvulsa_(d, q);
         case 'admin_cancelar': return adminCancelar_(d, q);
         case 'admin_dados': return adminDados_();
-        case 'admin_relatorio': return adminRelatorio_(d);
+        case 'admin_relatorio': return adminRelatorio_(d, q);
         case 'admin_excluir_venda': return adminExcluirVenda_(d);
         case 'admin_salvar_servicos': return adminSalvarServicos_(d);
         case 'admin_salvar_equipe': return adminSalvarEquipe_(d);
