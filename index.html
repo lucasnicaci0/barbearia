@@ -906,6 +906,59 @@ body.em-previa .topo{top:52px}
 .fx i{will-change:auto}
 #comodidades{content-visibility:auto;contain-intrinsic-size:auto 520px}
 @media(prefers-reduced-motion:reduce){.pole .haste::before{animation:none}}
+/* ===== v14 · financeiro ===== */
+.ad-card.neg{border-color:#8a2412;background:rgba(138,36,18,.13)}
+.ad-card.neg b{color:#7a1d0e}
+.fin-rapido{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 8px}.fin-rapido small{font-weight:700;color:var(--tinta2)}
+.fin-rapido .chip{padding:7px 11px;font-size:.92rem}
+.fin-resumo{margin:4px 0 10px;font-weight:600}.fin-resumo .ruim{color:#8a2412}
+.fin-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fin-lista li{display:grid;grid-template-columns:34px 1fr auto auto;gap:6px 12px;align-items:center;padding:10px 12px;border:1.5px solid var(--tinta2);border-left:6px solid #b08d4f;background:rgba(255,255,255,.3)}
+.fin-lista li.venc{border-color:#c6381c;border-left-color:#c6381c;background:rgba(198,56,28,.1)}
+.fin-lista li.perto{border-left-color:#d9a14b;background:rgba(217,161,75,.14)}
+.fin-lista .ic{font-size:1.5rem;text-align:center}
+.fin-lista .tx b,.fin-lista .qd b{display:block}.fin-lista small,.fin-sub{color:var(--tinta2);font-weight:600;font-size:.82rem}.ad-tab .fin-sub{display:block}.ad-rank{margin-bottom:14px}
+.fin-lista .qd{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:640px){.fin-lista li{grid-template-columns:30px 1fr}.fin-lista .qd{text-align:left;grid-column:2}.fin-lista li .bt{grid-column:1/-1}}
+.fin-form{max-width:560px}.fin-form h3{color:var(--tinta)}.fin-form textarea{resize:vertical}
+.fin-veredito{display:grid;gap:4px;padding:18px 20px;border:2px solid #4a8a30;border-left-width:10px;background:rgba(74,138,48,.12);margin:12px 0}
+.fin-veredito.neg{border-color:#8a2412;background:rgba(138,36,18,.1)}
+.fin-veredito small{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;color:var(--tinta2)}
+.fin-veredito b{font:400 2.4rem/1.1 var(--serif);color:#24400f}.fin-veredito.neg b{color:#7a1d0e}
+.fin-veredito span{font-weight:600}
+.fin-cascata{list-style:none;margin:6px 0 12px;padding:0}
+.fin-cascata li{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:9px 4px;border-bottom:1px solid rgba(106,77,44,.28)}
+.fin-cascata li.tot{background:rgba(255,255,255,.35);border-bottom:2px solid var(--tinta2);padding-left:10px;padding-right:10px}
+.fin-cascata .rot small{display:block;font-weight:600;color:var(--tinta2);font-size:.8rem}
+.fin-cascata .v{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}.fin-cascata .v.menos{color:#8a2412}.fin-cascata .v.neg{color:#8a2412}
+.fin-cascata .ad-hb{grid-column:1/-1;margin-top:2px;height:8px}
+.fin-cascata i.entrou{background:#4a8a30}.fin-cascata i.com{background:#b08d4f}.fin-cascata i.casa{background:linear-gradient(90deg,var(--ferr),var(--ferr2))}
+.fin-cascata i.fixo{background:#6a4d2c}.fin-cascata i.var{background:#9a7b4a}.fin-cascata i.res{background:#2f5d17}.fin-cascata i.neg{background:#8a2412}.fin-cascata i.inv{background:#5b6f86}.fin-cascata i.ret{background:#8a6a8a}
+.fin-graf{display:block;width:100%;height:auto;max-height:290px}
+.fin-graf .grade{stroke:rgba(106,77,44,.28);stroke-width:1}.fin-graf .zero{stroke:var(--tinta2);stroke-width:1.4}
+.fin-graf .eixo{font:600 11px var(--sans);fill:var(--tinta2)}
+.fin-graf .b-casa{fill:#4a8a30}.fin-graf .b-gasto{fill:#b44a1f}
+.fin-graf .hit{fill:transparent;cursor:pointer}.fin-graf .mes:hover .hit,.fin-graf .mes:focus-visible .hit{fill:rgba(143,59,34,.12)}.fin-graf .mes:focus-visible{outline:none}
+.fin-graf .linha-res{stroke:var(--tinta);stroke-width:2;stroke-dasharray:5 3;pointer-events:none}
+.fin-graf .pt-pos{fill:#2f5d17;stroke:#fff8e1;stroke-width:1.5;pointer-events:none}.fin-graf .pt-neg{fill:#8a2412;stroke:#fff8e1;stroke-width:1.5;pointer-events:none}
+.fin-legenda{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;font-weight:600;color:var(--tinta2);margin:4px 0 8px}
+.fin-legenda i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}.lg-casa{background:#4a8a30}.lg-gasto{background:#b44a1f}.lg-res{background:var(--tinta);border-radius:50%}
+.fin-cats{list-style:none;margin:0;padding:0}
+.fin-cat{display:grid;grid-template-columns:1fr auto;gap:2px 12px;width:100%;text-align:left;border:0;border-bottom:1px solid rgba(106,77,44,.28);background:none;padding:9px 4px;font:inherit;color:inherit;cursor:pointer}
+.fin-cat:hover{background:rgba(255,255,255,.35)}.fin-cat .n{font-weight:700}.fin-cat .v{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.fin-cat .p{color:var(--tinta2);font-weight:600;font-size:.84rem}.fin-cat .ad-delta{margin:0;text-align:right}.fin-cat .ad-hb{grid-column:1/-1}
+.fin-maiores{list-style:none;margin:0;padding:0}.fin-maiores li{display:grid;grid-template-columns:48px 1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid rgba(106,77,44,.28)}
+.fin-maiores .v{font-weight:800;font-variant-numeric:tabular-nums}.fin-maiores span:first-child{color:var(--tinta2);font-weight:600}
+.fin-meta{margin:10px 0}.fin-meta .cab{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.fin-meta .cab span{color:var(--tinta2);font-weight:600}
+.fin-meta .trilho{position:relative;height:16px;background:rgba(106,77,44,.2);border:1.5px solid var(--tinta2);margin:5px 0;overflow:hidden}
+.fin-meta .trilho i{position:absolute;left:0;top:0;bottom:0}.fin-meta .prev{background:repeating-linear-gradient(45deg,rgba(74,138,48,.35) 0 6px,rgba(74,138,48,.15) 6px 12px)}
+.fin-meta .fei{background:#4a8a30}.fin-meta .fei.neg{background:#8a2412}.fin-meta small{color:var(--tinta2);font-weight:600}
+.fin-insights{list-style:none;margin:6px 0 12px;padding:0;display:grid;gap:8px}
+.fin-insights li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--tinta2);background:rgba(255,255,255,.3);font-weight:600}
+.fin-insights .ic{flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background:#5b4a36;font-size:.85rem}
+.fin-insights li.bom{border-color:#4a8a30}.fin-insights li.bom .ic{background:#4a8a30}
+.fin-insights li.ruim{border-color:#c6381c;background:rgba(198,56,28,.08)}.fin-insights li.ruim .ic{background:#c6381c}
+.fin-insights li.atencao{border-color:#d9a14b}.fin-insights li.atencao .ic{background:#b07a14}
 </style>
 </head>
 <body>
@@ -1288,7 +1341,7 @@ aplicarSite();
 $('ano').textContent = new Date().getFullYear();
 
 // leituras do painel ficam guardadas por 25 s (trocar de aba não refaz a consulta); qualquer gravação limpa tudo
-const LEIT_CACHE = { admin_dados: 1, admin_dashboard: 1, admin_clientes: 1, admin_relatorio: 1, admin_agenda: 1, admin_agenda_relatorio: 1 };
+const LEIT_CACHE = { admin_dados: 1, admin_dashboard: 1, admin_clientes: 1, admin_relatorio: 1, admin_agenda: 1, admin_agenda_relatorio: 1, admin_custos_lista: 1, admin_fin_relatorio: 1 };
 const SEM_EFEITO = { perfil: 1, notificacoes: 1, meus: 1, fidelidade: 1, config: 1, slots: 1 };
 let cacheLeit = {};
 const clonar = o => typeof structuredClone === 'function' ? structuredClone(o) : JSON.parse(JSON.stringify(o));
@@ -2625,6 +2678,621 @@ $('ir-admin').onclick = async () => {
 $('ad-voltar').onclick = () => mostrar('home');
 $('ad-sair').onclick = sair;
 
+// =====================================================================
+//  v14 · FINANCEIRO (dono): custos e contas a pagar, relatório interativo, metas e exportação para Excel
+// =====================================================================
+const PER_F = [['mes', 'Este mês'], ['mes_ant', 'Mês passado'], ['30d', '30 dias'], ['3m', '3 meses'], ['ano', 'Este ano'], ['custom', 'Escolher datas']];
+const SUB_FIN = [['geral', 'Visão geral'], ['custos', 'Custos e contas'], ['rel', 'Relatório financeiro']];
+const TIPO_FIN = { fixo: 'Contas fixas (todo mês)', variavel: 'Gastos do dia a dia', invest: 'Investimentos (equipamento e reforma)', retirada: 'Retirada do dono' };
+const TIPO_CURTO = { fixo: 'Fixo', variavel: 'Variável', invest: 'Investimento', retirada: 'Retirada' };
+let adFin = { sub: 'geral', per: 'mes', de: '', ate: '', cat: '', st: '', gerado: '' };
+let finSeq = 0;
+const SVGNS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, a, ...kids) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in (a || {})) e.setAttribute(k, a[k]);
+  kids.flat(2).forEach(c => { if (c != null && c !== false) e.append(c); });
+  return e;
+}
+const R$k = v => { const n = Math.abs(v); return (v < 0 ? '−' : '') + (n >= 1000 ? (n / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mil' : String(Math.round(n))); };
+const iso2 = (a, b, c) => a + '-' + String(b).padStart(2, '0') + '-' + String(c).padStart(2, '0');
+const ultimoDia = (a, b) => new Date(Date.UTC(a, b, 0)).getUTCDate();
+function faixaFin(per, de, ate) {
+  const H = hojeServidor(), y = +H.slice(0, 4), m = +H.slice(5, 7);
+  if (per === 'mes') return [iso2(y, m, 1), iso2(y, m, ultimoDia(y, m))];
+  if (per === 'mes_ant') { const a = m === 1 ? y - 1 : y, b = m === 1 ? 12 : m - 1; return [iso2(a, b, 1), iso2(a, b, ultimoDia(a, b))]; }
+  if (per === '30d') return [somarDias(H, -29), H];
+  if (per === '3m') { let a = y, b = m - 2; if (b < 1) { b += 12; a--; } return [iso2(a, b, 1), iso2(y, m, ultimoDia(y, m))]; }
+  if (per === 'ano') return [iso2(y, 1, 1), iso2(y, 12, 31)];
+  return [de || iso2(y, m, 1), ate || H];
+}
+const parseValor = t => { let s = String(t == null ? '' : t).trim().replace(/[R$\s]/g, ''); if (s.indexOf(',') !== -1) s = s.replace(/\./g, '').replace(',', '.'); return Number(s); };
+const catInfo = (cats, nome) => (cats || []).filter(c => c.nome === nome)[0] || { ic: '📦', tipo: 'variavel' };
+// seta de variação: em GASTO, subir é ruim (vermelho) e descer é bom (verde)
+function deltaGasto(atual, ant) {
+  if (!ant) return h('span', { class: 'ad-delta', text: atual ? 'Sem período anterior para comparar' : '' });
+  const p = (atual - ant) / ant * 100, igual = Math.abs(p) < 0.5;
+  return h('span', { class: 'ad-delta ' + (igual ? '' : p > 0 ? 'desce' : 'sobe'), text: igual ? '＝ igual ao período anterior' : (p > 0 ? '▲ ' : '▼ ') + Math.abs(p).toLocaleString('pt-BR', { maximumFractionDigits: 0 }) + '% vs. período anterior' });
+}
+function deltaVal(atual, ant) {
+  if (!ant) return h('span', { class: 'ad-delta', text: atual || ant === 0 ? 'Sem período anterior para comparar' : '' });
+  const p = (atual - ant) / Math.abs(ant) * 100, igual = Math.abs(p) < 0.5;
+  return h('span', { class: 'ad-delta ' + (igual ? '' : p > 0 ? 'sobe' : 'desce'), text: igual ? '＝ igual ao período anterior' : (p > 0 ? '▲ ' : '▼ ') + Math.abs(p).toLocaleString('pt-BR', { maximumFractionDigits: 0 }) + '% vs. período anterior (' + R$(ant) + ')' });
+}
+function deltaPP(atual, ant, base) {
+  if (!base) return h('span', { class: 'ad-delta', text: 'Sem período anterior para comparar' });
+  const d = atual - ant;
+  return h('span', { class: 'ad-delta ' + (Math.abs(d) < 0.1 ? '' : d > 0 ? 'sobe' : 'desce'), text: Math.abs(d) < 0.1 ? '＝ igual ao período anterior' : (d > 0 ? '▲ ' : '▼ ') + Math.abs(d).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' pontos vs. período anterior' });
+}
+const dataCurta = iso => br(iso).slice(0, 5);
+function diasTxt(n) { return n === 0 ? 'vence hoje' : n === 1 ? 'vence amanhã' : n > 0 ? 'vence em ' + n + ' dias' : n === -1 ? 'venceu ontem' : 'venceu há ' + (-n) + ' dias'; }
+
+// ---------- sub-abas dentro do Dashboard (só o dono) ----------
+function abDash(box, vivo) {
+  if (!ehDono()) return abDashGeral(box, vivo);
+  box.append(h('h3', { text: 'Dashboard' }));
+  const nav = h('div', { class: 'ad-chips seg', role: 'tablist' }), corpo = h('div', {});
+  box.append(nav, corpo);
+  const desenhar = () => {
+    nav.textContent = ''; const meu = ++finSeq, ok = () => vivo() && meu === finSeq;
+    SUB_FIN.forEach(s => nav.append(h('button', { type: 'button', class: 'chip', role: 'tab', 'aria-pressed': String(adFin.sub === s[0]), text: s[1], onclick: () => { if (adFin.sub === s[0]) return; adFin.sub = s[0]; limpar('msg-ad'); desenhar(); } })));
+    corpo.textContent = '';
+    (adFin.sub === 'custos' ? abCustos : adFin.sub === 'rel' ? abFinRel : abDashGeral)(corpo, ok, desenhar);
+  };
+  desenhar();
+}
+// contas recorrentes (aluguel, internet…): cria o lançamento do mês sozinho, uma vez por dia
+async function finGerar() {
+  const hoje = hojeServidor(); if (adFin.gerado === hoje) return; adFin.gerado = hoje;
+  await apost('admin_custos_gerar', {}, null, true);
+}
+function linhaConta(c, cats, aoMudar) {
+  const dias = c.dias, venc = dias < 0;
+  const bt = h('button', { type: 'button', class: 'bt forte', text: 'Já paguei', onclick: async e => { e.target.disabled = true; const r = await apost('admin_custo_pagar', { id: c.id }, 'Conta marcada como paga.'); e.target.disabled = false; if (r) aoMudar(); } });
+  return h('li', { class: venc ? 'venc' : dias <= 3 ? 'perto' : '' },
+    h('span', { class: 'ic', text: catInfo(cats, c.categoria).ic, 'aria-hidden': 'true' }),
+    h('div', { class: 'tx' }, h('b', { text: c.desc }), h('small', { text: c.categoria + (c.fornecedor ? ' · ' + c.fornecedor : '') + (c.recorrente ? ' · todo mês' : '') })),
+    h('div', { class: 'qd' }, h('b', { text: R$(c.valor) }), h('small', { text: diasTxt(dias) + ' (' + dataCurta(c.venc) + ')' })), bt);
+}
+function listaContas(contas, cats, aoMudar) {
+  const w = h('div', { class: 'fin-contas' });
+  if (!contas.total.qtd) { w.append(h('div', { class: 'ad-ok', text: '✓ Nenhuma conta esperando pagamento.' })); return w; }
+  const resumo = [];
+  if (contas.vencidas.qtd) resumo.push(h('b', { class: 'ruim', text: contas.vencidas.qtd + (contas.vencidas.qtd === 1 ? ' conta vencida' : ' contas vencidas') + ' (' + R$(contas.vencidas.valor) + ')' }));
+  if (contas.proximas.qtd) resumo.push(h('span', { text: contas.proximas.qtd + (contas.proximas.qtd === 1 ? ' vence' : ' vencem') + ' nos próximos 15 dias (' + R$(contas.proximas.valor) + ')' }));
+  w.append(h('p', { class: 'fin-resumo' }, resumo.flatMap((x, i) => i ? [' · ', x] : [x])), h('ul', { class: 'fin-lista' }, contas.itens.slice(0, 12).map(c => linhaConta(c, cats, aoMudar))));
+  if (contas.itens.length > 12) w.append(h('p', { class: 'ad-nota', text: 'Mostrando as 12 mais urgentes de ' + contas.total.qtd + ' contas a pagar.' }));
+  return w;
+}
+
+// ---------- janela para lançar / editar um gasto ----------
+function custoForm(c, cats, pagtos, aoSalvar, catInicial) {
+  c = c || {}; const novo = !c.id, hoje = hojeServidor();
+  const msg = h('div', { class: 'msg', role: 'alert' });
+  const est = { data: c.data || hoje, venc: c.venc || '', img: '', rem: false, status: c.status || 'pago' };
+  const sel = h('select', {}); ['fixo', 'variavel', 'invest', 'retirada'].forEach(t => sel.append(h('optgroup', { label: TIPO_FIN[t] }, cats.filter(x => x.tipo === t).map(x => h('option', { value: x.nome, text: x.ic + ' ' + x.nome, selected: x.nome === (c.categoria || catInicial || '') })))));
+  const desc = h('input', { type: 'text', maxlength: '80', value: c.desc || '', placeholder: 'Ex.: conta de luz de novembro' });
+  const valor = h('input', { type: 'text', inputmode: 'decimal', value: c.valor ? String(c.valor).replace('.', ',') : '', placeholder: '0,00', autocomplete: 'off' });
+  const forn = h('input', { type: 'text', maxlength: '60', value: c.fornecedor || '', placeholder: 'Quem recebeu (opcional)' });
+  const pag = h('select', {}, h('option', { value: '', text: '—' }), pagtos.map(p => h('option', { value: p, text: p, selected: p === c.pagamento })));
+  const obs = h('textarea', { maxlength: '200', rows: '2', placeholder: 'Anotação (opcional)', text: c.obs || '' });
+  const rep = h('input', { type: 'checkbox', checked: c.recorrente === 'mensal' });
+  const vencBox = h('div', {}), stBox = h('div', { class: 'ad-chips seg' });
+  const pintarSt = () => {
+    stBox.textContent = '';
+    [['pago', 'Já paguei'], ['a pagar', 'Ainda vou pagar']].forEach(s => stBox.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(est.status === s[0]), text: s[1], onclick: () => { est.status = s[0]; if (s[0] === 'a pagar' && !est.venc) est.venc = est.data; pintarSt(); } })));
+    vencBox.textContent = ''; if (est.status === 'a pagar') vencBox.append(campo('Vence em', campoDataIn(est.venc || est.data, v => { est.venc = v; }, 'Vencimento')));
+  };
+  pintarSt();
+  const arq = h('input', { type: 'file', accept: 'image/*', hidden: true }), stArq = h('span', { class: 'ad-nota', text: c.fileId ? 'Comprovante anexado.' : 'Nenhum comprovante.' });
+  arq.onchange = async e => {
+    const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+    try { est.img = await lerImagem(f, 1400, 0); est.rem = false; stArq.textContent = 'Foto pronta: ' + f.name; } catch (er) { msg.className = 'msg erro'; msg.textContent = er.message || 'Não consegui abrir essa imagem.'; }
+  };
+  const bSalvar = h('button', { type: 'button', class: 'bt forte', text: novo ? 'Salvar gasto' : 'Salvar alterações', onclick: async () => {
+    const v = parseValor(valor.value);
+    if (!(v > 0)) { msg.className = 'msg erro'; msg.textContent = 'Informe o valor do gasto (maior que zero).'; valor.focus(); return; }
+    if (!est.data) { msg.className = 'msg erro'; msg.textContent = 'Informe a data do gasto (dia/mês/ano).'; return; }
+    if (est.status === 'a pagar' && !est.venc) { msg.className = 'msg erro'; msg.textContent = 'Informe quando a conta vence.'; return; }
+    bSalvar.disabled = true;
+    const ex = { id: c.id || '', data: est.data, categoria: sel.value, desc: desc.value, valor: v, status: est.status, venc: est.status === 'a pagar' ? est.venc : '', pagamento: pag.value, fornecedor: forn.value,
+      recorrente: rep.checked ? 'mensal' : (c.recorrente === 'mensal' ? 'encerrada' : ''), obs: obs.value };
+    if (est.img) ex.imagem = est.img; if (est.rem) ex.removerComprovante = true;
+    const r = await fpost(msg, 'admin_custo_salvar', ex, 'Gasto salvo.');
+    bSalvar.disabled = false;
+    if (r) { fecharModal(); aoSalvar(novo ? 'Gasto lançado.' : 'Gasto atualizado.'); }
+  } });
+  return h('div', { class: 'fin-form' },
+    h('div', { class: 'ad-acoes', style: 'justify-content:space-between;margin-bottom:6px' }, h('h3', { text: novo ? 'Lançar gasto' : 'Editar gasto', style: 'margin:0' }), h('button', { type: 'button', class: 'bt', text: 'Fechar ✕', onclick: fecharModal })),
+    h('div', { class: 'ad-2' }, campo('O que foi?', sel), campo('Valor (R$)', valor)),
+    campo('Descrição', desc),
+    h('div', { class: 'ad-2' }, campo('Data do gasto', campoDataIn(est.data, v => { est.data = v; }, 'Data do gasto')), campo('Forma de pagamento', pag)),
+    h('div', { class: 'campo' }, h('span', { text: 'Situação' }), stBox), vencBox,
+    campo('Fornecedor / loja', forn),
+    c.origem ? h('p', { class: 'ad-nota', text: 'Este lançamento foi criado sozinho a partir de uma conta que se repete todo mês.' })
+      : h('label', { class: 'ad-chk' }, rep, ' Repete todo mês (o lançamento do mês aparece sozinho, como "a pagar")'),
+    campo('Anotação', obs),
+    h('div', { class: 'campo' }, h('span', { text: 'Comprovante (foto da nota ou do boleto)' }), h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt', text: '📷 Anexar foto', onclick: () => arq.click() }), arq,
+      c.fileId ? h('a', { class: 'bt', href: 'https://drive.google.com/file/d/' + c.fileId + '/view', target: '_blank', rel: 'noopener', text: 'Ver anexado' }) : null,
+      c.fileId ? h('button', { type: 'button', class: 'bt', text: 'Remover', onclick: () => { est.rem = true; est.img = ''; stArq.textContent = 'O comprovante será removido ao salvar.'; } }) : null), stArq),
+    msg, h('div', { class: 'ad-acoes', style: 'margin-top:10px' }, bSalvar));
+}
+
+// ---------- Custos e contas ----------
+async function abCustos(box, vivo, redesenhar) {
+  box.append(h('p', { class: 'ad-nota', text: 'Anote tudo que sai de dinheiro: água, luz, produtos, manutenção, aluguel… Contas que se repetem todo mês aparecem sozinhas como "a pagar". O relatório financeiro usa estes lançamentos para mostrar quanto sobrou de verdade.' }));
+  const topo = h('div', {}), contasBox = h('div', {}), filtros = h('div', {}), alvo = h('div', {});
+  box.append(topo, h('h4', { text: 'Contas a pagar' }), contasBox, h('h4', { text: 'Todos os gastos' }), filtros, alvo);
+  let dados = null;
+  const abrirForm = (c, cat) => abrirModal(custoForm(c, dados ? dados.categorias : [], dados ? dados.pagamentos : [], m => { aviso('msg-ad', 'ok', m); carregar(); }, cat));
+  const desenharTopo = () => {
+    topo.textContent = '';
+    const rapidos = ['Água', 'Luz', 'Produtos e insumos', 'Manutenção e conserto', 'Aluguel', 'Marketing e anúncios'];
+    topo.append(h('div', { class: 'ad-acoes', style: 'margin:10px 0' }, h('button', { type: 'button', class: 'bt forte', text: '+ Lançar gasto', onclick: () => abrirForm(null, '') }),
+      h('button', { type: 'button', class: 'bt', text: 'Relatório financeiro →', onclick: () => { adFin.sub = 'rel'; redesenhar(); } })),
+      h('div', { class: 'fin-rapido', 'aria-label': 'Lançamento rápido' }, h('small', { text: 'Lançamento rápido:' }), rapidos.map(n => { const ci = catInfo(dados && dados.categorias, n); return h('button', { type: 'button', class: 'chip', text: ci.ic + ' ' + n.replace(' e conserto', '').replace(' e insumos', '').replace(' e anúncios', ''), onclick: () => abrirForm(null, n) }); })));
+  };
+  const desenharFiltros = () => {
+    filtros.textContent = '';
+    const chips = h('div', { class: 'ad-chips' });
+    PER_F.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adFin.per === p[0]), text: p[1], onclick: () => { adFin.per = p[0]; if (p[0] === 'custom' && !adFin.de) { const f = faixaFin('mes'); adFin.de = f[0]; adFin.ate = hojeServidor(); } desenharFiltros(); carregar(); } })));
+    filtros.append(chips);
+    if (adFin.per === 'custom') filtros.append(h('div', { class: 'ad-acoes', style: 'align-items:flex-start;margin:6px 0' }, campo('De', campoDataIn(adFin.de, v => { if (v) { adFin.de = v; carregar(); } }, 'Data inicial')), campo('Até', campoDataIn(adFin.ate, v => { if (v) { adFin.ate = v; carregar(); } }, 'Data final'))));
+    const cats = (dados ? dados.categorias : []).map(c => [c.nome, c.ic + ' ' + c.nome]);
+    filtros.append(h('div', { class: 'ad-2', style: 'max-width:560px' },
+      campo('Categoria', h('select', { onchange: e => { adFin.cat = e.target.value; carregar(); } }, h('option', { value: '', text: 'Todas' }), opcoes(cats, adFin.cat))),
+      campo('Situação', h('select', { onchange: e => { adFin.st = e.target.value; carregar(); } }, opcoes([['', 'Todas'], ['pago', 'Pagas'], ['a pagar', 'A pagar']], adFin.st)))));
+  };
+  async function carregar() {
+    await finGerar(); if (!vivo()) return;
+    const f = faixaFin(adFin.per, adFin.de, adFin.ate);
+    const r = await apost('admin_custos_lista', { de: f[0], ate: f[1], categoria: adFin.cat, status: adFin.st }, null, true);
+    if (!vivo() || !r) return;
+    const primeira = !dados; dados = r;
+    if (primeira) { desenharTopo(); desenharFiltros(); }
+    contasBox.textContent = ''; contasBox.append(listaContas(r.contas, r.categorias, carregar));
+    alvo.textContent = '';
+    const t = r.totais;
+    alvo.append(h('p', { class: 'ad-nota', text: br(r.de) + (r.de === r.ate ? '' : ' a ' + br(r.ate)) + (adFin.cat ? ' · ' + adFin.cat : '') + (adFin.st ? ' · ' + (adFin.st === 'pago' ? 'só pagas' : 'só a pagar') : '') }),
+      h('div', { class: 'ad-cards cards4' },
+        h('div', { class: 'ad-card grande dest' }, h('small', { text: 'Total de gastos' }), h('b', { text: R$(t.total) }), h('span', { class: 'desc', text: t.qtd + (t.qtd === 1 ? ' lançamento' : ' lançamentos') })),
+        h('div', { class: 'ad-card grande' }, h('small', { text: 'Já pago' }), h('b', { text: R$(t.pago) }), h('span', { class: 'desc', text: 'saiu do caixa' })),
+        h('div', { class: 'ad-card grande' }, h('small', { text: 'Ainda a pagar' }), h('b', { text: R$(t.aPagar) }), h('span', { class: 'desc', text: 'contas em aberto no período' }))));
+    if (!r.custos.length) { alvo.append(h('div', { class: 'ad-vazio', text: 'Nenhum gasto neste período. Toque em "+ Lançar gasto" para anotar o primeiro.' })); return; }
+    if (r.porCategoria.length > 1) alvo.append(h('h4', { text: 'Para onde foi o dinheiro' }), rankBarras(r.porCategoria.map(c => ({ nome: catInfo(r.categorias, c.nome).ic + ' ' + c.nome, v: c.valor })), x => R$(x.v), x => t.total ? PCT(x.v / t.total * 100) : ''));
+    const hoje = r.hoje;
+    const linhas = r.custos.map(c => {
+      const pagar = h('button', { type: 'button', class: 'bt', text: c.status === 'pago' ? 'Desfazer' : 'Já paguei', onclick: async e => { e.target.disabled = true; const x = await apost('admin_custo_pagar', c.status === 'pago' ? { id: c.id, desfazer: true } : { id: c.id }, c.status === 'pago' ? 'Voltou para "a pagar".' : 'Marcado como pago.'); if (x) carregar(); else e.target.disabled = false; } });
+      const exc = h('button', { type: 'button', class: 'bt', text: 'Excluir', onclick: async e => {
+        if (!confirm('Excluir "' + c.desc + '" (' + R$(c.valor) + ')?' + (c.recorrente === 'mensal' ? ' Os meses já criados continuam; só deixa de gerar os próximos.' : ''))) return;
+        e.target.disabled = true; const x = await apost('admin_custo_excluir', { id: c.id }, 'Gasto excluído.'); if (x) carregar(); else e.target.disabled = false; } });
+      const st = c.status === 'pago' ? h('span', { class: 'badge concluido', text: 'Pago' }) : h('span', { class: 'badge ' + (c.venc && c.venc < hoje ? 'faltou' : 'antec'), text: c.venc && c.venc < hoje ? 'Vencido' : 'A pagar' });
+      return [br(c.data).slice(0, 5) + '/' + c.data.slice(2, 4), h('div', {}, h('b', { text: catInfo(r.categorias, c.categoria).ic + ' ' + c.desc }), h('small', { class: 'fin-sub', text: c.categoria + (c.fornecedor ? ' · ' + c.fornecedor : '') + (c.recorrente === 'mensal' ? ' · repete todo mês' : c.origem ? ' · mensal automático' : '') })),
+        R$(c.valor), h('div', {}, st, c.status === 'a pagar' && c.venc ? h('small', { class: 'fin-sub', text: ' vence ' + dataCurta(c.venc) }) : null), h('div', { class: 'ad-acoes' }, pagar, h('button', { type: 'button', class: 'bt', text: 'Editar', onclick: () => abrirForm(c) }), exc)];
+    });
+    alvo.append(tabela(['Data', 'Gasto', 'Valor', 'Situação', ''], linhas, [2]));
+    if (r.truncado) alvo.append(h('p', { class: 'ad-nota', text: 'Mostrando os 600 lançamentos mais recentes. Use os filtros para ver os demais.' }));
+    alvo.append(h('div', { class: 'ad-acoes', style: 'margin-top:10px' }, h('button', { type: 'button', class: 'bt', text: 'Baixar estes gastos (CSV)', onclick: () => baixarCSV('gastos_' + r.de + '_a_' + r.ate + '.csv', ['Data', 'Categoria', 'Tipo', 'Descrição', 'Valor', 'Situação', 'Vencimento', 'Pago em', 'Pagamento', 'Fornecedor', 'Observação'],
+      r.custos.map(c => [br(c.data), c.categoria, TIPO_CURTO[c.tipo], c.desc, num2(c.valor), c.status === 'pago' ? 'pago' : 'a pagar', c.venc ? br(c.venc) : '', c.pagoEm ? br(c.pagoEm) : '', c.pagamento, c.fornecedor, c.obs])) })));
+  }
+  carregar();
+}
+
+// ---------- resumo do mês na Visão geral ----------
+async function finResumoDash(box, vivo) {
+  await finGerar(); if (!vivo()) return;
+  const f = faixaFin('mes'), r = await apost('admin_fin_relatorio', { de: f[0], ate: f[1] }, null, true);
+  if (!vivo() || !r) return;
+  const t = r.atual, a = r.anterior, c = r.contas;
+  box.textContent = '';
+  box.append(h('h4', { text: 'Dinheiro do mês (' + MES_ABR[+r.hoje.slice(5, 7) - 1] + '/' + r.hoje.slice(2, 4) + ')' }));
+  if (c.vencidas.qtd) box.append(h('ul', { class: 'dash-atencao' }, h('li', {}, h('b', { class: 'n', text: String(c.vencidas.qtd) }), h('span', { text: c.vencidas.qtd === 1 ? 'conta vencida, no valor de ' + R$(c.vencidas.valor) : 'contas vencidas, somando ' + R$(c.vencidas.valor) }), h('button', { type: 'button', class: 'bt forte', text: 'Ver contas', onclick: () => { adFin.sub = 'custos'; adFin.st = 'a pagar'; adFin.per = '3m'; abrirAba('dash'); } }))));
+  else if (c.proximas.qtd) box.append(h('ul', { class: 'dash-atencao' }, h('li', { class: 'info' }, h('b', { class: 'n', text: String(c.proximas.qtd) }), h('span', { text: (c.proximas.qtd === 1 ? 'conta vence' : 'contas vencem') + ' nos próximos 15 dias (' + R$(c.proximas.valor) + ')' }), h('button', { type: 'button', class: 'bt', text: 'Ver contas', onclick: () => { adFin.sub = 'custos'; adFin.st = 'a pagar'; adFin.per = '3m'; abrirAba('dash'); } }))));
+  const neg = t.resultado < 0;
+  box.append(h('div', { class: 'ad-cards cards4' },
+    h('div', { class: 'ad-card' }, h('small', { text: 'Entrou no caixa' }), h('b', { text: R$(t.bruto) }), h('span', { class: 'ad-delta', text: 'a casa fica com ' + R$(t.casa) })),
+    h('div', { class: 'ad-card' }, h('small', { text: 'Gastos do mês' }), h('b', { text: R$(t.oper) }), deltaGasto(t.oper, a.oper)),
+    h('div', { class: 'ad-card ' + (neg ? 'neg' : 'dest') }, h('small', { text: 'Sobrou (resultado)' }), h('b', { text: R$(t.resultado) }), h('span', { class: 'ad-delta', text: neg ? 'no vermelho: gastou mais do que entrou' : 'margem de ' + PCT(t.margem) })),
+    h('div', { class: 'ad-card' }, h('small', { text: 'A pagar' }), h('b', { text: R$(c.total.valor) }), h('span', { class: 'ad-delta', text: c.total.qtd + (c.total.qtd === 1 ? ' conta em aberto' : ' contas em aberto') }))),
+    h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt forte', text: '+ Lançar gasto', onclick: () => { adFin.sub = 'custos'; abrirAba('dash'); setTimeout(() => { const b = [...document.querySelectorAll('#ad-painel .bt.forte')].filter(x => /Lançar gasto/.test(x.textContent))[0]; if (b) b.click(); }, 400); } }),
+      h('button', { type: 'button', class: 'bt', text: 'Ver relatório financeiro →', onclick: () => { adFin.sub = 'rel'; abrirAba('dash'); } })));
+}
+
+// ---------- Relatório financeiro (interativo) ----------
+function graficoMeses(meses, aoClicar) {
+  const W = 720, H = 250, pl = 46, pr = 8, pt = 14, pb = 34, iw = W - pl - pr, ih = H - pt - pb;
+  const vals = meses.flatMap(m => [m.casa, m.oper, m.resultado, 0]), max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+  const passo = (() => { const span = (max - min) || 1, bruto = span / 4, p = Math.pow(10, Math.floor(Math.log10(bruto))), f = bruto / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; })();
+  const topo = Math.ceil(max / passo) * passo || passo, base = Math.floor(min / passo) * passo, y = v => pt + (topo - v) / ((topo - base) || 1) * ih;
+  const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fin-graf', role: 'img', 'aria-label': 'Gráfico dos últimos 12 meses: o que sobrou para a casa, os gastos e o resultado de cada mês' });
+  for (let v = base; v <= topo + 1e-9; v += passo) { svg.append(svgEl('line', { x1: pl, x2: W - pr, y1: y(v), y2: y(v), class: v === 0 ? 'zero' : 'grade' }), svgEl('text', { x: pl - 6, y: y(v) + 4, class: 'eixo', 'text-anchor': 'end' }, R$k(v))); }
+  const cw = iw / meses.length, bw = Math.min(18, cw * 0.32);
+  const pts = [];
+  meses.forEach((m, i) => {
+    const cx = pl + cw * i + cw / 2, tt = MES_ABR[+m.k.slice(5, 7) - 1] + '/' + m.k.slice(2, 4);
+    const g = svgEl('g', { class: 'mes', tabindex: '0', role: 'button', 'aria-label': tt + ': sobrou para a casa ' + R$(m.casa) + ', gastos ' + R$(m.oper) + ', resultado ' + R$(m.resultado) + '. Toque para ver este mês.' });
+    g.append(svgEl('title', {}, tt + '\nSobrou para a casa: ' + R$(m.casa) + '\nGastos: ' + R$(m.oper) + '\nResultado: ' + R$(m.resultado) + '\nCortes: ' + m.cortes),
+      svgEl('rect', { x: cx - cw / 2, y: pt, width: cw, height: ih, class: 'hit' }),
+      svgEl('rect', { x: cx - bw - 1, y: Math.min(y(m.casa), y(0)), width: bw, height: Math.max(1, Math.abs(y(0) - y(m.casa))), class: 'b-casa' }),
+      svgEl('rect', { x: cx + 1, y: Math.min(y(m.oper), y(0)), width: bw, height: Math.max(1, Math.abs(y(0) - y(m.oper))), class: 'b-gasto' }),
+      svgEl('text', { x: cx, y: H - 12, class: 'eixo', 'text-anchor': 'middle' }, MES_ABR[+m.k.slice(5, 7) - 1]));
+    g.addEventListener('click', () => aoClicar(m)); g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aoClicar(m); } });
+    svg.append(g); pts.push([cx, y(m.resultado), m.resultado]);
+  });
+  svg.append(svgEl('polyline', { points: pts.map(p => p[0] + ',' + p[1]).join(' '), class: 'linha-res', fill: 'none' }), pts.map(p => svgEl('circle', { cx: p[0], cy: p[1], r: 3.4, class: p[2] < 0 ? 'pt-neg' : 'pt-pos' })));
+  return svg;
+}
+function metaBarra(rot, atual, proj, meta, tom) {
+  const pct = meta ? Math.min(100, atual / meta * 100) : 0, pp = meta ? Math.min(100, proj / meta * 100) : 0;
+  return h('div', { class: 'fin-meta' }, h('div', { class: 'cab' }, h('b', { text: rot }), h('span', { text: meta ? R$(atual) + ' de ' + R$(meta) + ' (' + PCT(atual / meta * 100) + ')' : 'sem meta definida' })),
+    h('div', { class: 'trilho', role: 'img', 'aria-label': rot + ': ' + (meta ? PCT(atual / meta * 100) + ' da meta' : 'sem meta') }, h('i', { class: 'prev', style: 'width:' + pp.toFixed(1) + '%' }), h('i', { class: 'fei ' + (tom || ''), style: 'width:' + pct.toFixed(1) + '%' })),
+    meta ? h('small', { text: 'No ritmo de hoje o mês termina em ' + R$(proj) + (proj >= meta ? ' — meta batida ✓' : ' — faltam ' + R$(meta - proj) + ' para a meta') }) : null);
+}
+function insightsFin(r) {
+  const t = r.atual, a = r.anterior, m = r.metas, L = [];
+  const add = (tipo, txt) => L.push([tipo, txt]);
+  if (r.contas.vencidas.qtd) add('ruim', r.contas.vencidas.qtd + (r.contas.vencidas.qtd === 1 ? ' conta está vencida' : ' contas estão vencidas') + ' (' + R$(r.contas.vencidas.valor) + '). Pague logo para evitar multa e juros.');
+  if (t.bruto === 0 && t.oper === 0) return [['info', 'Ainda não há vendas nem gastos neste período.']];
+  if (t.resultado < 0) add('ruim', 'No período a barbearia gastou ' + R$(-t.resultado) + ' a mais do que a casa ficou (depois das comissões). Veja quais gastos dá para reduzir ou se algum lançamento é de investimento.');
+  else add('bom', 'A barbearia fechou o período no azul: ' + R$(t.resultado) + ' de resultado (' + PCT(t.margem) + ' do que entrou no caixa).');
+  if (t.pontoEquilibrio && t.fixo > 0) {
+    if (t.bruto >= t.pontoEquilibrio) add('bom', 'Ponto de equilíbrio: com as contas fixas de ' + R$(t.fixo) + ', a barbearia precisa faturar ' + R$(t.pontoEquilibrio) + '. Já passou disso em ' + R$(t.bruto - t.pontoEquilibrio) + ' — a partir daqui o dinheiro é lucro.');
+    else add('ruim', 'Ponto de equilíbrio: para cobrir as contas fixas (' + R$(t.fixo) + ') é preciso faturar ' + R$(t.pontoEquilibrio) + '. Ainda faltam ' + R$(t.pontoEquilibrio - t.bruto) + '.');
+  }
+  r.porCategoria.filter(c => c.tipo !== 'retirada' && c.anterior > 0 && c.valor - c.anterior >= 50 && c.valor >= c.anterior * 1.2).slice(0, 3).forEach(c => add('atencao', c.nome + ' subiu ' + PCT((c.valor / c.anterior - 1) * 100) + ' em relação ao período anterior (de ' + R$(c.anterior) + ' para ' + R$(c.valor) + ').'));
+  if (t.bruto > 0 && t.maoDeObra > 60) add('atencao', 'As comissões consomem ' + PCT(t.maoDeObra) + ' do que entra no caixa. Vale rever percentuais ou preços.');
+  if (t.gratis > 0 && t.gratisCusto > 0) add('info', 'Os ' + t.gratis + ' cortes grátis do cartão fidelidade custaram ' + R$(t.gratisCusto) + ' em comissão.');
+  const top = r.porCategoria.filter(c => c.tipo === 'fixo' || c.tipo === 'variavel')[0];
+  if (top && t.oper > 0 && top.valor / t.oper >= 0.4) add('info', 'O maior gasto é ' + top.nome + ': ' + PCT(top.pct) + ' de tudo que saiu no período.');
+  if (a && a.resultado !== undefined && (a.bruto || a.oper) && Math.abs(t.resultado - a.resultado) >= 1) add(t.resultado >= a.resultado ? 'bom' : 'atencao', 'Resultado ' + (t.resultado >= a.resultado ? 'melhor' : 'pior') + ' que o período anterior (' + R$(a.resultado) + ' antes, ' + R$(t.resultado) + ' agora).');
+  if (m.metaLucro > 0 && m.projecaoResultado < m.metaLucro && r.hoje.slice(0, 7) === m.mes) add('atencao', 'No ritmo atual o resultado do mês termina em ' + R$(m.projecaoResultado) + ', abaixo da meta de ' + R$(m.metaLucro) + '.');
+  if (r.contas.total.qtd && !r.contas.vencidas.qtd) add('info', 'Você tem ' + r.contas.total.qtd + (r.contas.total.qtd === 1 ? ' conta' : ' contas') + ' a pagar, somando ' + R$(r.contas.total.valor) + '.');
+  return L;
+}
+async function abFinRel(box, vivo, redesenhar) {
+  box.append(h('p', { class: 'ad-nota', text: 'A resposta para "o dinheiro da barbearia está indo bem?". Soma o que sobrou das vendas (depois das comissões) e tira os gastos que você anotou em "Custos e contas".' }));
+  const filtros = h('div', {}), alvo = h('div', {});
+  box.append(filtros, alvo);
+  const desenharFiltros = () => {
+    filtros.textContent = '';
+    const chips = h('div', { class: 'ad-chips' });
+    PER_F.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adFin.per === p[0]), text: p[1], onclick: () => { adFin.per = p[0]; if (p[0] === 'custom' && !adFin.de) { const f = faixaFin('mes'); adFin.de = f[0]; adFin.ate = hojeServidor(); } desenharFiltros(); carregar(); } })));
+    filtros.append(chips);
+    if (adFin.per === 'custom') filtros.append(h('div', { class: 'ad-acoes', style: 'align-items:flex-start;margin:6px 0' }, campo('De', campoDataIn(adFin.de, v => { if (v) { adFin.de = v; carregar(); } }, 'Data inicial')), campo('Até', campoDataIn(adFin.ate, v => { if (v) { adFin.ate = v; carregar(); } }, 'Data final'))));
+  };
+  desenharFiltros();
+  async function carregar() {
+    alvo.textContent = ''; alvo.append(h('p', { class: 'ad-nota', text: 'Calculando…' }));
+    await finGerar(); if (!vivo()) return;
+    const f = faixaFin(adFin.per, adFin.de, adFin.ate), r = await apost('admin_fin_relatorio', { de: f[0], ate: f[1] }, null, true);
+    if (!vivo()) return; alvo.textContent = ''; if (!r) return;
+    const t = r.atual, a = r.anterior, neg = t.resultado < 0, num = v => Number(v || 0).toLocaleString('pt-BR');
+    alvo.append(h('p', { class: 'ad-nota', text: br(r.de) + (r.de === r.ate ? '' : ' a ' + br(r.ate)) + ' (' + r.dias + (r.dias === 1 ? ' dia' : ' dias') + '). Comparado com ' + br(r.deAnt) + ' a ' + br(r.ateAnt) + '.' }));
+    // 1. veredito
+    alvo.append(h('div', { class: 'fin-veredito ' + (neg ? 'neg' : 'pos') },
+      h('small', { text: neg ? 'A barbearia ficou no vermelho' : 'A barbearia ficou no azul' }), h('b', { text: R$(t.resultado) }),
+      h('span', { text: 'Entraram ' + R$(t.bruto) + ' no caixa; ' + R$(t.comissao) + ' foram para os barbeiros; sobraram ' + R$(t.casa) + ' para a casa; os gastos foram ' + R$(t.oper) + '.' }), deltaVal(t.resultado, a.resultado)));
+    // 2. do caixa ao bolso
+    const base = Math.max(t.bruto, 1), barra = (v, cl) => h('span', { class: 'ad-hb', 'aria-hidden': 'true' }, h('i', { class: cl, style: 'width:' + Math.max(0, Math.min(100, Math.abs(v) / base * 100)).toFixed(1) + '%' }));
+    const passo = (rot, v, sinal, cl, forte, dica) => h('li', { class: forte ? 'tot' : '' }, h('span', { class: 'rot' }, h('b', { text: rot }), dica ? h('small', { text: dica }) : null), h('span', { class: 'v ' + (sinal === '−' ? 'menos' : v < 0 ? 'neg' : ''), text: sinal ? sinal + ' ' + R$(Math.abs(v)) : R$(v) }), barra(v, cl));
+    alvo.append(h('h4', { text: 'Do caixa até o seu bolso' }), h('ul', { class: 'fin-cascata' },
+      passo('Entrou no caixa', t.bruto, '', 'entrou', true, t.qtd + ' atendimentos'),
+      passo('Comissões dos barbeiros', t.comissao, '−', 'com', false),
+      passo('Sobrou para a casa', t.casa, '', 'casa', true),
+      passo('Contas fixas', t.fixo, '−', 'fixo', false, 'aluguel, água, luz, internet…'),
+      passo('Gastos variáveis', t.variavel, '−', 'var', false, 'produtos, manutenção, limpeza…'),
+      passo('Resultado da barbearia', t.resultado, '', t.resultado < 0 ? 'neg' : 'res', true, 'o que de fato sobrou da operação'),
+      t.invest ? passo('Investimentos', t.invest, '−', 'inv', false, 'equipamentos e reformas') : null,
+      t.retirada ? passo('Retiradas do dono', t.retirada, '−', 'ret', false) : null,
+      (t.invest || t.retirada) ? passo('Sobra no caixa', t.sobra, '', t.sobra < 0 ? 'neg' : 'res', true, 'depois de investir e retirar') : null));
+    // 3. indicadores
+    const K = (rot, v, dl, desc, dest) => h('div', { class: 'ad-card grande' + (dest ? ' dest' : '') }, h('small', { text: rot }), h('b', { text: v }), dl, h('span', { class: 'desc', text: desc }));
+    alvo.append(h('h4', { text: 'Indicadores' }), h('div', { class: 'ad-cards cards4' },
+      K('Margem de lucro', PCT(t.margem), deltaPP(t.margem, a.margem, a.bruto), 'resultado ÷ o que entrou', true),
+      K('Valor médio por cliente', R$(t.ticket), deltaDe(t.ticket, a.ticket), 'o que entrou ÷ atendimentos'),
+      K('Gasto por corte', t.cortes ? R$(t.custoPorCorte) : '—', t.cortes ? deltaGasto(t.custoPorCorte, a.custoPorCorte) : h('span'), 'gastos ÷ cortes feitos (' + num(t.cortes) + ')'),
+      K('Comissão sobre o caixa', PCT(t.maoDeObra), deltaGasto(t.maoDeObra, a.maoDeObra), 'quanto vai para os barbeiros'),
+      K('Ponto de equilíbrio', t.pontoEquilibrio ? R$(t.pontoEquilibrio) : '—', h('span', { class: 'ad-delta ' + (t.pontoEquilibrio && t.bruto >= t.pontoEquilibrio ? 'sobe' : 'desce'), text: t.pontoEquilibrio ? (t.bruto >= t.pontoEquilibrio ? '✓ já passou' : 'faltam ' + R$(t.pontoEquilibrio - t.bruto)) : 'sem contas fixas lançadas' }), 'quanto precisa entrar para pagar as contas fixas')));
+    // 4. 12 meses
+    alvo.append(h('h4', { text: 'Os últimos 12 meses' }), h('p', { class: 'ad-nota', text: 'Toque em um mês para ver o relatório dele. Linha = resultado (verde acima de zero, vermelho abaixo).' }),
+      graficoMeses(r.meses, m => { adFin.per = 'custom'; adFin.de = m.k + '-01'; adFin.ate = m.k + '-' + String(ultimoDia(+m.k.slice(0, 4), +m.k.slice(5, 7))).padStart(2, '0'); desenharFiltros(); carregar(); window.scrollTo({ top: 0, behavior: 'smooth' }); }),
+      h('div', { class: 'fin-legenda' }, h('span', {}, h('i', { class: 'lg-casa' }), 'Sobrou para a casa'), h('span', {}, h('i', { class: 'lg-gasto' }), 'Gastos'), h('span', {}, h('i', { class: 'lg-res' }), 'Resultado')));
+    // 5. categorias + maiores gastos
+    if (r.porCategoria.length) {
+      const cats = r.porCategoria, maxC = Math.max.apply(null, cats.map(c => c.valor)) || 1;
+      alvo.append(h('h4', { text: 'Para onde foi o dinheiro' }), h('ul', { class: 'fin-cats' }, cats.map(c => h('li', {}, h('button', { type: 'button', class: 'fin-cat', title: 'Ver os lançamentos de ' + c.nome, onclick: () => { adFin.sub = 'custos'; adFin.cat = c.nome; adFin.st = ''; redesenhar(); window.scrollTo({ top: 0 }); } },
+        h('span', { class: 'n', text: c.ic + ' ' + c.nome }), h('span', { class: 'v', text: R$(c.valor) }), h('span', { class: 'p', text: PCT(c.pct) + ' · ' + TIPO_CURTO[c.tipo] }), c.anterior ? h('span', { class: 'ad-delta ' + (c.valor > c.anterior ? 'desce' : c.valor < c.anterior ? 'sobe' : ''), text: (c.valor > c.anterior ? '▲ ' : c.valor < c.anterior ? '▼ ' : '＝ ') + 'antes ' + R$(c.anterior) }) : h('span', { class: 'ad-delta', text: 'sem gasto antes' }),
+        h('span', { class: 'ad-hb', 'aria-hidden': 'true' }, h('i', { style: 'width:' + Math.max(2, c.valor / maxC * 100) + '%' })))))));
+    } else alvo.append(h('div', { class: 'ad-vazio', text: 'Nenhum gasto lançado neste período. Em "Custos e contas" anote água, luz, produtos, manutenção… para o relatório mostrar o resultado de verdade.' }));
+    const dois = h('div', { class: 'ad-2col' });
+    if (r.maiores.length) dois.append(h('div', {}, h('h4', { text: 'Maiores gastos' }), h('ul', { class: 'fin-maiores' }, r.maiores.map(x => h('li', {}, h('span', { text: dataCurta(x.data) }), h('b', { text: x.desc }), h('span', { class: 'v', text: R$(x.valor) }))))));
+    if (r.porBarbeiro.length) dois.append(h('div', {}, h('h4', { text: 'Quanto cada barbeiro rendeu' }), tabela(['Barbeiro', 'Entrou', 'Casa'], r.porBarbeiro.map(b => [b.nome, R$(b.bruto), R$(b.casa)]), [1, 2])));
+    if (dois.childNodes.length) alvo.append(dois);
+    // 6. contas a pagar
+    alvo.append(h('h4', { text: 'Contas a pagar' }), listaContas(r.contas, r.categorias || [], carregar));
+    // 7. metas
+    const m = r.metas, mm = h('div', {});
+    alvo.append(h('h4', { text: 'Metas do mês' }), mm);
+    const desenharMetas = () => {
+      mm.textContent = '';
+      const iL = h('input', { type: 'text', inputmode: 'decimal', value: m.metaLucro ? String(m.metaLucro).replace('.', ',') : '', placeholder: 'Ex.: 3000' }), iR = h('input', { type: 'text', inputmode: 'decimal', value: m.metaReceita ? String(m.metaReceita).replace('.', ',') : '', placeholder: 'Ex.: 9000' });
+      mm.append(h('p', { class: 'ad-nota', text: 'Defina quanto quer que sobre e quanto quer faturar por mês. A projeção usa o ritmo dos dias que já passaram (' + m.diasPassados + ' de ' + m.diasMes + '). Já há ' + R$(m.agendado) + ' em ' + m.agendadoQtd + ' horários marcados à frente.' }),
+        metaBarra('Faturamento do mês (entrou no caixa)', m.bruto, m.projecaoReceita, m.metaReceita, ''), metaBarra('Resultado do mês (o que sobra)', m.resultado, m.projecaoResultado, m.metaLucro, m.resultado < 0 ? 'neg' : ''),
+        h('div', { class: 'ad-2', style: 'max-width:560px;margin-top:8px' }, campo('Meta de faturamento (R$/mês)', iR), campo('Meta de resultado (R$/mês)', iL)),
+        h('button', { type: 'button', class: 'bt', text: 'Salvar metas', onclick: async e => {
+          const a1 = iL.value.trim() ? parseValor(iL.value) : 0, a2 = iR.value.trim() ? parseValor(iR.value) : 0;
+          if (!(a1 >= 0) || !(a2 >= 0)) { aviso('msg-ad', 'erro', 'Digite só números nas metas.'); return; }
+          e.target.disabled = true; const x = await apost('admin_fin_meta_salvar', { metaLucro: a1, metaReceita: a2 }, 'Metas salvas.'); e.target.disabled = false;
+          if (x) { m.metaLucro = a1; m.metaReceita = a2; desenharMetas(); }
+        } }));
+    };
+    desenharMetas();
+    // 8. alertas e ideias
+    const ins = insightsFin(r);
+    if (ins.length) alvo.append(h('h4', { text: 'O que o relatório está dizendo' }), h('ul', { class: 'fin-insights' }, ins.map(i => h('li', { class: i[0] }, h('span', { class: 'ic', text: i[0] === 'bom' ? '✓' : i[0] === 'ruim' ? '!' : i[0] === 'atencao' ? '▲' : 'i', 'aria-hidden': 'true' }), h('span', { text: i[1] })))));
+    // 9. exportar
+    const msgX = h('span', { class: 'ad-nota' });
+    alvo.append(h('h4', { text: 'Levar para o Excel' }), h('p', { class: 'ad-nota', text: 'Gera uma planilha completa (resumo com gráficos, vendas, gastos, contas a pagar e comparativo mensal) que você pode abrir no Excel, no Google Planilhas ou no celular. Os totais são fórmulas: se você mudar um valor lá, tudo se recalcula.' }),
+      h('div', { class: 'ad-acoes' }, h('button', { type: 'button', class: 'bt forte', text: '⬇ Baixar relatório em Excel (.xlsx)', onclick: async e => {
+        e.target.disabled = true; msgX.textContent = 'Montando a planilha…';
+        try { const x = await apost('admin_fin_relatorio', { de: r.de, ate: r.ate, linhas: true }, null, true, { fresco: true }); if (!x) { msgX.textContent = ''; } else { await baixarExcelFin(x); msgX.textContent = 'Pronto! A planilha foi baixada.'; } }
+        catch (er) { msgX.textContent = 'Não consegui montar a planilha: ' + (er && er.message || 'erro desconhecido'); }
+        e.target.disabled = false; } }), msgX));
+  }
+  carregar();
+}
+
+// =====================================================================
+//  Excel (.xlsx) feito à mão no navegador: fórmulas vivas, listas suspensas, filtros e gráficos
+// =====================================================================
+const crcTab = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = crcTab[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+async function comprimirRaw(b) { const cs = new Blob([b]).stream().pipeThrough(new CompressionStream('deflate-raw')); return new Uint8Array(await new Response(cs).arrayBuffer()); }
+async function zipStore(arquivos) {                    // arquivos: [[nome, texto]] → Uint8Array (ZIP; comprime quando o navegador sabe)
+  const enc = new TextEncoder(), partes = [], central = []; let pos = 0;
+  const d = new Date(), hora = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), data = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const [nome, txt] of arquivos) {
+    const n = enc.encode(nome), b = enc.encode(txt), crc = crc32(b); let dados = b, met = 0;
+    if (typeof CompressionStream === 'function' && b.length > 200) { try { const c = await comprimirRaw(b); if (c.length < b.length) { dados = c; met = 8; } } catch (e) {} }
+    const lh = new DataView(new ArrayBuffer(30)); lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, met, true); lh.setUint16(10, hora, true); lh.setUint16(12, data, true);
+    lh.setUint32(14, crc, true); lh.setUint32(18, dados.length, true); lh.setUint32(22, b.length, true); lh.setUint16(26, n.length, true); lh.setUint16(28, 0, true);
+    partes.push(new Uint8Array(lh.buffer), n, dados);
+    const ch = new DataView(new ArrayBuffer(46)); ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, met, true); ch.setUint16(12, hora, true); ch.setUint16(14, data, true);
+    ch.setUint32(16, crc, true); ch.setUint32(20, dados.length, true); ch.setUint32(24, b.length, true); ch.setUint16(28, n.length, true); ch.setUint32(42, pos, true);
+    central.push(new Uint8Array(ch.buffer), n);
+    pos += 30 + n.length + dados.length;
+  }
+  const tamC = central.reduce((s, x) => s + x.length, 0), fim = new DataView(new ArrayBuffer(22));
+  fim.setUint32(0, 0x06054b50, true); fim.setUint16(8, arquivos.length, true); fim.setUint16(10, arquivos.length, true); fim.setUint32(12, tamC, true); fim.setUint32(16, pos, true);
+  const todas = partes.concat(central, [new Uint8Array(fim.buffer)]), out = new Uint8Array(pos + tamC + 22); let o = 0; todas.forEach(p => { out.set(p, o); o += p.length; });
+  return out;
+}
+const xe = t => String(t == null ? '' : t).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const colL = n => { let s = ''; n++; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
+const serialXl = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || '') ? Math.round(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 86400000) + 25569 : null;
+// estilos (índices em cellXfs)
+const XS = { pad: 0, titulo: 1, cab: 2, txt: 3, data: 4, din: 5, pct: 6, int: 7, entrada: 8, rot: 9, dinT: 10, nota: 11, centro: 12, sub: 13, rotT: 14, pctT: 15, mes: 16, num2: 17 };
+function planilha(linhas, opc) {                        // linhas: [[{v,f,s,t}|valor...]]
+  opc = opc || {}; let maxC = 0;
+  const rows = linhas.map((lin, i) => {
+    if (!lin) return '';
+    const cs = lin.map((c, j) => {
+      if (c == null || c === '') return ''; if (typeof c !== 'object') c = { v: c };
+      maxC = Math.max(maxC, j + 1); const ref = colL(j) + (i + 1), s = c.s ? ' s="' + c.s + '"' : '';
+      if (c.f) { const num = typeof c.v === 'number'; return '<c r="' + ref + '"' + s + (num || c.v == null ? '' : ' t="str"') + '><f>' + xe(c.f) + '</f>' + (c.v == null ? '' : '<v>' + (num ? c.v : xe(c.v)) + '</v>') + '</c>'; }
+      if (typeof c.v === 'number') return '<c r="' + ref + '"' + s + '><v>' + c.v + '</v></c>';
+      return '<c r="' + ref + '"' + s + ' t="inlineStr"><is><t xml:space="preserve">' + xe(c.v) + '</t></is></c>';
+    }).join('');
+    const al = opc.alturas && opc.alturas[i] ? ' ht="' + opc.alturas[i] + '" customHeight="1"' : '';
+    return cs || al ? '<row r="' + (i + 1) + '"' + al + '>' + cs + '</row>' : '';
+  }).join('');
+  const ult = Math.max(1, linhas.length), cols = (opc.larg || []).map((w, i) => '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>').join('');
+  const pane = opc.congelar ? '<pane ' + (opc.congelar[0] ? 'xSplit="' + opc.congelar[0] + '" ' : '') + 'ySplit="' + opc.congelar[1] + '" topLeftCell="' + colL(opc.congelar[0]) + (opc.congelar[1] + 1) + '" activePane="' + (opc.congelar[0] ? 'bottomRight' : 'bottomLeft') + '" state="frozen"/>' : '';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+    + '<sheetPr>' + (opc.aba ? '<tabColor rgb="FF' + opc.aba + '"/>' : '') + '<pageSetUpPr fitToPage="1"/></sheetPr><dimension ref="A1:' + colL(Math.max(0, maxC - 1)) + ult + '"/>'
+    + '<sheetViews><sheetView workbookViewId="0"' + (opc.sel ? ' tabSelected="1"' : '') + (opc.semGrade ? ' showGridLines="0"' : '') + ' zoomScale="100">' + pane + '</sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/>'
+    + (cols ? '<cols>' + cols + '</cols>' : '') + '<sheetData>' + rows + '</sheetData>'
+    + (opc.filtro ? '<autoFilter ref="' + opc.filtro + '"/>' : '') + (opc.merge ? '<mergeCells count="' + opc.merge.length + '">' + opc.merge.map(m => '<mergeCell ref="' + m + '"/>').join('') + '</mergeCells>' : '')
+    + (opc.cf || '') + (opc.dv || '') + '<pageMargins left="0.5" right="0.5" top="0.6" bottom="0.6" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="' + (opc.paisagem ? 'landscape' : 'portrait') + '" fitToWidth="1" fitToHeight="0"/>'
+    + (opc.desenho ? '<drawing r:id="rId1"/>' : '') + '</worksheet>';
+}
+const ESTILOS_XL = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+  + '<numFmts count="4"><numFmt numFmtId="164" formatCode="&quot;R$&quot;\\ #,##0.00;[Red]\\-&quot;R$&quot;\\ #,##0.00"/><numFmt numFmtId="165" formatCode="dd/mm/yyyy"/><numFmt numFmtId="166" formatCode="mmm/yy"/><numFmt numFmtId="167" formatCode="0.0%"/></numFmts>'
+  + '<fonts count="7"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="18"/><color rgb="FF5A2A12"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFF6DE"/><name val="Calibri"/></font><font><sz val="11"/><color rgb="FF0000FF"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF6B5A44"/><name val="Calibri"/></font><font><b/><sz val="13"/><color rgb="FF5A2A12"/><name val="Calibri"/></font></fonts>'
+  + '<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF6D2A0E"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF2CC"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1E4C3"/><bgColor indexed="64"/></patternFill></fill></fills>'
+  + '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFC9B48A"/></left><right style="thin"><color rgb="FFC9B48A"/></right><top style="thin"><color rgb="FFC9B48A"/></top><bottom style="thin"><color rgb="FFC9B48A"/></bottom><diagonal/></border></borders>'
+  + '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="18">'
+  + '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+  + '<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>'
+  + '<xf numFmtId="0" fontId="2" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
+  + '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"/>'
+  + '<xf numFmtId="165" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf>'
+  + '<xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/>'
+  + '<xf numFmtId="167" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/>'
+  + '<xf numFmtId="3" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/>'
+  + '<xf numFmtId="165" fontId="3" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf>'
+  + '<xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"/>'
+  + '<xf numFmtId="164" fontId="4" fillId="4" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"/>'
+  + '<xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment vertical="top"/></xf>'
+  + '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf>'
+  + '<xf numFmtId="0" fontId="6" fillId="0" borderId="0" xfId="0" applyFont="1"/>'
+  + '<xf numFmtId="0" fontId="4" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>'
+  + '<xf numFmtId="167" fontId="4" fillId="4" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"/>'
+  + '<xf numFmtId="166" fontId="4" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center"/></xf>'
+  + '<xf numFmtId="4" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/>'
+  + '</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>'
+  + '<dxfs count="2"><dxf><fill><patternFill><bgColor rgb="FFFFE8B8"/></patternFill></fill></dxf><dxf><font><b/><color rgb="FF9C0006"/></font><fill><patternFill><bgColor rgb="FFFFC7CE"/></patternFill></fill></dxf></dxfs></styleSheet>';
+// gráfico de colunas (+ linha) ou de barras, com os valores já guardados para quem não recalcula
+function graficoXl(o) {
+  const num = (ref, vals, fmt) => '<c:numRef><c:f>' + xe(ref) + '</c:f><c:numCache><c:formatCode>' + xe(fmt || 'General') + '</c:formatCode><c:ptCount val="' + vals.length + '"/>' + vals.map((v, i) => '<c:pt idx="' + i + '"><c:v>' + v + '</c:v></c:pt>').join('') + '</c:numCache></c:numRef>';
+  const cor = c => '<c:spPr><a:solidFill><a:srgbClr val="' + c + '"/></a:solidFill></c:spPr>';
+  const ser = (s, i) => '<c:ser><c:idx val="' + i + '"/><c:order val="' + i + '"/><c:tx><c:strRef><c:f>' + xe(s.nomeRef) + '</c:f><c:strCache><c:ptCount val="1"/><c:pt idx="0"><c:v>' + xe(s.nome) + '</c:v></c:pt></c:strCache></c:strRef></c:tx>'
+    + (s.linha ? '<c:spPr><a:ln w="28575"><a:solidFill><a:srgbClr val="' + s.cor + '"/></a:solidFill></a:ln></c:spPr><c:marker><c:symbol val="circle"/><c:size val="6"/><c:spPr><a:solidFill><a:srgbClr val="' + s.cor + '"/></a:solidFill></c:spPr></c:marker>' : cor(s.cor) + '<c:invertIfNegative val="0"/>')
+    + '<c:cat>' + num(o.catRef, o.cats, o.catFmt) + '</c:cat><c:val>' + num(s.ref, s.vals, 'General') + '</c:val>' + (s.linha ? '<c:smooth val="0"/>' : '') + '</c:ser>';
+  const barras = o.series.filter(s => !s.linha), linhas = o.series.filter(s => s.linha), horiz = !!o.horizontal;
+  const txt = '<c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="900"/></a:pPr><a:endParaRPr lang="pt-BR"/></a:p></c:txPr>';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><c:roundedCorners val="0"/><c:chart>'
+    + '<c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="1200" b="1"/></a:pPr><a:r><a:rPr lang="pt-BR" sz="1200" b="1"/><a:t>' + xe(o.titulo) + '</a:t></a:r></a:p></c:rich></c:tx><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>'
+    + '<c:barChart><c:barDir val="' + (horiz ? 'bar' : 'col') + '"/><c:grouping val="clustered"/><c:varyColors val="0"/>' + barras.map((s, i) => ser(s, i)).join('') + '<c:gapWidth val="60"/><c:axId val="111111"/><c:axId val="222222"/></c:barChart>'
+    + (linhas.length ? '<c:lineChart><c:grouping val="standard"/><c:varyColors val="0"/>' + linhas.map((s, i) => ser(s, barras.length + i)).join('') + '<c:marker val="1"/><c:axId val="111111"/><c:axId val="222222"/></c:lineChart>' : '')
+    + '<c:catAx><c:axId val="111111"/><c:scaling><c:orientation val="' + (horiz ? 'maxMin' : 'minMax') + '"/></c:scaling><c:delete val="0"/><c:axPos val="' + (horiz ? 'l' : 'b') + '"/><c:numFmt formatCode="' + xe(o.catFmt || 'General') + '" sourceLinked="0"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="low"/>' + txt + '<c:crossAx val="222222"/><c:crosses val="autoZero"/><c:auto val="0"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/><c:noMultiLvlLbl val="0"/></c:catAx>'
+    + '<c:valAx><c:axId val="222222"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="' + (horiz ? 't' : 'l') + '"/><c:majorGridlines><c:spPr><a:ln w="6350"><a:solidFill><a:srgbClr val="D9C9A3"/></a:solidFill></a:ln></c:spPr></c:majorGridlines><c:numFmt formatCode="#,##0" sourceLinked="0"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/>' + txt + '<c:crossAx val="111111"/><c:crosses val="' + (horiz ? 'max' : 'autoZero') + '"/><c:crossBetween val="between"/></c:valAx>'
+    + '</c:plotArea><c:legend><c:legendPos val="b"/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/><c:dispBlanksAs val="gap"/></c:chart></c:chartSpace>';
+}
+const ancora = (n, c1, r1, c2, r2) => '<xdr:twoCellAnchor><xdr:from><xdr:col>' + c1 + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + r1 + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:to><xdr:col>' + c2 + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + r2 + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>'
+  + '<xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="' + (n + 1) + '" name="Gráfico ' + n + '"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/></xdr:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" r:id="rId' + n + '"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor>';
+
+// monta o relatório completo. x = resposta de admin_fin_relatorio com linhas:true
+async function montarXlsx(x) {
+  const TIPOS = { fixo: 'Fixo', variavel: 'Variável', invest: 'Investimento', retirada: 'Retirada' }, cats = x.categorias || [];
+  const V = x.vendas || [], C = x.custosLinhas || [], de = x.de, ate = x.ate, hojeIso = x.hoje;
+  const dentro = (d, a, b) => d >= a && d <= b, r2 = n => Math.round(n * 100) / 100;
+  const somaV = (f, a, b, fl) => r2(V.filter(r => dentro(r.data, a, b) && (!fl || fl(r))).reduce((s, r) => s + f(r), 0));
+  const somaC = (a, b, fl) => r2(C.filter(r => dentro(r.data, a, b) && (!fl || fl(r))).reduce((s, r) => s + r.valor, 0));
+  const NV = 20000, NC = 5000, nC = C.length + 150;
+  const rV = col => 'Vendas!$' + col + '$2:$' + col + '$' + NV, rC = col => 'Custos!$' + col + '$2:$' + col + '$' + NC;
+  const per = (rng, a, b) => rng + ',">="&' + a + ',' + rng + ',"<="&' + b;
+  const sV = (col, a, b, extra) => 'SUMIFS(' + rV(col) + ',' + rV('A') + ',">="&' + a + ',' + rV('A') + ',"<="&' + b + (extra || '') + ')';
+  const sC = (a, b, extra) => 'SUMIFS(' + rC('E') + ',' + rC('A') + ',">="&' + a + ',' + rC('A') + ',"<="&' + b + (extra || '') + ')';
+  const nomeLoja = x.nomeSite || 'Barbearia';
+  // ----- Listas
+  const pagtos = ['Dinheiro', 'Pix', 'Cartão', 'Boleto', 'Transferência', 'Débito automático', 'Outro'];
+  const nL = Math.max(cats.length, pagtos.length, 2);
+  const listas = [[{ v: 'Categoria', s: XS.cab }, { v: 'Tipo', s: XS.cab }, { v: 'Situação', s: XS.cab }, { v: 'Forma de pagamento', s: XS.cab }]];
+  for (let i = 0; i < nL; i++) listas.push([cats[i] ? { v: cats[i].nome, s: XS.txt } : '', cats[i] ? { v: TIPOS[cats[i].tipo], s: XS.txt } : '', i < 2 ? { v: ['pago', 'a pagar'][i], s: XS.txt } : '', pagtos[i] ? { v: pagtos[i], s: XS.txt } : '']);
+  listas[nL + 2] = [{ v: 'Para incluir uma categoria nova, escreva-a no fim da coluna A e o tipo (Fixo, Variável, Investimento ou Retirada) na coluna B; depois acrescente-a também na tabela "Gastos por categoria" do Resumo.', s: XS.nota }];
+  const tipoDe = nome => { const c = cats.filter(z => z.nome === nome)[0]; return c ? TIPOS[c.tipo] : 'Variável'; };
+  // ----- Vendas
+  const cabV = ['Data', 'Hora', 'Barbeiro', 'Serviço', 'Categoria', 'Cliente', 'Valor (R$)', 'Comissão (R$)', 'Fica para a casa (R$)', 'Corte grátis'];
+  const vendas = [cabV.map(t => ({ v: t, s: XS.cab }))];
+  V.forEach(r => vendas.push([{ v: serialXl(r.data), s: XS.data }, { v: r.hora, s: XS.centro }, { v: r.barbeiro, s: XS.txt }, { v: r.servico, s: XS.txt }, { v: r.categoria, s: XS.txt }, { v: r.cliente || '', s: XS.txt }, { v: r.valor, s: XS.din }, { v: r.comissao, s: XS.din }, { v: r.lucro, s: XS.din }, { v: r.gratis ? 'sim' : '', s: XS.centro }]));
+  // ----- Custos
+  const cabC = ['Data', 'Categoria', 'Tipo', 'Descrição', 'Valor (R$)', 'Situação', 'Vencimento', 'Pago em', 'Forma de pagamento', 'Fornecedor', 'Observação'];
+  const custos = [cabC.map(t => ({ v: t, s: XS.cab }))];
+  for (let i = 0; i < nC; i++) {
+    const r = C[i], n = i + 2, fTipo = 'IF(B' + n + '="","",IFERROR(VLOOKUP(B' + n + ',Listas!$A$2:$B$60,2,FALSE),""))';
+    custos.push([r ? { v: serialXl(r.data), s: XS.data } : { s: XS.data, v: '' }, { v: r ? r.categoria : '', s: XS.txt }, { f: fTipo, v: r ? tipoDe(r.categoria) : '', s: XS.txt }, { v: r ? r.desc : '', s: XS.txt }, r ? { v: r.valor, s: XS.din } : { s: XS.din, v: '' },
+      { v: r ? r.status : '', s: XS.centro }, r && r.venc ? { v: serialXl(r.venc), s: XS.data } : { s: XS.data, v: '' }, r && r.pagoEm ? { v: serialXl(r.pagoEm), s: XS.data } : { s: XS.data, v: '' }, { v: r ? r.pagamento : '', s: XS.txt }, { v: r ? r.fornecedor : '', s: XS.txt }, { v: r ? r.obs : '', s: XS.txt }]);
+  }
+  // ----- Resumo
+  const A = r2, at = x.atual;
+  const fixoV = somaC(de, ate, r => tipoDe(r.categoria) === 'Fixo'), varV = somaC(de, ate, r => tipoDe(r.categoria) === 'Variável'), invV = somaC(de, ate, r => tipoDe(r.categoria) === 'Investimento'), retV = somaC(de, ate, r => tipoDe(r.categoria) === 'Retirada');
+  const bruto = somaV(r => r.valor, de, ate), com = somaV(r => r.comissao, de, ate), casa = A(bruto - com), resu = A(casa - fixoV - varV), sobra = A(resu - invV - retV);
+  const nAt = V.filter(r => dentro(r.data, de, ate)).length, nCo = V.filter(r => dentro(r.data, de, ate) && r.categoria === 'corte').length;
+  const mc = bruto ? (casa - varV) / bruto : 0, pago = somaC(de, ate, r => r.status === 'pago'), apagar = A(somaC(de, ate) - pago);
+  const pc = (cel, base, vv, bb) => ({ f: 'IF(' + base + '=0,0,' + cel + '/' + base + ')', v: bb ? vv / bb : 0, s: XS.pct });
+  const tipoSum = t => sC('$B$3', '$B$4', ',' + rC('C') + ',"' + t + '"');
+  const R = [];
+  R[0] = [{ v: 'Relatório financeiro — ' + nomeLoja, s: XS.titulo }];
+  R[1] = [{ v: 'Gerado em ' + br(hojeIso) + '. Valores em reais (R$).', s: XS.nota }];
+  R[2] = [{ v: 'De', s: XS.rot }, { v: serialXl(de), s: XS.entrada }];
+  R[3] = [{ v: 'Até', s: XS.rot }, { v: serialXl(ate), s: XS.entrada }, { v: '← mude as datas em azul e todos os números e gráficos se recalculam (os dados vão de ' + br(x.janelaDe || de) + ' em diante).', s: XS.nota }];
+  R[5] = [{ v: 'Do caixa até o seu bolso', s: XS.cab }, { v: 'Valor', s: XS.cab }, { v: '% do caixa', s: XS.cab }];
+  const linhaR = (rot, f, v, tot) => [{ v: rot, s: tot ? XS.rotT : XS.txt }, { f: f, v: v, s: tot ? XS.dinT : XS.din }];
+  R[6] = linhaR('Entrou no caixa (todas as vendas)', sV('G', '$B$3', '$B$4'), bruto, true);
+  R[7] = linhaR('(−) Comissões dos barbeiros', sV('H', '$B$3', '$B$4'), com);
+  R[8] = linhaR('Sobrou para a casa', 'B7-B8', casa, true);
+  R[9] = linhaR('(−) Contas fixas', tipoSum('Fixo'), fixoV);
+  R[10] = linhaR('(−) Gastos variáveis', tipoSum('Variável'), varV);
+  R[11] = linhaR('Resultado da barbearia', 'B9-B10-B11', resu, true);
+  R[12] = linhaR('(−) Investimentos (equipamentos, reforma)', tipoSum('Investimento'), invV);
+  R[13] = linhaR('(−) Retiradas do dono', tipoSum('Retirada'), retV);
+  R[14] = linhaR('Sobra no caixa', 'B12-B13-B14', sobra, true);
+  [[6, bruto], [7, com], [8, casa], [9, fixoV], [10, varV], [11, resu], [12, invV], [13, retV], [14, sobra]].forEach(([i, vv]) => { R[i][2] = pc('B' + (i + 1), '$B$7', vv, bruto); if ([6, 8, 11, 14].indexOf(i) !== -1) R[i][2].s = XS.pctT; });
+  R[16] = [{ v: 'Indicadores', s: XS.cab }, { v: 'Valor', s: XS.cab }];
+  R[17] = [{ v: 'Atendimentos', s: XS.txt }, { f: 'COUNTIFS(' + per(rV('A'), '$B$3', '$B$4') + ')', v: nAt, s: XS.int }];
+  R[18] = [{ v: 'Cortes feitos', s: XS.txt }, { f: 'COUNTIFS(' + per(rV('A'), '$B$3', '$B$4') + ',' + rV('E') + ',"corte")', v: nCo, s: XS.int }];
+  R[19] = [{ v: 'Valor médio por cliente', s: XS.txt }, { f: 'IF(B18=0,0,B7/B18)', v: nAt ? A(bruto / nAt) : 0, s: XS.din }];
+  R[20] = [{ v: 'Margem de lucro (resultado ÷ caixa)', s: XS.txt }, { f: 'IF(B7=0,0,B12/B7)', v: bruto ? resu / bruto : 0, s: XS.pct }];
+  R[21] = [{ v: 'Gasto por corte (fixos + variáveis)', s: XS.txt }, { f: 'IF(B19=0,0,(B10+B11)/B19)', v: nCo ? A((fixoV + varV) / nCo) : 0, s: XS.din }];
+  R[22] = [{ v: 'Comissão sobre o caixa', s: XS.txt }, { f: 'IF(B7=0,0,B8/B7)', v: bruto ? com / bruto : 0, s: XS.pct }];
+  R[23] = [{ v: 'Ponto de equilíbrio (quanto precisa entrar)', s: XS.txt }, { f: 'IF(B7=0,0,IF((B9-B11)<=0,0,B10/((B9-B11)/B7)))', v: bruto && (casa - varV) > 0 ? A(fixoV / ((casa - varV) / bruto)) : 0, s: XS.din }];
+  R[24] = [{ v: 'Gastos já pagos', s: XS.txt }, { f: sC('$B$3', '$B$4', ',' + rC('F') + ',"pago"'), v: pago, s: XS.din }];
+  R[25] = [{ v: 'Gastos ainda a pagar', s: XS.txt }, { f: sC('$B$3', '$B$4', ',' + rC('F') + ',"a pagar"'), v: apagar, s: XS.din }];
+  R[27] = [{ v: 'Gastos por categoria', s: XS.cab }, { v: 'Valor', s: XS.cab }, { v: '% dos gastos', s: XS.cab }, { v: 'Tipo', s: XS.cab }];
+  const catV = cats.map(c => somaC(de, ate, r => r.categoria === c.nome)), totCat = A(catV.reduce((s, v) => s + v, 0));
+  cats.forEach((c, i) => { const n = 29 + i; R[28 + i] = [{ f: 'Listas!A' + (i + 2), v: c.nome, s: XS.txt }, { f: sC('$B$3', '$B$4', ',' + rC('B') + ',$A' + n), v: catV[i], s: XS.din }, { f: 'IF($B$' + (29 + cats.length) + '=0,0,B' + n + '/$B$' + (29 + cats.length) + ')', v: totCat ? catV[i] / totCat : 0, s: XS.pct }, { f: 'Listas!B' + (i + 2), v: TIPOS[c.tipo], s: XS.txt }]; });
+  const nTot = 28 + cats.length;
+  R[nTot] = [{ v: 'Total lançado', s: XS.rotT }, { f: 'SUM(B29:B' + (28 + cats.length) + ')', v: totCat, s: XS.dinT }, { v: '', s: XS.pctT }, { v: '', s: XS.rotT }];
+  // ----- Mensal (12 meses terminando no mês de "Até")
+  const cabM = ['Mês', 'Entrou no caixa', 'Comissões', 'Sobrou para a casa', 'Contas fixas', 'Gastos variáveis', 'Resultado', 'Investimentos', 'Retiradas', 'Sobra no caixa', 'Margem', 'Cortes'];
+  const M = [cabM.map(t => ({ v: t, s: XS.cab }))];
+  let [ay, am] = ate.split('-').map(Number); const listaM = [];
+  for (let i = 0; i < 12; i++) { listaM.unshift([ay, am]); am--; if (am < 1) { am = 12; ay--; } }
+  const mesesCache = [];
+  listaM.forEach(([y, m], i) => {
+    const n = i + 2, a = y + '-' + String(m).padStart(2, '0') + '-01', b = y + '-' + String(m).padStart(2, '0') + '-' + String(ultimoDia(y, m)).padStart(2, '0');
+    const br_ = somaV(r => r.valor, a, b), co = somaV(r => r.comissao, a, b), ca = A(br_ - co), fx = somaC(a, b, r => tipoDe(r.categoria) === 'Fixo'), vr = somaC(a, b, r => tipoDe(r.categoria) === 'Variável'), re = A(ca - fx - vr);
+    const inv = somaC(a, b, r => tipoDe(r.categoria) === 'Investimento'), rt = somaC(a, b, r => tipoDe(r.categoria) === 'Retirada'), nc = V.filter(r => dentro(r.data, a, b) && r.categoria === 'corte').length;
+    const ini = 'Mensal!$A' + n, fimM = 'DATE(YEAR($A' + n + '),MONTH($A' + n + ')+1,0)', iniL = '$A' + n;
+    const sv = col => 'SUMIFS(' + rV(col) + ',' + rV('A') + ',">="&' + iniL + ',' + rV('A') + ',"<="&' + fimM + ')';
+    const sc = t => 'SUMIFS(' + rC('E') + ',' + rC('A') + ',">="&' + iniL + ',' + rC('A') + ',"<="&' + fimM + ',' + rC('C') + ',"' + t + '")';
+    M.push([{ f: i === 0 ? 'DATE(YEAR(Resumo!$B$4),MONTH(Resumo!$B$4)-11,1)' : 'DATE(YEAR($A' + (n - 1) + '),MONTH($A' + (n - 1) + ')+1,1)', v: serialXl(a), s: XS.mes },
+      { f: sv('G'), v: br_, s: XS.din }, { f: sv('H'), v: co, s: XS.din }, { f: 'B' + n + '-C' + n, v: ca, s: XS.din }, { f: sc('Fixo'), v: fx, s: XS.din }, { f: sc('Variável'), v: vr, s: XS.din }, { f: 'D' + n + '-E' + n + '-F' + n, v: re, s: XS.din },
+      { f: sc('Investimento'), v: inv, s: XS.din }, { f: sc('Retirada'), v: rt, s: XS.din }, { f: 'G' + n + '-H' + n + '-I' + n, v: A(re - inv - rt), s: XS.din }, { f: 'IF(B' + n + '=0,0,G' + n + '/B' + n + ')', v: br_ ? re / br_ : 0, s: XS.pct },
+      { f: 'COUNTIFS(' + rV('A') + ',">="&' + iniL + ',' + rV('A') + ',"<="&' + fimM + ',' + rV('E') + ',"corte")', v: nc, s: XS.int }]);
+    mesesCache.push({ a, br: br_, co, ca, fx, vr, re, inv, rt, nc });
+  });
+  const tot = k => A(mesesCache.reduce((s, m) => s + m[k], 0));
+  M.push([{ v: 'Total 12 meses', s: XS.rotT }].concat(['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'].map((cl, j) => ({ f: 'SUM(' + cl + '2:' + cl + '13)', v: [tot('br'), tot('co'), tot('ca'), tot('fx'), tot('vr'), tot('re'), tot('inv'), tot('rt'), A(tot('re') - tot('inv') - tot('rt'))][j], s: XS.dinT })), [{ f: 'IF(B14=0,0,G14/B14)', v: tot('br') ? tot('re') / tot('br') : 0, s: XS.pctT }, { f: 'SUM(L2:L13)', v: mesesCache.reduce((s, m) => s + m.nc, 0), s: XS.int }]).flat());
+  M[15] = [{ v: 'Os meses terminam no mês da data "Até" do Resumo. Só há dados a partir de ' + br(x.janelaDe || de) + '.', s: XS.nota }];
+  // ----- Contas a pagar (foto do dia do download)
+  const P = [['Vencimento', 'Conta', 'Categoria', 'Valor (R$)', 'Fornecedor', 'Dias para vencer', 'Situação'].map(t => ({ v: t, s: XS.cab }))];
+  const pend = (x.aPagarLinhas || []).slice().sort((a, b) => (a.venc || a.data).localeCompare(b.venc || b.data));
+  pend.forEach((c, i) => { const n = i + 2, v = c.venc || c.data, dias = Math.round((Date.parse(v) - Date.parse(hojeIso)) / 86400000);
+    P.push([{ v: serialXl(v), s: XS.data }, { v: c.desc, s: XS.txt }, { v: c.categoria, s: XS.txt }, { v: c.valor, s: XS.din }, { v: c.fornecedor || '', s: XS.txt }, { f: 'A' + n + '-TODAY()', v: dias, s: XS.int }, { f: 'IF(F' + n + '<0,"Vencida",IF(F' + n + '<=15,"Vence em breve","Em dia"))', v: dias < 0 ? 'Vencida' : dias <= 15 ? 'Vence em breve' : 'Em dia', s: XS.centro }]); });
+  if (pend.length) P.push([{ v: 'Total a pagar', s: XS.rotT }, { v: '', s: XS.rotT }, { v: '', s: XS.rotT }, { f: 'SUM(D2:D' + (pend.length + 1) + ')', v: A(pend.reduce((s, c) => s + c.valor, 0)), s: XS.dinT }]);
+  P[pend.length + 3] = [{ v: 'Lista tirada do sistema no dia do download. Para dar baixa, mude a Situação na aba Custos (ou marque como paga no site).', s: XS.nota }];
+  // ----- validações e formatação condicional
+  const dvC = '<dataValidations count="5">'
+    + '<dataValidation type="list" allowBlank="1" showErrorMessage="1" errorTitle="Categoria" error="Escolha uma categoria da lista (aba Listas)." sqref="B2:B' + NC + '"><formula1>Listas!$A$2:$A$60</formula1></dataValidation>'
+    + '<dataValidation type="list" allowBlank="1" showErrorMessage="1" errorTitle="Situação" error="Use pago ou a pagar." sqref="F2:F' + NC + '"><formula1>"pago,a pagar"</formula1></dataValidation>'
+    + '<dataValidation type="list" allowBlank="1" showErrorMessage="1" sqref="I2:I' + NC + '"><formula1>Listas!$D$2:$D$20</formula1></dataValidation>'
+    + '<dataValidation type="date" operator="greaterThan" allowBlank="1" showErrorMessage="1" errorTitle="Data" error="Digite uma data válida (dia/mês/ano)." sqref="A2:A' + NC + ' G2:H' + NC + '"><formula1>36526</formula1></dataValidation>'
+    + '<dataValidation type="decimal" operator="greaterThanOrEqual" allowBlank="1" showErrorMessage="1" errorTitle="Valor" error="Digite só números." sqref="E2:E' + NC + '"><formula1>0</formula1></dataValidation></dataValidations>';
+  const cfC = '<conditionalFormatting sqref="A2:K' + NC + '"><cfRule type="expression" dxfId="1" priority="1"><formula>AND($F2="a pagar",$G2&lt;&gt;"",$G2&lt;TODAY())</formula></cfRule><cfRule type="expression" dxfId="0" priority="2"><formula>$F2="a pagar"</formula></cfRule></conditionalFormatting>';
+  const cfP = !pend.length ? '' : '<conditionalFormatting sqref="G2:G' + (pend.length + 1) + '"><cfRule type="cellIs" dxfId="1" priority="1" operator="equal"><formula>"Vencida"</formula></cfRule><cfRule type="cellIs" dxfId="0" priority="2" operator="equal"><formula>"Vence em breve"</formula></cfRule></conditionalFormatting>';
+  const dvR = '<dataValidations count="1"><dataValidation type="date" operator="greaterThan" allowBlank="0" showErrorMessage="1" errorTitle="Data" error="Digite uma data válida (dia/mês/ano)." sqref="B3:B4"><formula1>36526</formula1></dataValidation></dataValidations>';
+  const planR = planilha(R, { larg: [44, 18, 14, 14, 3], alturas: { 1: 20 }, aba: 'B44A1F', sel: true, semGrade: true, merge: [], dv: dvR, desenho: true });
+  const planM = planilha(M, { larg: [16, 16, 14, 16, 14, 16, 14, 14, 12, 14, 10, 8], congelar: [1, 1], aba: '4A8A30', paisagem: true });
+  const planV = planilha(vendas, { larg: [12, 8, 16, 22, 11, 22, 13, 13, 18, 11], congelar: [0, 1], filtro: 'A1:J' + Math.max(2, vendas.length), aba: '8F3B22', alturas: { 0: 32 } });
+  const planC = planilha(custos, { larg: [12, 28, 13, 32, 13, 11, 12, 12, 18, 20, 28], congelar: [0, 1], filtro: 'A1:K' + custos.length, aba: 'D9A14B', cf: cfC, dv: dvC, alturas: { 0: 32 } });
+  const planP = planilha(P, { larg: [12, 30, 26, 13, 22, 15, 16], congelar: [0, 1], aba: 'C6381C', cf: cfP, alturas: { 0: 32 } });
+  const planL = planilha(listas, { larg: [32, 14, 12, 22], aba: '999999' });
+  // ----- gráficos
+  const ch1 = graficoXl({ titulo: 'Últimos 12 meses: casa × gastos × resultado', catRef: 'Mensal!$A$2:$A$13', cats: mesesCache.map(m => serialXl(m.a)), catFmt: 'mmm/yy', series: [
+    { nome: 'Sobrou para a casa', nomeRef: 'Mensal!$D$1', ref: 'Mensal!$D$2:$D$13', vals: mesesCache.map(m => m.ca), cor: '4A8A30' },
+    { nome: 'Contas fixas', nomeRef: 'Mensal!$E$1', ref: 'Mensal!$E$2:$E$13', vals: mesesCache.map(m => m.fx), cor: '6A4D2C' },
+    { nome: 'Gastos variáveis', nomeRef: 'Mensal!$F$1', ref: 'Mensal!$F$2:$F$13', vals: mesesCache.map(m => m.vr), cor: 'D9A14B' },
+    { nome: 'Resultado', nomeRef: 'Mensal!$G$1', ref: 'Mensal!$G$2:$G$13', vals: mesesCache.map(m => m.re), cor: '241A12', linha: true }] });
+  const ch2 = graficoXl({ titulo: 'Gastos por categoria no período', horizontal: true, catRef: 'Resumo!$A$29:$A$' + (28 + cats.length), cats: cats.map(c => c.nome).map(n => n), series: [{ nome: 'Valor', nomeRef: 'Resumo!$B$28', ref: 'Resumo!$B$29:$B$' + (28 + cats.length), vals: catV, cor: 'B44A1F' }] });
+  // categorias são texto: troca numRef por strRef na categoria do gráfico 2
+  const ch2s = ch2.replace(/<c:cat><c:numRef><c:f>([^<]*)<\/c:f><c:numCache><c:formatCode>[^<]*<\/c:formatCode><c:ptCount val="(\d+)"\/>(.*?)<\/c:numCache><\/c:numRef><\/c:cat>/, (m, f, n, pts) => '<c:cat><c:strRef><c:f>' + f + '</c:f><c:strCache><c:ptCount val="' + n + '"/>' + pts + '</c:strCache></c:strRef></c:cat>');
+  const desenho = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' + ancora(1, 5, 4, 15, 24) + ancora(2, 5, 25, 15, 46) + '</xdr:wsDr>';
+  const REL = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships', CT = 'application/vnd.openxmlformats-officedocument.';
+  const abas = [['Resumo', planR], ['Mensal', planM], ['Vendas', planV], ['Custos', planC], ['Contas a pagar', planP], ['Listas', planL]];
+  const arquivos = [
+    ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="' + CT + 'spreadsheetml.sheet.main+xml"/>'
+      + abas.map((a, i) => '<Override PartName="/xl/worksheets/sheet' + (i + 1) + '.xml" ContentType="' + CT + 'spreadsheetml.worksheet+xml"/>').join('') + '<Override PartName="/xl/styles.xml" ContentType="' + CT + 'spreadsheetml.styles+xml"/><Override PartName="/xl/drawings/drawing1.xml" ContentType="' + CT + 'drawing+xml"/><Override PartName="/xl/charts/chart1.xml" ContentType="' + CT + 'drawingml.chart+xml"/><Override PartName="/xl/charts/chart2.xml" ContentType="' + CT + 'drawingml.chart+xml"/></Types>'],
+    ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + REL + '/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="' + REL + '"><bookViews><workbookView xWindow="0" yWindow="0" windowWidth="24000" windowHeight="14000" activeTab="0"/></bookViews><sheets>'
+      + abas.map((a, i) => '<sheet name="' + xe(a[0]) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>').join('') + '</sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="2" hidden="1">Vendas!$A$1:$J$' + Math.max(2, vendas.length) + '</definedName><definedName name="_xlnm._FilterDatabase" localSheetId="3" hidden="1">Custos!$A$1:$K$' + custos.length + '</definedName></definedNames><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>'],
+    ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + abas.map((a, i) => '<Relationship Id="rId' + (i + 1) + '" Type="' + REL + '/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>').join('') + '<Relationship Id="rId' + (abas.length + 1) + '" Type="' + REL + '/styles" Target="styles.xml"/></Relationships>'],
+    ['xl/styles.xml', ESTILOS_XL]
+  ].concat(abas.map((a, i) => ['xl/worksheets/sheet' + (i + 1) + '.xml', a[1]]), [
+    ['xl/worksheets/_rels/sheet1.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + REL + '/drawing" Target="../drawings/drawing1.xml"/></Relationships>'],
+    ['xl/drawings/drawing1.xml', desenho],
+    ['xl/drawings/_rels/drawing1.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + REL + '/chart" Target="../charts/chart1.xml"/><Relationship Id="rId2" Type="' + REL + '/chart" Target="../charts/chart2.xml"/></Relationships>'],
+    ['xl/charts/chart1.xml', ch1], ['xl/charts/chart2.xml', ch2s]]);
+  return zipStore(arquivos);
+}
+async function baixarExcelFin(x) {
+  const bytes = await montarXlsx(x);
+  const nome = 'financeiro_' + x.de + '_a_' + x.ate + '.xlsx';
+  const a = h('a', { href: URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })), download: nome });
+  document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+
 // ---- Dashboard (dono: tudo / barbeiro: só os números dele) ----
 const PER_D = [['hoje', 'Hoje'], ['7d', '7 dias'], ['mes', 'Este mês'], ['mes_ant', 'Mês passado'], ['30d', '30 dias'], ['ano', 'Este ano']];
 const MES_ABR = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -2644,14 +3312,17 @@ function miniBarras(rotulos, valores, titulos) {
   return h('div', {}, h('div', { class: 'ad-mini', role: 'img', 'aria-label': 'Gráfico de barras' }, valores.map((v, i) => h('div', { class: v && i === pico ? 'pico' : '', title: titulos[i] }, h('i', { style: 'height:' + (v ? Math.max(4, v / max * 100) : 0) + '%' })))),
     h('div', { class: 'ad-mini-r' }, rotulos.map(r => h('span', { text: r }))));
 }
-async function abDash(box, vivo) {
+async function abDashGeral(box, vivo) {
   const dono = ehDono();
-  box.append(h('h3', { text: dono ? 'Dashboard' : 'Meu desempenho' }),
+  if (!dono) box.append(h('h3', { text: 'Meu desempenho' }));
+  box.append(
     h('p', { class: 'ad-nota', text: dono ? 'Primeiro o que precisa de você, depois o dia de hoje e, por fim, como foi o período. Todo número pode ser conferido em "Conferir os números", no fim da página.' : 'Seus atendimentos e a sua comissão. Só você vê estes números, e dá para conferir cada um no fim da página.' }));
   const atencao = h('div', {}), hojeBox = h('div', {}), chips = h('div', { class: 'ad-chips' }), alvo = h('div', {});
   const desenharChips = () => { chips.textContent = ''; PER_D.forEach(p => chips.append(h('button', { type: 'button', class: 'chip', 'aria-pressed': String(adD.per === p[0]), text: p[1], onclick: () => { adD.per = p[0]; desenharChips(); carregar(); } }))); };
   desenharChips();
-  box.append(atencao, hojeBox, h('h4', { text: 'Como foi o período' }), chips, alvo);
+  const finBox = h('div', {});
+  box.append(atencao, hojeBox, finBox, h('h4', { text: 'Como foi o período' }), chips, alvo);
+  if (dono) finResumoDash(finBox, vivo);
   async function carregar() {
     alvo.textContent = ''; alvo.append(h('p', { class: 'ad-nota', text: 'Carregando…' }));
     const r = await apost('admin_dashboard', { periodo: adD.per }, null, true);

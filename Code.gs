@@ -38,7 +38,7 @@ const CFG_PADRAO = {
   regiao: 'Mansões Odisséia', lat: '-15.771585825269458', lon: '-48.281261505017945',
   abre: '9', fecha: '19', intervalo: '30', diasFechados: '0', diasAFrente: '14',
   corBotao: '#8f3b22', corMadeira: '#382a20', ceu: 'entardecer', fotoHero: '', fotoFachada: '', metaCortes: '7',
-  exigirConfirmacao: '1', emailAvisos: '1'
+  exigirConfirmacao: '1', emailAvisos: '1', metaLucro: '0', metaReceita: '0'
 };
 const SEMENTE_MARCAS = [['m1', '', 'Fox For Men', '', 1], ['m2', '', 'QOD Barber Shop', '', 2], ['m3', '', 'Roger', '', 3], ['m4', '', 'Shark Barber', '', 4]];
 const ICONES = ['tesoura', 'navalha', 'gota', 'estrela', 'crianca', 'pincel'];
@@ -283,7 +283,7 @@ function lixeira_(fileId) {
 // todas as abas da planilha (Equipe, Servicos, Config, Fotos, Vendas...).
 function autorizar() {
   pastaFotos_();
-  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_, nt_, ac_, bq_, gl_].forEach(f => f());
+  [ag_, us_, fb_, vd_, ft_, cf_, sv_, eq_, mc_, pr_, nt_, ac_, bq_, gl_, ct_].forEach(f => f());
   semearFotos_();
   MailApp.getRemainingDailyQuota();            // pede a permissão de enviar e-mail (avisos para barbeiros e clientes)
 }
@@ -298,7 +298,7 @@ function publico_() {
     const c = cfg_(), h = horario_(), limite = somarDias_(hoje_(), -1);
     const site = {};
     Object.keys(CFG_PADRAO).forEach(k => { site[k] = c[k]; });
-    delete site.abre; delete site.fecha; delete site.intervalo; delete site.diasFechados; delete site.diasAFrente; delete site.emailAvisos;
+    delete site.abre; delete site.fecha; delete site.intervalo; delete site.diasFechados; delete site.diasAFrente; delete site.emailAvisos; delete site.metaLucro; delete site.metaReceita;
     const certs = {}, porSrv = {};
     galeria_().forEach(g => { const o = { id: g.id, fileId: g.fileId, url: g.url, titulo: g.titulo }; const alvo = g.tipo === 'certificado' ? certs : porSrv; (alvo[g.chave] = alvo[g.chave] || []).push(o); });
     txt = JSON.stringify({
@@ -1071,6 +1071,217 @@ function adminDashboard_(d, q) {
   return json_(out);
 }
 
+// ---------- Financeiro: custos, contas a pagar, metas e relatório ----------
+const CAB_CT = ['Id', 'Data', 'Categoria', 'Descrição', 'Valor', 'Fornecedor', 'Pagamento', 'Status', 'Vencimento', 'Recorrente', 'Obs', 'FileId', 'Criado em', 'Por', 'Origem', 'Pago em'];
+const FMT_CT = ['@', '@', '@', '@', '0.00', '@', '@', '@', '@', '@', '@', '@', '@', '@', '@', '@'];
+const ct_ = () => aba_('Custos', CAB_CT);
+// tipo: fixo (todo mês), variavel (cresce com o movimento), invest (equipamento/reforma, não entra no resultado), retirada (dinheiro que o dono tira)
+const CATS_CUSTO = [
+  { nome: 'Aluguel', tipo: 'fixo', ic: '🏠' }, { nome: 'Água', tipo: 'fixo', ic: '💧' }, { nome: 'Luz', tipo: 'fixo', ic: '💡' },
+  { nome: 'Internet e telefone', tipo: 'fixo', ic: '📶' }, { nome: 'Salários e funcionários', tipo: 'fixo', ic: '👥' },
+  { nome: 'Impostos e taxas (MEI/DAS)', tipo: 'fixo', ic: '🧾' }, { nome: 'Software e assinaturas', tipo: 'fixo', ic: '💻' },
+  { nome: 'Produtos e insumos', tipo: 'variavel', ic: '🧴' }, { nome: 'Limpeza e higiene', tipo: 'variavel', ic: '🧽' },
+  { nome: 'Manutenção e conserto', tipo: 'variavel', ic: '🔧' }, { nome: 'Marketing e anúncios', tipo: 'variavel', ic: '📣' },
+  { nome: 'Taxas de cartão e Pix', tipo: 'variavel', ic: '💳' }, { nome: 'Outros gastos', tipo: 'variavel', ic: '📦' },
+  { nome: 'Equipamentos e móveis', tipo: 'invest', ic: '🪒' }, { nome: 'Reforma e melhorias', tipo: 'invest', ic: '🛠️' },
+  { nome: 'Retirada do dono', tipo: 'retirada', ic: '🤠' }
+];
+const PAGAMENTOS = ['Dinheiro', 'Pix', 'Cartão', 'Boleto', 'Transferência', 'Débito automático', 'Outro'];
+const tipoCusto_ = nome => { const c = CATS_CUSTO.filter(x => x.nome === nome)[0]; return c ? c.tipo : 'variavel'; };
+function custos_() {
+  return ct_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    id: String(l[0]), data: dataTxt_(l[1]), categoria: String(l[2]), tipo: tipoCusto_(String(l[2])), desc: String(l[3]), valor: Number(l[4]) || 0,
+    fornecedor: String(l[5]), pagamento: String(l[6]), status: String(l[7]) === 'a pagar' ? 'a pagar' : 'pago', venc: dataTxt_(l[8] || ''),
+    recorrente: String(l[9]) === 'mensal' ? 'mensal' : String(l[9]) === 'encerrada' ? 'encerrada' : '', obs: String(l[10]), fileId: String(l[11]),
+    criado: String(l[12]), por: String(l[13]), origem: String(l[14]), pagoEm: dataTxt_(l[15] || '')
+  }));
+}
+const custoLinha_ = c => [c.id, c.data, c.categoria, seguro_(c.desc), c.valor, seguro_(c.fornecedor), c.pagamento, c.status, c.venc, c.recorrente, seguro_(c.obs), c.fileId, c.criado, c.por, c.origem, c.pagoEm];
+const mesDe_ = iso => String(iso).slice(0, 7);
+const mesTxt_ = (a, m) => a + '-' + (m < 10 ? '0' : '') + m;
+function proxMes_(m) { const p = m.split('-').map(Number); return p[1] === 12 ? mesTxt_(p[0] + 1, 1) : mesTxt_(p[0], p[1] + 1); }
+function diaNoMes_(mes, dia) {
+  const p = mes.split('-').map(Number), ult = new Date(Date.UTC(p[0], p[1], 0)).getUTCDate(), d = Math.min(dia, ult);
+  return mes + '-' + (d < 10 ? '0' : '') + d;
+}
+// contas que se repetem todo mês: cria o lançamento do mês que ainda não existe (rodar ao abrir a tela)
+function custosGerar_() {
+  const mesAtual = mesDe_(hoje_()), lista = custos_(), tem = {}, novos = [];
+  lista.forEach(c => { tem[(c.origem || c.id) + '|' + mesDe_(c.data)] = 1; });
+  lista.filter(c => c.recorrente === 'mensal' && !c.origem && isoOk_(c.data)).forEach(m => {
+    const dia = Number(m.data.slice(8, 10)), desloc = isoOk_(m.venc) ? diasEntre_(m.data, m.venc) : 0;
+    let mes = mesDe_(m.data);
+    for (let k = 0; k < 60 && novos.length < 120; k++) {
+      mes = proxMes_(mes);
+      if (mes > mesAtual) break;
+      if (tem[m.id + '|' + mes]) continue;
+      const data = diaNoMes_(mes, dia);
+      novos.push(custoLinha_({ id: Utilities.getUuid().slice(0, 8), data: data, categoria: m.categoria, desc: m.desc, valor: m.valor, fornecedor: m.fornecedor, pagamento: m.pagamento,
+        status: 'a pagar', venc: somarDias_(data, desloc), recorrente: '', obs: m.obs, fileId: '', criado: agoraBR_(), por: 'automático', origem: m.id, pagoEm: '' }));
+      tem[m.id + '|' + mes] = 1;
+    }
+  });
+  novos.forEach(l => acrescentar_(ct_(), CAB_CT, l, FMT_CT));
+  return json_({ ok: true, criados: novos.length });
+}
+function custoSalvar_(d, q) {
+  const id = String(d.id || '').trim(), data = String(d.data || '');
+  if (!isoOk_(data)) return erro_('Informe a data do gasto.');
+  const cat = CATS_CUSTO.filter(c => c.nome === String(d.categoria))[0];
+  if (!cat) return erro_('Escolha uma categoria.');
+  const valor = r2_(Number(String(d.valor).replace(',', '.')));
+  if (!isFinite(valor) || valor <= 0 || valor > 10000000) return erro_('Informe um valor maior que zero.');
+  const status = d.status === 'a pagar' ? 'a pagar' : 'pago';
+  let venc = String(d.venc || '');
+  if (venc && !isoOk_(venc)) return erro_('Vencimento inválido.');
+  if (status === 'a pagar' && !venc) venc = data;
+  const pagamento = PAGAMENTOS.indexOf(String(d.pagamento)) !== -1 ? String(d.pagamento) : '';
+  const recorrente = d.recorrente === 'mensal' ? 'mensal' : d.recorrente === 'encerrada' ? 'encerrada' : '';
+  const sh = ct_(), vals = sh.getDataRange().getValues(), linhas = vals.slice(1);
+  let ant = null, idx = -1;
+  if (id) {
+    idx = linhas.findIndex(l => String(l[0]) === id);
+    if (idx === -1) return erro_('Lançamento não encontrado.');
+    ant = linhas[idx];
+  }
+  const nid = id || Utilities.getUuid().slice(0, 8);
+  let fileId = ant ? String(ant[11] || '') : '';
+  if (d.removerComprovante && fileId) { lixeira_(fileId); fileId = ''; }
+  if (d.imagem) {
+    const r = salvarImagem_(d.imagem, 'comprovante-' + nid); if (r.erro) return erro_(r.erro);
+    if (fileId) lixeira_(fileId); fileId = r.id;
+  }
+  const pagoEm = status === 'pago' ? (ant && String(ant[7]) === 'pago' && String(ant[15] || '') ? dataTxt_(ant[15]) : (isoOk_(d.pagoEm) ? d.pagoEm : data)) : '';
+  const c = { id: nid, data: data, categoria: cat.nome, desc: limpo_(d.desc, 80) || cat.nome, valor: valor, fornecedor: limpo_(d.fornecedor, 60), pagamento: pagamento, status: status, venc: venc,
+    recorrente: recorrente, obs: limpo_(d.obs, 200), fileId: fileId, criado: ant ? String(ant[12]) : agoraBR_(), por: ant ? String(ant[13]) : q.nome, origem: ant ? String(ant[14] || '') : '', pagoEm: pagoEm };
+  if (c.origem) c.recorrente = '';
+  if (idx === -1) acrescentar_(sh, CAB_CT, custoLinha_(c), FMT_CT);
+  else { linhas[idx] = custoLinha_(c); reescrever_(sh, CAB_CT, linhas, FMT_CT); }
+  return json_({ ok: true, id: nid });
+}
+function custoExcluir_(d) {
+  const id = String(d.id || ''), sh = ct_(), linhas = sh.getDataRange().getValues().slice(1), idx = linhas.findIndex(l => String(l[0]) === id);
+  if (idx === -1) return erro_('Lançamento não encontrado.');
+  const fileId = String(linhas[idx][11] || ''), eraModelo = String(linhas[idx][9]) === 'mensal' && !String(linhas[idx][14] || '');
+  linhas.splice(idx, 1);
+  if (eraModelo) linhas.forEach(l => { if (String(l[14]) === id) l[14] = ''; });          // os meses já criados ficam como lançamentos comuns
+  reescrever_(sh, CAB_CT, linhas, FMT_CT);
+  if (fileId) lixeira_(fileId);
+  return json_({ ok: true });
+}
+function custoPagar_(d) {
+  const id = String(d.id || ''), sh = ct_(), linhas = sh.getDataRange().getValues().slice(1), idx = linhas.findIndex(l => String(l[0]) === id);
+  if (idx === -1) return erro_('Lançamento não encontrado.');
+  const pago = d.desfazer ? false : true, l = linhas[idx];
+  l[7] = pago ? 'pago' : 'a pagar';
+  l[15] = pago ? (isoOk_(d.pagoEm) ? d.pagoEm : hoje_()) : '';
+  if (pago && PAGAMENTOS.indexOf(String(d.pagamento)) !== -1) l[6] = String(d.pagamento);
+  if (!pago && !isoOk_(dataTxt_(l[8]))) l[8] = dataTxt_(l[1]);
+  reescrever_(sh, CAB_CT, linhas, FMT_CT);
+  return json_({ ok: true });
+}
+function contasAPagar_(lista, hoje) {
+  const lim = somarDias_(hoje, 15), pend = lista.filter(c => c.status === 'a pagar').map(c => {
+    const v = isoOk_(c.venc) ? c.venc : c.data;
+    return { id: c.id, desc: c.desc, categoria: c.categoria, valor: c.valor, venc: v, dias: diasEntre_(hoje, v), fornecedor: c.fornecedor, recorrente: !!c.origem || c.recorrente === 'mensal' };
+  }).sort((a, b) => a.venc.localeCompare(b.venc));
+  const soma = a => r2_(a.reduce((s, x) => s + x.valor, 0)), venc = pend.filter(x => x.dias < 0), prox = pend.filter(x => x.dias >= 0 && x.venc <= lim);
+  return { vencidas: { qtd: venc.length, valor: soma(venc) }, proximas: { qtd: prox.length, valor: soma(prox) }, total: { qtd: pend.length, valor: soma(pend) }, itens: pend.slice(0, 60) };
+}
+function custosLista_(d) {
+  const hoje = hoje_(), mesIni = hoje.slice(0, 8) + '01';
+  let de = isoOk_(d.de) ? d.de : mesIni, ate = isoOk_(d.ate) ? d.ate : hoje;
+  if (de > ate) { const t = de; de = ate; ate = t; }
+  const todos = custos_();
+  let lista = todos.filter(c => c.data >= de && c.data <= ate);
+  if (d.categoria) lista = lista.filter(c => c.categoria === d.categoria);
+  if (d.status === 'pago' || d.status === 'a pagar') lista = lista.filter(c => c.status === d.status);
+  lista.sort((a, b) => b.data.localeCompare(a.data) || b.criado.localeCompare(a.criado));
+  const tot = { total: 0, pago: 0, aPagar: 0, qtd: lista.length }, porCat = {};
+  lista.forEach(c => { tot.total += c.valor; if (c.status === 'pago') tot.pago += c.valor; else tot.aPagar += c.valor; porCat[c.categoria] = (porCat[c.categoria] || 0) + c.valor; });
+  Object.keys(tot).forEach(k => { tot[k] = r2_(tot[k]); });
+  return json_({ ok: true, de: de, ate: ate, hoje: hoje, custos: lista.slice(0, 600), truncado: lista.length > 600, totais: tot,
+    porCategoria: Object.keys(porCat).map(k => ({ nome: k, valor: r2_(porCat[k]) })).sort((a, b) => b.valor - a.valor),
+    contas: contasAPagar_(todos, hoje), categorias: CATS_CUSTO, pagamentos: PAGAMENTOS });
+}
+function finMetaSalvar_(d) {
+  const num = v => { const n = Number(String(v == null ? 0 : v).replace(',', '.')); return isFinite(n) && n >= 0 && n <= 100000000 ? String(r2_(n)) : null; };
+  const novo = {};
+  if (d.metaLucro !== undefined) novo.metaLucro = num(d.metaLucro);
+  if (d.metaReceita !== undefined) novo.metaReceita = num(d.metaReceita);
+  if (Object.keys(novo).some(k => novo[k] === null)) return erro_('Informe valores válidos para as metas.');
+  const f = Object.assign({}, cfg_(), novo);
+  reescrever_(cf_(), CAB_CF, Object.keys(CFG_PADRAO).map(k => [k, String(f[k] == null ? '' : f[k])]), FMT_TXT(2));
+  limparCache_();
+  return json_({ ok: true });
+}
+// Relatório financeiro completo (receita da casa × custos) com comparativo, 12 meses, ponto de equilíbrio, contas e metas
+function finRelatorio_(d) {
+  const hoje = hoje_(), mesIni = hoje.slice(0, 8) + '01';
+  let de = isoOk_(d.de) ? d.de : mesIni, ate = isoOk_(d.ate) ? d.ate : hoje;
+  if (de > ate) { const t = de; de = ate; ate = t; }
+  if (diasEntre_(de, ate) > 800) return erro_('Escolha um período de até 2 anos.');
+  const dias = diasEntre_(de, ate) + 1, deAnt = somarDias_(de, -dias), ateAnt = somarDias_(de, -1);
+  const vendas = vd_().getDataRange().getValues().slice(1).filter(l => String(l[0]).trim()).map(l => ({
+    data: dataTxt_(l[0]), hora: horaTxt_(l[1]), barbeiro: String(l[2]), servico: String(l[3]), categoria: String(l[4]), cliente: String(l[5]),
+    valor: Number(l[7]) || 0, comissao: Number(l[9]) || 0, lucro: Number(l[10]) || 0, gratis: String(l[17]) === 'sim'
+  }));
+  const custos = custos_();
+  const agr = (a, b) => {
+    const v = vendas.filter(r => r.data >= a && r.data <= b), c = custos.filter(r => r.data >= a && r.data <= b);
+    const t = { bruto: 0, comissao: 0, casa: 0, qtd: v.length, cortes: 0, gratis: 0, gratisCusto: 0, fixo: 0, variavel: 0, invest: 0, retirada: 0, pago: 0, aPagar: 0 };
+    v.forEach(r => { t.bruto += r.valor; t.comissao += r.comissao; t.casa += r.lucro; if (r.categoria === 'corte') t.cortes++; if (r.gratis) { t.gratis++; t.gratisCusto += r.comissao; } });
+    c.forEach(r => { t[r.tipo] += r.valor; if (r.status === 'pago') t.pago += r.valor; else t.aPagar += r.valor; });
+    t.oper = t.fixo + t.variavel; t.resultado = t.casa - t.oper; t.sobra = t.resultado - t.invest - t.retirada;
+    t.margem = t.bruto ? t.resultado / t.bruto * 100 : 0; t.ticket = t.qtd ? t.bruto / t.qtd : 0;
+    t.maoDeObra = t.bruto ? t.comissao / t.bruto * 100 : 0; t.custoPorCorte = t.cortes ? t.oper / t.cortes : 0;
+    const mc = t.bruto ? (t.casa - t.variavel) / t.bruto : 0;
+    t.margemContribuicao = mc * 100; t.pontoEquilibrio = mc > 0 ? t.fixo / mc : null;
+    Object.keys(t).forEach(k => { if (typeof t[k] === 'number') t[k] = r2_(t[k]); });
+    return t;
+  };
+  const atual = agr(de, ate), anterior = agr(deAnt, ateAnt);
+  // por categoria
+  const cs = custos.filter(c => c.data >= de && c.data <= ate), csAnt = custos.filter(c => c.data >= deAnt && c.data <= ateAnt), cat = {};
+  cs.forEach(c => { const o = cat[c.categoria] = cat[c.categoria] || { nome: c.categoria, tipo: c.tipo, valor: 0, qtd: 0, anterior: 0 }; o.valor += c.valor; o.qtd++; });
+  csAnt.forEach(c => { if (cat[c.categoria]) cat[c.categoria].anterior += c.valor; });
+  const totC = cs.reduce((s, c) => s + c.valor, 0);
+  const porCategoria = Object.keys(cat).map(k => { const o = cat[k]; o.valor = r2_(o.valor); o.anterior = r2_(o.anterior); o.pct = totC ? r2_(o.valor / totC * 100) : 0; o.ic = (CATS_CUSTO.filter(x => x.nome === k)[0] || {}).ic || '📦'; return o; }).sort((a, b) => b.valor - a.valor);
+  // 12 meses terminando no mês de "ate"
+  const meses = []; let m = mesDe_(ate).split('-').map(Number), ini12;
+  const lista12 = [];
+  for (let i = 0; i < 12; i++) { lista12.unshift(mesTxt_(m[0], m[1])); m = m[1] === 1 ? [m[0] - 1, 12] : [m[0], m[1] - 1]; }
+  lista12.forEach(k => { const a = k + '-01', b = diaNoMes_(k, 31), t = agr(a, b); meses.push({ k: k, bruto: t.bruto, comissao: t.comissao, casa: t.casa, oper: t.oper, invest: t.invest, retirada: t.retirada, resultado: t.resultado, sobra: t.sobra, margem: t.margem, cortes: t.cortes }); });
+  // por barbeiro
+  const pb = {};
+  vendas.filter(r => r.data >= de && r.data <= ate).forEach(r => { const o = pb[r.barbeiro] = pb[r.barbeiro] || { nome: r.barbeiro, qtd: 0, bruto: 0, comissao: 0, casa: 0 }; o.qtd++; o.bruto += r.valor; o.comissao += r.comissao; o.casa += r.lucro; });
+  const porBarbeiro = Object.keys(pb).map(k => { const o = pb[k]; ['bruto', 'comissao', 'casa'].forEach(f => { o[f] = r2_(o[f]); }); return o; }).sort((a, b) => b.bruto - a.bruto);
+  // metas e previsão do mês corrente
+  const c = cfg_(), mesAt = agr(mesIni, hoje), diasMes = Number(diaNoMes_(mesDe_(hoje), 31).slice(8)), passados = Number(hoje.slice(8, 10));
+  const preco = {}; servicos_().forEach(s => { preco[s.nome] = s.preco; });
+  const fimMes = diaNoMes_(mesDe_(hoje), 31);
+  let agendado = 0, agendadoQtd = 0;
+  ag_().getDataRange().getValues().slice(1).forEach(l => {
+    const dt = dataTxt_(l[0]), st = String(l[8] || '').trim();
+    if (String(l[0]).trim() && dt > hoje && dt <= fimMes && !st) { agendado += preco[String(l[3])] || 0; agendadoQtd++; }
+  });
+  const metas = { metaLucro: Number(c.metaLucro) || 0, metaReceita: Number(c.metaReceita) || 0, mes: mesDe_(hoje), diasMes: diasMes, diasPassados: passados,
+    bruto: mesAt.bruto, resultado: mesAt.resultado, agendado: r2_(agendado), agendadoQtd: agendadoQtd,
+    projecaoReceita: r2_(passados ? mesAt.bruto / passados * diasMes : 0), projecaoResultado: r2_(passados ? mesAt.resultado / passados * diasMes : 0), fixoMes: mesAt.fixo };
+  const out = { ok: true, de: de, ate: ate, deAnt: deAnt, ateAnt: ateAnt, hoje: hoje, dias: dias, atual: atual, anterior: anterior, porCategoria: porCategoria, meses: meses,
+    porBarbeiro: porBarbeiro, contas: contasAPagar_(custos, hoje), metas: metas, categorias: CATS_CUSTO,
+    maiores: cs.slice().sort((a, b) => b.valor - a.valor).slice(0, 8).map(x => ({ id: x.id, data: x.data, desc: x.desc, categoria: x.categoria, valor: x.valor, status: x.status })) };
+  if (d.linhas) {
+    const jan = lista12[0] + '-01', a0 = jan < de ? jan : de;
+    out.janelaDe = a0;
+    out.vendas = vendas.filter(r => r.data >= a0 && r.data <= ate).slice(-8000);
+    out.custosLinhas = custos.filter(r => r.data >= a0 && r.data <= ate).slice(-4000);
+    out.aPagarLinhas = custos.filter(r => r.status === 'a pagar');
+    out.nomeSite = c.nome;
+  }
+  return json_(out);
+}
+
 // Tudo o que o painel do dono precisa para editar
 function adminDados_() {
   const c = cfg_(), conf = {};
@@ -1715,9 +1926,9 @@ function doGet(e) {
 }
 
 const ACOES_EQUIPE = ['admin_agenda', 'admin_agenda_relatorio', 'admin_concluir', 'admin_venda_avulsa', 'admin_cancelar', 'admin_dashboard', 'admin_relatorio', 'admin_confirmar', 'admin_recusar', 'admin_clientes', 'admin_cliente_avaliar', 'admin_bloqueio_pedir'];
-const LEITURAS = ['entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_agenda_relatorio', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
+const LEITURAS = ['admin_custos_lista', 'admin_fin_relatorio', 'entrar', 'perfil', 'meus', 'fidelidade', 'notificacoes', 'admin_agenda', 'admin_agenda_relatorio', 'admin_dados', 'admin_relatorio', 'admin_dashboard', 'admin_clientes'];   // não travam a fila (mais rápido)
 const ACOES_DONO = ['admin_dados', 'admin_relatorio', 'admin_excluir_venda', 'admin_salvar_servicos', 'admin_salvar_equipe',
-  'admin_salvar_config', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
+  'admin_salvar_config', 'admin_custos_lista', 'admin_custo_salvar', 'admin_custo_excluir', 'admin_custo_pagar', 'admin_custos_gerar', 'admin_fin_relatorio', 'admin_fin_meta_salvar', 'admin_marcas_salvar', 'admin_marca_foto', 'admin_marca_foto_url', 'admin_barbeiro_cadastrar', 'admin_foto_fachada', 'admin_foto_fachada_del', 'admin_foto_add', 'admin_foto_salvar', 'admin_foto_del', 'admin_foto_img', 'admin_promos_salvar', 'admin_promo_img', 'admin_foto_hero', 'admin_foto_hero_del',
   'admin_bloqueio_decidir', 'admin_bloqueio_remover', 'admin_galeria_add', 'admin_galeria_del', 'admin_equipe_foto'];
 
 function doPost(e) {
@@ -1768,6 +1979,13 @@ function rotear_(d) {
         case 'admin_salvar_servicos': return adminSalvarServicos_(d);
         case 'admin_salvar_equipe': return adminSalvarEquipe_(d);
         case 'admin_salvar_config': return adminSalvarConfig_(d);
+        case 'admin_custos_lista': return custosLista_(d);
+        case 'admin_custo_salvar': return custoSalvar_(d, q);
+        case 'admin_custo_excluir': return custoExcluir_(d);
+        case 'admin_custo_pagar': return custoPagar_(d);
+        case 'admin_custos_gerar': return custosGerar_();
+        case 'admin_fin_relatorio': return finRelatorio_(d);
+        case 'admin_fin_meta_salvar': return finMetaSalvar_(d);
         case 'admin_foto_add': return adminFotoAdd_(d);
         case 'admin_foto_salvar': return adminFotoSalvar_(d);
         case 'admin_foto_del': return adminFotoDel_(d);
